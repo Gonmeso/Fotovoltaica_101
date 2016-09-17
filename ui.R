@@ -64,9 +64,9 @@ shinyUI(
                    
                    
                    tabPanel('Coordenadas',
-                            h3("La latitud de su posición es:"),
-                            br(),
-                            h3("La longitud de su posición es:")
+                            h3("La posición seleccionada es: "),
+                            verbatimTextOutput("Click_text"),
+                            verbatimTextOutput("Glat")
                             )
                    
                  )
