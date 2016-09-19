@@ -49,25 +49,24 @@ shinyUI(
                             
                             # div(img( src = 'Espana.jpg', height = 345, width = 490), style="text-align: center;"),
                             
-                            leafletOutput("Mapa", width = "500", height = "500"),
+                            leafletOutput("Map", width = "500", height = "500"),
                             
-                            p(),
-                            actionButton("recalc", "Nuevo Punto")
+                            p("Sus coordenadas son:"),
+                            
+                            verbatimTextOutput("Click_text")
+                            
+                           
+                            
                           
                               
                             
-                   ),
+                   )
                              
                    
                    
                    
                    
                    
-                   tabPanel('Coordenadas',
-                            h3("La posición seleccionada es: "),
-                            verbatimTextOutput("Click_text"),
-                            verbatimTextOutput("Glat")
-                            )
                    
                  )
                  
