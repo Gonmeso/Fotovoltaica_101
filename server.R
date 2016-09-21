@@ -27,9 +27,15 @@ shinyServer(function(input, output) {
   
   posicion <- reactive(as.numeric(input$Map_click))
 
-  output$Click_text<-renderText(paste0(posicion()))
-
-   
+  # output$Click_text<-renderText(paste0(posicion$lng, ' ', posicion$lat))
+  observe({
+    
+  leafletProxy("Map") %>%
+    clearMarkers() %>%
+    addMarkers(input$lonIn, input$latIn)
+    
+    output$Click_text<-renderText(paste0(input$lonIn,' ',input$latIn))
+  })
    
    observe({
      
@@ -39,22 +45,39 @@ shinyServer(function(input, output) {
      leafletProxy("Map") %>%
        clearMarkers() %>%
        addMarkers(pos$lng, pos$lat)
-     
-     df <- pos$lng
-     lat1 <- pos$lat
+
+
+     output$Click_text<-renderText(paste0(pos$lng,' ', pos$lat))
+
+
 
    })
   
-   output$calle <- renderPrint({
-     
+   
+
+   observe({
+
      direccion <- as.character(input$calle)
+
+     getPos <- geocode(direccion, 'latlon', source = 'google')
      
-     geocode(direccion, 'latlon', source = 'google')
+     
+       
+     
+     leafletProxy("Map") %>%
+       clearMarkers() %>%
+       addMarkers(getPos$lon, getPos$lat)
+    
+     
+     output$Click_text<-renderText(paste0(getPos$lon,' ', getPos$lat))
+     
+     
+     return(getPos)
      
    })
 
    
-reactive(print(input$pos$lat))
+
 
  
   

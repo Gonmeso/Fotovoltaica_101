@@ -41,9 +41,12 @@ shinyUI(
                  navlistPanel(
                    tabPanel('Mapa',
                             
+                            numericInput('lonIn', "Longitud", value = 0, width = '50px'),
+                            
+                            numericInput('latIn', "Latitud", value = 0, width = '50px'),
+                            
                             textInput('calle', "Dirección", value = "Spain"),
 
-                            verbatimTextOutput('calle'),
                             
                             h3("Seleccione su posición", align = "center"),
                             
