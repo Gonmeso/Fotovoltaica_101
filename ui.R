@@ -52,11 +52,11 @@ shinyUI(
                             
                             # div(img( src = 'Espana.jpg', height = 345, width = 490), style="text-align: center;"),
                             
-                            leafletOutput("Map", width = "500", height = "500"),
+                            leafletOutput("Map")#,
                             
-                            p("Sus coordenadas son:"),
-                            
-                            verbatimTextOutput("Click_text")
+                            # p("Sus coordenadas son:"),
+
+                            # verbatimTextOutput("Click_text")
                             
                            
                             

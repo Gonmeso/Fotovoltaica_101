@@ -1,6 +1,9 @@
- library(shiny)
- library(ggmap)
- library(solaR)
+library(shiny)
+library(ggmap)
+library(solaR)
+library(htmltools)
+source("SiarData.R")
+
 
 
  
@@ -10,6 +13,22 @@ lng1 <- 0
 lng2 <- 0
 df <- data.frame()
  
+IconoPanel <- makeIcon(
+  
+  iconUrl = "www/SolarIcon.svg",
+  iconWidth = 38,
+  iconHeight = 38
+  
+)
+
+MPopup <- paste("<b>",DatosSiar$Estacion, "</b>",
+                br(),
+                "Provincia: ", DatosSiar$Provincia,
+                br(),
+                "Latitud: ",DatosSiar$lat,
+                br(),
+                "Longitud: ", DatosSiar$lon)
+
  
 ##Llamada al server
 shinyServer(function(input, output) {
@@ -19,7 +38,19 @@ shinyServer(function(input, output) {
   
     leaflet() %>%
     addTiles() %>%  
-    setView(lng=-3.7038, lat=40.4168, 5) 
+    addMarkers(
+      DatosSiar$lon, DatosSiar$lat,
+      icon = IconoPanel, group = "Estaciones",
+      popup = MPopup
+      )  %>%
+    addLayersControl(
+      overlayGroups = "Estaciones",
+      position = "bottomright",
+      options = layersControlOptions(collapsed = FALSE)
+      
+    ) %>%
+    hideGroup("Estaciones") %>%
+    setView(lng=-3.7038, lat=40.4168, 6) 
   
   
   })
@@ -31,10 +62,14 @@ shinyServer(function(input, output) {
   observe({
     
   leafletProxy("Map") %>%
-    clearMarkers() %>%
-    addMarkers(input$lonIn, input$latIn)
+    ##clearMarkers(group = "latMarker") %>%
+    clearGroup(group = "latMarker") %>%
+    addMarkers(input$lonIn, input$latIn, group = "latMarker",
+               popup = paste("<b>","La Latitud de este punto es: ","</b>",input$latIn, br(),
+                             
+                             "<b>","La Longitud de este punto es: ","</b>", input$lonIn))
     
-    output$Click_text<-renderText(paste0(input$lonIn,' ',input$latIn))
+    # output$Click_text<-renderText(paste0(input$lonIn,' ',input$latIn))
   })
    
    observe({
@@ -43,17 +78,23 @@ shinyServer(function(input, output) {
      if (is.null(pos))
        return()
      leafletProxy("Map") %>%
-       clearMarkers() %>%
-       addMarkers(pos$lng, pos$lat)
+       ##clearMarkers() %>%
+       clearGroup(group = "latMarker") %>%
+       
+       addMarkers(pos$lng, pos$lat,group = "latMarker",
+                  popup = paste("<b>","La Latitud de este punto es: ","</b>",pos$lat, br(),
+                                
+                                "<b>","La Longitud de este punto es: ","</b>", pos$lng))
 
 
-     output$Click_text<-renderText(paste0(pos$lng,' ', pos$lat))
+
+     # output$Click_text<-renderText(paste0(pos$lng,' ', pos$lat))
 
 
 
    })
   
-   
+
 
    observe({
 
@@ -65,11 +106,15 @@ shinyServer(function(input, output) {
        
      
      leafletProxy("Map") %>%
-       clearMarkers() %>%
-       addMarkers(getPos$lon, getPos$lat)
+       ##clearMarkers() %>%
+       clearGroup(group = "latMarker") %>%
+       addMarkers(getPos$lon, getPos$lat, group = "latMarker",
+                  popup = paste("<b>","La Latitud de este punto es: ","</b>",getPos$lat, br(),
+                                
+                                "<b>","La Longitud de este punto es: ","</b>", getPos$lon))
     
      
-     output$Click_text<-renderText(paste0(getPos$lon,' ', getPos$lat))
+     # output$Click_text<-renderText(paste0(getPos$lon,' ', getPos$lat))
      
      
      return(getPos)
