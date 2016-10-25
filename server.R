@@ -12,12 +12,18 @@ lat2 <- 0
 lng1 <- 0
 lng2 <- 0
 df <- data.frame()
+
+easyFormat <- function(x, y){
+  
+  format(round(x,y), nsmall = y)
+  
+}
  
 IconoPanel <- makeIcon(
   
-  iconUrl = "www/SolarIcon.svg",
-  iconWidth = 38,
-  iconHeight = 38
+  iconUrl = "www/SunIcon.png",
+  iconWidth = 20,
+  iconHeight = 20
   
 )
 
@@ -25,9 +31,9 @@ MPopup <- paste("<b>",DatosSiar$Estacion, "</b>",
                 br(),
                 "Provincia: ", DatosSiar$Provincia,
                 br(),
-                "Latitud: ",DatosSiar$lat,
+                "Latitud: ",easyFormat(DatosSiar$lat, 2),
                 br(),
-                "Longitud: ", DatosSiar$lon)
+                "Longitud: ", easyFormat(DatosSiar$lon, 2))
 
  
 ##Llamada al server
@@ -50,7 +56,7 @@ shinyServer(function(input, output) {
       
     ) %>%
     hideGroup("Estaciones") %>%
-    setView(lng=-3.7038, lat=40.4168, 6) 
+    setView(lng=-3.7038, lat=40.4168, 5) 
   
   
   })
@@ -65,9 +71,9 @@ shinyServer(function(input, output) {
     ##clearMarkers(group = "latMarker") %>%
     clearGroup(group = "latMarker") %>%
     addMarkers(input$lonIn, input$latIn, group = "latMarker",
-               popup = paste("<b>","La Latitud de este punto es: ","</b>",input$latIn, br(),
+               popup = paste("<b>","La Latitud de este punto es: ","</b>",easyFormat(input$latIn, 2), br(),
                              
-                             "<b>","La Longitud de este punto es: ","</b>", input$lonIn))
+                             "<b>","La Longitud de este punto es: ","</b>", easyFormat(input$lonIn,2)))
     
     # output$Click_text<-renderText(paste0(input$lonIn,' ',input$latIn))
   })
@@ -82,9 +88,9 @@ shinyServer(function(input, output) {
        clearGroup(group = "latMarker") %>%
        
        addMarkers(pos$lng, pos$lat,group = "latMarker",
-                  popup = paste("<b>","La Latitud de este punto es: ","</b>",pos$lat, br(),
+                  popup = paste("<b>","La Latitud de este punto es: ","</b>",easyFormat(pos$lat,2), br(),
                                 
-                                "<b>","La Longitud de este punto es: ","</b>", pos$lng))
+                                "<b>","La Longitud de este punto es: ","</b>", easyFormat(pos$lng,2)))
 
 
 
@@ -94,36 +100,58 @@ shinyServer(function(input, output) {
 
    })
   
+  lat1 <- reactive({
+    pos <- input$Map_click
+    as.numeric(pos$lat)
+   
+  })
 
 
+  
    observe({
 
      direccion <- as.character(input$calle)
 
      getPos <- geocode(direccion, 'latlon', source = 'google')
      
-     
+     lat1 <- getPos$lat
        
      
      leafletProxy("Map") %>%
        ##clearMarkers() %>%
        clearGroup(group = "latMarker") %>%
        addMarkers(getPos$lon, getPos$lat, group = "latMarker",
-                  popup = paste("<b>","La Latitud de este punto es: ","</b>",getPos$lat, br(),
+                  popup = paste("<b>","La Latitud de este punto es: ","</b>",easyFormat(getPos$lat, 2), br(),
                                 
-                                "<b>","La Longitud de este punto es: ","</b>", getPos$lon))
+                                "<b>","La Longitud de este punto es: ","</b>", easyFormat(getPos$lon,2)))
     
      
      # output$Click_text<-renderText(paste0(getPos$lon,' ', getPos$lat))
-     
+
      
      return(getPos)
      
    })
 
+   ##Obtener la latitud y longitud de las marcadores originales
    
+   lat2 <- reactive({
+     pos <- input$Map_marker_click$lat
+     as.numeric(pos)
+     
+  })
+   
+   lng2 <- reactive({
+     pos <- input$Map_marker_click$lng
+     as.numeric(pos)
+     
+   })
 
-
- 
+   observe({
+     
+     PInfo <- as.vector(input$Map_marker_click)
+     print(PInfo)
+     
+   })
   
 })

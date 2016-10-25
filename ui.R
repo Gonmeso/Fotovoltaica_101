@@ -8,12 +8,13 @@ shinyUI(
   
   ##Ajuste de la página al especio de la ventana
   fluidPage(theme = "bootstrap.css",
+    fluidRow(        
     
     ##Creación de la barra superior
     navbarPage(
       
        ##Titulo 
-       strong("Fotovoltaica 101", align = "center"),
+       "Fotovoltaica 101", position = "static-top",
     
       #Tabs creadas, falta la parte de cada una 
       tabPanel('Introducción',
@@ -41,9 +42,13 @@ shinyUI(
                  navlistPanel(
                    tabPanel('Mapa',
                             
-                            numericInput('lonIn', "Longitud", value = 0, width = '50px'),
+                          
+                            column(4,
                             
-                            numericInput('latIn', "Latitud", value = 0, width = '50px'),
+                            numericInput('lonIn', "Longitud", value = 0, width = '50px')),
+                            
+                            column(5,
+                            numericInput('latIn', "Latitud", value = 0, width = '50px')),
                             
                             textInput('calle', "Dirección", value = "Spain"),
 
@@ -52,12 +57,15 @@ shinyUI(
                             
                             # div(img( src = 'Espana.jpg', height = 345, width = 490), style="text-align: center;"),
                             
-                            leafletOutput("Map")#,
+                            column(12, 
+                            leafletOutput("Map"))#,
                             
                             # p("Sus coordenadas son:"),
 
                             # verbatimTextOutput("Click_text")
                             
+                          
+                          
                            
                             
                           
@@ -131,4 +139,5 @@ shinyUI(
     
     
   )
+)
 )
