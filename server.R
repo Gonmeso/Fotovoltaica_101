@@ -7,25 +7,26 @@ source("SiarData.R")
 
 
  
-lat1 <- 0
-lat2 <- 0
-lng1 <- 0
-lng2 <- 0
-df <- data.frame()
+##Función para formatear sencillamente, usado para los decimales de los PopUps
 
 easyFormat <- function(x, y){
   
   format(round(x,y), nsmall = y)
   
 }
+
+##Creación del Icono usado para las estaciones meteorológicas
  
 IconoPanel <- makeIcon(
   
+  setwd("D:/TFG/Fotovoltaica 101/Fotovoltaica_101"),
   iconUrl = "www/SunIcon.png",
   iconWidth = 20,
   iconHeight = 20
   
 )
+
+##Contenido del PopUp de las estaciones
 
 MPopup <- paste("<b>",DatosSiar$Estacion, "</b>",
                 br(),
@@ -39,22 +40,26 @@ MPopup <- paste("<b>",DatosSiar$Estacion, "</b>",
 ##Llamada al server
 shinyServer(function(input, output) {
   
+  ##Renderización del mapa para la salida por la interfaz (ui)
   
   output$Map <- renderLeaflet({
   
     leaflet() %>%
     addTiles() %>%  
+    ##Adición de los marcadores de las estaciones, usando el popup descrito anteriormente, utilizando las coordenadas del archivo DatosSiar  
     addMarkers(
       DatosSiar$lon, DatosSiar$lat,
       icon = IconoPanel, group = "Estaciones",
       popup = MPopup
       )  %>%
+    ##Control de capas, para permitir mostrar o no los marcadores de las estaciones, por defecto desactivado con hideGroup 
     addLayersControl(
       overlayGroups = "Estaciones",
       position = "bottomright",
       options = layersControlOptions(collapsed = FALSE)
       
     ) %>%
+      
     hideGroup("Estaciones") %>%
     setView(lng=-3.7038, lat=40.4168, 5) 
   
@@ -64,20 +69,22 @@ shinyServer(function(input, output) {
   
   posicion <- reactive(as.numeric(input$Map_click))
 
-  # output$Click_text<-renderText(paste0(posicion$lng, ' ', posicion$lat))
+ 
+  ##Creación del marcador y el popup por introducción de coordenadas 
   observe({
     
   leafletProxy("Map") %>%
-    ##clearMarkers(group = "latMarker") %>%
+    
     clearGroup(group = "latMarker") %>%
     addMarkers(input$lonIn, input$latIn, group = "latMarker",
                popup = paste("<b>","La Latitud de este punto es: ","</b>",easyFormat(input$latIn, 2), br(),
                              
                              "<b>","La Longitud de este punto es: ","</b>", easyFormat(input$lonIn,2)))
     
-    # output$Click_text<-renderText(paste0(input$lonIn,' ',input$latIn))
+    
   })
    
+  ##Creación del marcador y popup por clic
    observe({
      
      pos <- input$Map_click
@@ -94,7 +101,7 @@ shinyServer(function(input, output) {
 
 
 
-     # output$Click_text<-renderText(paste0(pos$lng,' ', pos$lat))
+     
 
 
 
@@ -107,18 +114,18 @@ shinyServer(function(input, output) {
   })
 
 
-  
+   ##Creación de marcador y popup por introducción de la dirección
    observe({
 
+     ##Recibe la dirección desde la UI
      direccion <- as.character(input$calle)
-
+    
+     ##Obtención de las coordenadas mediante geocode(), del paquete ggmap
      getPos <- geocode(direccion, 'latlon', source = 'google')
-     
-     lat1 <- getPos$lat
        
      
      leafletProxy("Map") %>%
-       ##clearMarkers() %>%
+  
        clearGroup(group = "latMarker") %>%
        addMarkers(getPos$lon, getPos$lat, group = "latMarker",
                   popup = paste("<b>","La Latitud de este punto es: ","</b>",easyFormat(getPos$lat, 2), br(),
@@ -147,11 +154,34 @@ shinyServer(function(input, output) {
      
    })
 
-   observe({
-     
-     PInfo <- as.vector(input$Map_marker_click)
-     print(PInfo)
+   ##Obtención del dataframe de la estación seleccionada porr clic
+   dataEstacion <- reactive({
+     ##Debido al uso de funciones se encuentra esta condición, para evitar errores
+     if(!is.null(input$Map_marker_click)){
+      
+      ##Latitud del clic  
+      Num <- as.numeric(input$Map_marker_click$lat)
+      
+      ##Selecciona la fila de DatosSiar que coincide con el clic a la estación
+      pillaDatos <- DatosSiar[DatosSiar$lat==Num,]
+      
+      ##Comprobación por consola
+      PInfo <- as.vector(input$Map_marker_click)
+      print(PInfo)
+      print(pillaDatos)
+      
+      ##Se coge el dataframe de la estacion clicada
+      estaEs <- AllData[pillaDatos$N_Estacion==AllData$IdEstacion&pillaDatos$N_Provincia==AllData$IdProvincia,] 
+      
+      return(as.data.frame(estaEs))
+     }
      
    })
-  
+   
+   ##Prueba del funcionamiento de la selección del dataframe por consola
+   observe({
+     if(!is.null(input$Map_marker_click)){
+     print(dataEstacion())}
+   })
+
 })

@@ -60,9 +60,7 @@ shinyUI(
                             column(12, 
                             leafletOutput("Map"))#,
                             
-                            # p("Sus coordenadas son:"),
 
-                            # verbatimTextOutput("Click_text")
                             
                           
                           
@@ -91,50 +89,6 @@ shinyUI(
       
     )        
             
-    
-    ##Creación de la barra lateral, se puede incluir el main panel
-    #sidebarLayout(
-      
-      
-      #sidebarPanel(
-        
-        # navlistPanel(
-        #   
-        #   tabPanel('¿Qué es la energía fotovoltaica?',
-        #            
-        #            readLines("DefFotov.txt", n='1')
-        #            
-        #            ),
-        #   
-        #   tabPanel('', 'Ejemplos de módulos fotovoltaicos')
-        #   
-        #   )
-        
-        #),
-      
-      ##sidebarPanel('Ejemplos'),
-      
-       #mainPanel( 'Hola'
-      #   
-      #   # textOutput("DefFoto"),
-      #   # 
-      #   # imageOutput("EjFoto")
-      #   # 
-      #    readLines("DefFotov.txt", n='1'),
-      #            style = "color:solidblack",
-      #   
-      #            br(),
-      #            br(),
-      #            br(),
-      #   
-      #            img( src = 'EjFoto.jpg', height = 216, width = 300, align = "left" , style='border:1px' )
-      # 
-        #         )
-      
-   
-      
-   # )
-    
     
     
     
