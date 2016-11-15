@@ -19,7 +19,7 @@ easyFormat <- function(x, y){
  
 IconoPanel <- makeIcon(
   
-  setwd("D:/TFG/Fotovoltaica 101/Fotovoltaica_101"),
+##  setwd("D:/TFG/Fotovoltaica 101/Fotovoltaica_101"),
   iconUrl = "www/SunIcon.png",
   iconWidth = 20,
   iconHeight = 20
@@ -48,7 +48,8 @@ shinyServer(function(input, output) {
     addTiles() %>%  
     ##Adición de los marcadores de las estaciones, usando el popup descrito anteriormente, utilizando las coordenadas del archivo DatosSiar  
     addMarkers(
-      DatosSiar$lon, DatosSiar$lat,
+        DatosSiar$lon, DatosSiar$lat,
+        layerId = DatosSiar$ID,
       icon = IconoPanel, group = "Estaciones",
       popup = MPopup
       )  %>%
@@ -94,7 +95,7 @@ shinyServer(function(input, output) {
        ##clearMarkers() %>%
        clearGroup(group = "latMarker") %>%
        
-       addMarkers(pos$lng, pos$lat,group = "latMarker",
+       addMarkers(pos$lng, pos$lat, group = "latMarker",
                   popup = paste("<b>","La Latitud de este punto es: ","</b>",easyFormat(pos$lat,2), br(),
                                 
                                 "<b>","La Longitud de este punto es: ","</b>", easyFormat(pos$lng,2)))
@@ -160,10 +161,10 @@ shinyServer(function(input, output) {
      if(!is.null(input$Map_marker_click)){
       
       ##Latitud del clic  
-      Num <- as.numeric(input$Map_marker_click$lat)
-      
+      ##Num <- as.numeric(input$Map_marker_click$lat)
+      clickID <- input$Map_marker_click$id
       ##Selecciona la fila de DatosSiar que coincide con el clic a la estación
-      pillaDatos <- DatosSiar[DatosSiar$lat==Num,]
+      pillaDatos <- DatosSiar[ID == clickID]
       
       ##Comprobación por consola
       PInfo <- as.vector(input$Map_marker_click)
@@ -171,9 +172,7 @@ shinyServer(function(input, output) {
       print(pillaDatos)
       
       ##Se coge el dataframe de la estacion clicada
-      estaEs <- AllData[pillaDatos$N_Estacion==AllData$IdEstacion&pillaDatos$N_Provincia==AllData$IdProvincia,] 
-      
-      return(as.data.frame(estaEs))
+      estaEs <- AllData[ID == clickID]
      }
      
    })
