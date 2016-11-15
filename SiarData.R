@@ -1,25 +1,23 @@
-setwd("D:/TFG/Fotovoltaica 101/Fotovoltaica_101")
+##setwd("D:/TFG/Fotovoltaica 101/Fotovoltaica_101")
 library(data.table)
 
 ##Carga de DatosSiar para la creación de marcadores y popups
-DatosSiar <- read.csv("data/Siar_Data.csv",  encoding="UTF-8")
+DatosSiar <- fread("data/Siar_Data.csv",  encoding="UTF-8")
+DatosSiar$ID <- with(DatosSiar,
+                     paste(N_Provincia, N_Estacion, sep = '.'))
 
 ##Lista para cargar los archivos con los datos de las estaciones
-myData <- list.files("data/", pattern = "*.csv")
-
-##Eliminamos la última posición (DatosSiar)
-myData1 <- myData[1:length(myData)-1]
-
-
-setwd("D:/TFG/Fotovoltaica 101/Fotovoltaica_101/data")
+myData <- list.files("data/", pattern = "Estaciones_Siar")
 
 ##Leemos los ficheros y los metemos en una lista
-if(is.null(EstacionesSiar)==TRUE){
-
-EstacionesSiar <- lapply(myData1, read.csv,header = TRUE,
-                                          fileEncoding = "UTF-16LE",
-                                          sep = ";" )
-}
-
+old <- setwd('data/')
+EstacionesSiar <- lapply(myData, read.csv2,
+                         fileEncoding = "UTF-16LE")                         
+setwd(old)
 ##Merge de todos los dataframes en uno
 AllData <- rbindlist(EstacionesSiar, fill = TRUE)
+AllData[ ,
+        ID := paste(IdProvincia,
+                    IdEstacion,
+                    sep = '.')
+        ]
