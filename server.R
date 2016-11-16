@@ -144,8 +144,8 @@ shinyServer(function(input, output) {
    ##Obtener la latitud y longitud de las marcadores originales
    
    lat2 <- reactive({
-     pos <- input$Map_marker_click$lat
-     as.numeric(pos)
+     input$Map_marker_click$lat
+    
      
   })
    
@@ -180,7 +180,26 @@ shinyServer(function(input, output) {
    ##Prueba del funcionamiento de la selección del dataframe por consola
    observe({
      if(!is.null(input$Map_marker_click)){
-     print(dataEstacion())}
+     print(dataEstacion())
+       a <- as.data.frame(fSolD(as.numeric(lat2()), fBTd("serie")))
+       
+       plot(1:366,a$Ws)
+       print(head(a))
+       }
+
+     })
+   
+   ##Movimiento relativo, sirve tanto para estaciones como click
+   dailyMove <- reactive({
+     
+     if(!is.null(input$Map_marker_click)){
+      calcSol(as.numeric(lat2()), fBTd("serie"))
+     }
+
+     
    })
+   
+
+   
 
 })
