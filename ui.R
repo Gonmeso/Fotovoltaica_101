@@ -58,7 +58,12 @@ shinyUI(
                             # div(img( src = 'Espana.jpg', height = 345, width = 490), style="text-align: center;"),
                             
                             column(12, 
-                            leafletOutput("Map"))#,
+                            leafletOutput("Map"),
+                            br(),
+                            p(plotOutput("grafico"))
+                            )
+                            
+
                             
 
                             

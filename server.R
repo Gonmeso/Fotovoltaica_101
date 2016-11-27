@@ -173,6 +173,11 @@ shinyServer(function(input, output) {
       
       ##Se coge el dataframe de la estacion clicada
       estaEs <- AllData[ID == clickID]
+      
+      ##Paso de MJ/m2 a Wh/m2
+      estaEs$G0 <- estaEs$G0*1000000/3600
+      
+      estaEs
      }
      
    })
@@ -182,24 +187,68 @@ shinyServer(function(input, output) {
      if(!is.null(input$Map_marker_click)){
      print(dataEstacion())
        a <- as.data.frame(fSolD(as.numeric(lat2()), fBTd("serie")))
-       
-       plot(1:366,a$Ws)
+       print(horizontalPlane())
+       # print(class(dailyMove()))
        print(head(a))
-       }
+       output$grafico <-  renderPlot({px1 <- xyplot(horizontalPlane())
+                                     px2 <- xyplot(generatorPlane())
+                                     
+                                     print(px1, position=c(0, .5, 1, 1), more=TRUE)
+                                     print(px2, position=c(0, 0, 1, .5))
+                                     box("figure")
+                                     })
+       # output$grafico2 <-  renderPlot( xyplot(generatorPlane()))
+     }
+       print(generatorPlane())
 
      })
+   
+
+
+   
+# ///////SOLAR//////
    
    ##Movimiento relativo, sirve tanto para estaciones como click
    dailyMove <- reactive({
      
      if(!is.null(input$Map_marker_click)){
-      calcSol(as.numeric(lat2()), fBTd("serie"))
+       calcSol(as.numeric(lat2()), fBTd("serie"))
      }
+     
+     
+   })  
+   
 
+   horizontalPlane <- reactive({
+     
+     if(!is.null(input$Map_marker_click)){
+       
+       datos <- as.data.frame(dataEstacion())
+
+       SolD <- fSolD(as.numeric(lat2()),
+                     fBTd("serie",
+                          year = as.POSIXlt(Sys.Date())$year+1900-1))
+       G0d <- zoo(datos$G0, index(SolD))
+       Ta <- zoo(datos$Ta, index(SolD))
+       G0d <- cbind.zoo(G0=G0d,Ta=Ta)
+
+
+       calcG0(as.numeric(lat2()), modeRad = "bd", dataRad= G0d)
+     }
      
    })
    
-
+  generatorPlane <- reactive({
+    
+    if(!is.null(input$Map_marker_click)){
+    
+    g0 <- horizontalPlane()
+    
+    calcGef(lat2(),modeRad = 'prev', dataRad = g0)
+    
+    }
+    
+  })
    
 
 })
