@@ -1,0 +1,11 @@
+name: fotovoltaica_101
+title:
+account: fotovoltaica101
+server: shinyapps.io
+appId: 140635
+bundleId: 627862
+url: https://fotovoltaica101.shinyapps.io/fotovoltaica_101/
+when: 1480360685.33265
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .gitattributes|.RData

@@ -2,6 +2,7 @@ library(shiny)
 library(ggmap)
 library(solaR)
 library(htmltools)
+library(rsconnect)
 source("SiarData.R")
 
 
@@ -30,11 +31,14 @@ IconoPanel <- makeIcon(
 
 MPopup <- paste("<b>",DatosSiar$Estacion, "</b>",
                 br(),
-                "Provincia: ", DatosSiar$Provincia,
+                "Provincia: ",
+                DatosSiar$Provincia,
                 br(),
-                "Latitud: ",easyFormat(DatosSiar$lat, 2),
+                "Latitud: ",
+                easyFormat(DatosSiar$lat, 2),
                 br(),
-                "Longitud: ", easyFormat(DatosSiar$lon, 2))
+                "Longitud: ",
+                easyFormat(DatosSiar$lon, 2))
 
  
 ##Llamada al server
@@ -77,10 +81,18 @@ shinyServer(function(input, output) {
   leafletProxy("Map") %>%
     
     clearGroup(group = "latMarker") %>%
-    addMarkers(input$lonIn, input$latIn, group = "latMarker",
-               popup = paste("<b>","La Latitud de este punto es: ","</b>",easyFormat(input$latIn, 2), br(),
-                             
-                             "<b>","La Longitud de este punto es: ","</b>", easyFormat(input$lonIn,2)))
+    addMarkers(input$lonIn,
+               input$latIn,
+               group = "latMarker",
+               popup = paste("<b>",
+                             "La Latitud de este punto es: ",
+                             "</b>",
+                             easyFormat(input$latIn, 2),
+                             br(),
+                             "<b>",
+                             "La Longitud de este punto es: ",
+                             "</b>",
+                             easyFormat(input$lonIn,2)))
     
     
   })
@@ -95,24 +107,22 @@ shinyServer(function(input, output) {
        ##clearMarkers() %>%
        clearGroup(group = "latMarker") %>%
        
-       addMarkers(pos$lng, pos$lat, group = "latMarker",
-                  popup = paste("<b>","La Latitud de este punto es: ","</b>",easyFormat(pos$lat,2), br(),
-                                
-                                "<b>","La Longitud de este punto es: ","</b>", easyFormat(pos$lng,2)))
-
-
-
-     
-
+       addMarkers(pos$lng,
+                  pos$lat,
+                  group = "latMarker",
+                  popup = paste("<b>",
+                                "La Latitud de este punto es: ",
+                                "</b>",
+                                easyFormat(pos$lat,2),
+                                br(),
+                                "<b>",
+                                "La Longitud de este punto es: ",
+                                "</b>", easyFormat(pos$lng,2)))
 
 
    })
   
-  lat1 <- reactive({
-    pos <- input$Map_click
-    as.numeric(pos$lat)
-   
-  })
+
 
 
    ##Creación de marcador y popup por introducción de la dirección
@@ -122,16 +132,27 @@ shinyServer(function(input, output) {
      direccion <- as.character(input$calle)
     
      ##Obtención de las coordenadas mediante geocode(), del paquete ggmap
-     getPos <- geocode(direccion, 'latlon', source = 'google')
+     getPos <- geocode(direccion,
+                       'latlon',
+                       source = 'google')
        
      
      leafletProxy("Map") %>%
   
        clearGroup(group = "latMarker") %>%
-       addMarkers(getPos$lon, getPos$lat, group = "latMarker",
-                  popup = paste("<b>","La Latitud de este punto es: ","</b>",easyFormat(getPos$lat, 2), br(),
-                                
-                                "<b>","La Longitud de este punto es: ","</b>", easyFormat(getPos$lon,2)))
+       
+       addMarkers(getPos$lon,
+                  getPos$lat,
+                  group = "latMarker",
+                  popup = paste("<b>",
+                                "La Latitud de este punto es: ",
+                                "</b>",
+                                easyFormat(getPos$lat, 2),
+                                br(),
+                                "<b>",
+                                "La Longitud de este punto es: ",
+                                "</b>",
+                                easyFormat(getPos$lon,2)))
     
      
      # output$Click_text<-renderText(paste0(getPos$lon,' ', getPos$lat))
@@ -144,13 +165,15 @@ shinyServer(function(input, output) {
    ##Obtener la latitud y longitud de las marcadores originales
    
    lat2 <- reactive({
+     
      input$Map_marker_click$lat
     
-     
   })
    
    lng2 <- reactive({
+     
      pos <- input$Map_marker_click$lng
+     
      as.numeric(pos)
      
    })
@@ -184,24 +207,58 @@ shinyServer(function(input, output) {
    
    ##Prueba del funcionamiento de la selección del dataframe por consola
    observe({
+     
      if(!is.null(input$Map_marker_click)){
-     print(dataEstacion())
+       
+       print(dataEstacion())
+       
        a <- as.data.frame(fSolD(as.numeric(lat2()), fBTd("serie")))
+       
        print(horizontalPlane())
-       # print(class(dailyMove()))
+       
+       
        print(head(a))
-       output$grafico <-  renderPlot({px1 <- xyplot(horizontalPlane())
-                                     px2 <- xyplot(generatorPlane())
+       
+       output$grafico <-  renderPlot({
+         
+         px1 <- xyplot(horizontalPlane())
+         px2 <- xyplot(generatorPlane())
                                      
-                                     print(px1, position=c(0, .5, 1, 1), more=TRUE)
-                                     print(px2, position=c(0, 0, 1, .5))
-                                     box("figure")
+         print(px1, position=c(0, .5, 1, 1), more=TRUE)
+         print(px2, position=c(0, 0, 1, .5))
+         
+         box("figure")
                                      })
-       # output$grafico2 <-  renderPlot( xyplot(generatorPlane()))
+      
      }
+     
        print(generatorPlane())
+       print(head(aRed()))
 
      })
+   
+   observe({
+     
+     if(!is.null(input$Map_marker_click)){
+       
+       lat <- lat2()
+       lng <- lng2()
+       
+       if(lat>43.81|lat<35.76|lng>3.94|lng< -9.27){
+       
+       showModal(modalDialog(
+         
+         title = "UPS!",
+         "No tenemos datos para esta zona, actualmente solo tenemos datos de España",
+         easyClose = TRUE
+         
+       ))
+       
+       }
+         
+     }
+     
+   })
    
 
 
@@ -212,7 +269,9 @@ shinyServer(function(input, output) {
    dailyMove <- reactive({
      
      if(!is.null(input$Map_marker_click)){
+       
        calcSol(as.numeric(lat2()), fBTd("serie"))
+       
      }
      
      
@@ -226,14 +285,15 @@ shinyServer(function(input, output) {
        datos <- as.data.frame(dataEstacion())
 
        SolD <- fSolD(as.numeric(lat2()),
-                     fBTd("serie",
-                          year = as.POSIXlt(Sys.Date())$year+1900-1))
+                     fBTd("serie", year = as.POSIXlt(Sys.Date())$year+1900-1))
+       
        G0d <- zoo(datos$G0, index(SolD))
        Ta <- zoo(datos$Ta, index(SolD))
        G0d <- cbind.zoo(G0=G0d,Ta=Ta)
 
-
-       calcG0(as.numeric(lat2()), modeRad = "bd", dataRad= G0d)
+       calcG0(as.numeric(lat2()),
+              modeRad = "bd",
+              dataRad= G0d)
      }
      
    })
@@ -250,5 +310,17 @@ shinyServer(function(input, output) {
     
   })
    
+  aRed <- reactive({
+    
+    if(!is.null(input$Map_marker_click)){
+      
+      inclin <- generatorPlane()
+      
+      fProd(inclin)
+      
+    }
+    
+  })
+  
 
 })
