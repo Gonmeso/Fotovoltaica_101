@@ -197,9 +197,6 @@ shinyServer(function(input, output) {
       ##Se coge el dataframe de la estacion clicada
       estaEs <- AllData[ID == clickID]
       
-      ##Paso de MJ/m2 a Wh/m2
-      estaEs$G0 <- estaEs$G0*1000000/3600
-      
       estaEs
      }
      
@@ -282,18 +279,17 @@ shinyServer(function(input, output) {
      
      if(!is.null(input$Map_marker_click)){
        
-       datos <- as.data.frame(dataEstacion())
-
-       SolD <- fSolD(as.numeric(lat2()),
-                     fBTd("serie", year = as.POSIXlt(Sys.Date())$year+1900-1))
-       
-       G0d <- zoo(datos$G0, index(SolD))
-       Ta <- zoo(datos$Ta, index(SolD))
-       G0d <- cbind.zoo(G0=G0d,Ta=Ta)
-
-       calcG0(as.numeric(lat2()),
-              modeRad = "bd",
-              dataRad= G0d)
+         datos <- as.data.frame(dataEstacion())
+         lat <- as.numeric(lat2())
+         
+         G0d <- zoo(datos[, .(G0, Ta)],
+                  as.POSIXct(datos$Fecha, format = '%d/%m/%Y'))
+         
+         calcG0(lat, 
+                modeRad = "bd",
+                dataRad = list(lat = lat,
+                               file = G0d)
+                )
      }
      
    })
