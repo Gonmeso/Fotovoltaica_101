@@ -20,7 +20,7 @@ easyFormat <- function(x, y){
  
 IconoPanel <- makeIcon(
   
-  setwd('/TFG Gonzalo/Fotovoltaica_101-master'),
+  # setwd('Fotovoltaica_101/'),
   iconUrl = "www/SunIcon.png",
   iconWidth = 20,
   iconHeight = 20
@@ -205,11 +205,13 @@ shinyServer(function(input, output, session) {
    ##Prueba del funcionamiento de la selección del dataframe por consola
    observe({
      
+     Datos_Est<- dataEstacion()
+     
      if(!is.null(input$Map_marker_click)){
        
-       if(!is.na(DatosSiar[ID == 0][1,1])){
+       if(!is.na(Datos_Est[1,1])&exists('DatosSiar')){
        
-       print(dataEstacion())
+       print(Datos_Est)
        
        a <- as.data.frame(fSolD(as.numeric(lat2()), fBTd("serie")))
        
@@ -378,11 +380,42 @@ shinyServer(function(input, output, session) {
     }
     })
   
+  observe({
+    if(!is.null(input$slctInv)){
+      
+      inversor = Datos_Inversores[Datos_Inversores$Nombre==input$slctInv,]
+      
+      if(input$slctInv!="Ninguno"){
+        
+        if(is.na(inversor$Gumb)){
+        inversor$Gumb = 20
+        }
+        
+        if(is.na(inversor$Ki1)&is.na(inversor$Ki2)&is.na(inversor$Ki3)){
+          inversor$GKi1 = 0.01
+          inversor$GKi2 = 0.025
+          inversor$GKi3 = 0.05
+        }
+      }
+      updateNumericInput(session, "GKi1", value = inversor$GKi1)
+      updateNumericInput(session, "GKi2", value = inversor$GKi2)
+      updateNumericInput(session, "GKi3", value = inversor$GKi3)
+      updateNumericInput(session, "GPinv", value = inversor$Pinv)
+      updateNumericInput(session, "GGumb", value = inversor$Gumb)
+      updateSliderInput(session, "GVminmax", value = c(inversor$Vmin, inversor$Vmax))
+
+    }
+  })
+  
+  
+  
+  
+  
   observeEvent(input$toMod,{
     
     updateNavlistPanel(session,
-                      inputId = "#tab-4583-2",
-                      selected = "#tab-6727-2"
+                      inputId = 'Loca',
+                      selected = 'dMod'
                       )
     
   })

@@ -79,7 +79,7 @@ shinyUI(
                    ),
                    
                    tabPanel(title = 'Datos modulo',
-                            id = 'dMod',
+                            value = 'dMod',
                             
                             
                             
@@ -155,9 +155,9 @@ shinyUI(
                             ),
                    tabPanel("Datos Generador",
                             
-                            h4("Aqui se muestran los datos sobre el generador escogido,
+                            h6(strong("Aqui se muestran los datos sobre el generador escogido,
                                asimismo, si no se encuentra el generador deseado, puede
-                               introducir los datos manualmente:"),
+                               introducir los datos manualmente:"), style = "font-family:verdana" ),
                             
                             column(3,
                                    
@@ -181,15 +181,38 @@ shinyUI(
                             ),
                    
                    tabPanel("Datos inversor",
+                            
+                            selectInput("slctInv",
+                                        "Selecciona el inversor",
+                                        choices = c("Ninguno",as.character(Datos_Inversores$Nombre))
+                                        ),
+                            
                             column(3,
                                    
-                                   numericInput('GKi',
-                                                'Ki',
-                                                step = 1,
+                                   numericInput('GKi1',
+                                                'Ki1',
+                                                step = 0.001,
                                                 width = '100px',
-                                                c(0,100)
+                                                c(0,1)
                                    ),
                                    
+                                   numericInput('GKi2',
+                                                'Ki2',
+                                                step = 0.001,
+                                                width = '100px',
+                                                c(0,1)
+                                   ),
+                                   
+                                   numericInput('GKi3',
+                                                'Ki3',
+                                                step = 0.001,
+                                                width = '100px',
+                                                c(0,1)
+                                   )
+                            ),
+                             
+                            column(3,
+                                  
                                    numericInput(
                                      'GPinv',
                                      'Pinv',
@@ -214,14 +237,15 @@ shinyUI(
                                                min = 0,
                                                max = 1000,
                                                c(0,100)
-                                               
-                                                
-                                   )
+                                   
+                                   ),
+                                   offset =  1 
                                    
                                    
                                    
-                            )
+                            ),
                             
+
                             )
                              
                  )

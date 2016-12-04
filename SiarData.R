@@ -41,6 +41,6 @@ if(!exists("AllData")){
 
 }
 
-setwd('data/')
+setwd('Data/')
 Datos_Modulos <- read.csv2(file = "Datos_Modulos.csv")
-
+Datos_Inversores <- read.csv2(file = "Datos_inversores.csv")
