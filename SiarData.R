@@ -1,9 +1,9 @@
-##setwd("D:/TFG/Fotovoltaica 101/Fotovoltaica_101")
+
 library(data.table)
 
 
 if(!exists("DatosSiar")){
-##Carga de DatosSiar para la creación de marcadores y popups
+##Carga de DatosSiar para la creaciÃ³n de marcadores y popups
 DatosSiar <- fread("data/Siar_Data.csv",  encoding="UTF-8")
 DatosSiar$ID <- with(DatosSiar,
                      paste(N_Provincia, N_Estacion, sep = '.'))
@@ -21,7 +21,7 @@ if(!exists("AllData")){
     setwd(old)
     ##Merge de todos los dataframes en uno
     AllData <- rbindlist(EstacionesSiar, fill = TRUE)
-    ## Selecciono variables de interés
+    ## Selecciono variables de interÃ©s
     AllData <- AllData[, c(1, 2, 3, 6, 11), with = FALSE]
     names(AllData)[c(4, 5)] <- c("Ta", "G0")
     AllData[ ,
@@ -29,7 +29,7 @@ if(!exists("AllData")){
                         IdEstacion,
                         sep = '.')
             ]
-    ## Índice temporal como POSIXct para calcG0 etc.
+    ## Ãndice temporal como POSIXct para calcG0 etc.
     AllData[,
             Fecha := as.POSIXct(Fecha,
                                 format = '%d/%m/%Y')
@@ -41,6 +41,6 @@ if(!exists("AllData")){
 
 }
 
-setwd('Data/')
-Datos_Modulos <- read.csv2(file = "Datos_Modulos.csv")
-Datos_Inversores <- read.csv2(file = "Datos_inversores.csv")
+
+Datos_Modulos <- read.csv2(file = "data/Datos_Modulos.csv")
+Datos_Inversores <- read.csv2(file = "data/Datos_inversores.csv")
