@@ -40,3 +40,7 @@ if(!exists("AllData")){
             ]
 
 }
+
+setwd('data/')
+Datos_Modulos <- read.csv2(file = "Datos_Modulos.csv")
+

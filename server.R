@@ -20,7 +20,7 @@ easyFormat <- function(x, y){
  
 IconoPanel <- makeIcon(
   
-##  setwd("D:/TFG/Fotovoltaica 101/Fotovoltaica_101"),
+  setwd('/TFG Gonzalo/Fotovoltaica_101-master'),
   iconUrl = "www/SunIcon.png",
   iconWidth = 20,
   iconHeight = 20
@@ -42,7 +42,7 @@ MPopup <- paste("<b>",DatosSiar$Estacion, "</b>",
 
  
 ##Llamada al server
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   
   ##Renderización del mapa para la salida por la interfaz (ui)
   
@@ -207,6 +207,8 @@ shinyServer(function(input, output) {
      
      if(!is.null(input$Map_marker_click)){
        
+       if(!is.na(DatosSiar[ID == 0][1,1])){
+       
        print(dataEstacion())
        
        a <- as.data.frame(fSolD(as.numeric(lat2()), fBTd("serie")))
@@ -226,12 +228,15 @@ shinyServer(function(input, output) {
          
          box("figure")
                                      })
+       
+       print(generatorPlane())
+       print(aRed())
       
      }
      
-       print(generatorPlane())
-       print(head(aRed()))
 
+
+     } 
      })
    
    observe({
@@ -247,6 +252,7 @@ shinyServer(function(input, output) {
          
          title = "UPS!",
          "No tenemos datos para esta zona, actualmente solo tenemos datos de España",
+         footer = modalButton("Ok"),
          easyClose = TRUE
          
        ))
@@ -282,14 +288,16 @@ shinyServer(function(input, output) {
          datos <- as.data.frame(dataEstacion())
          lat <- as.numeric(lat2())
          
-         G0d <- zoo(datos[, .(G0, Ta)],
+         G0d <- zoo(datos[, c("G0", "Ta")],
                   as.POSIXct(datos$Fecha, format = '%d/%m/%Y'))
+         if(!is.null('G0d')){
          
          calcG0(lat, 
                 modeRad = "bd",
                 dataRad = list(lat = lat,
                                file = G0d)
                 )
+         }
      }
      
    })
@@ -310,11 +318,72 @@ shinyServer(function(input, output) {
     
     if(!is.null(input$Map_marker_click)){
       
+      
       inclin <- generatorPlane()
+      
+      if(!is.null(input$slctMod)){
+        
+        module = Datos_Modulos[Datos_Modulos$Nombre==input$slctMod,]
+        
+        if(is.na(module$CoefVT)){
+          module$CoefVT = 0.0023
+          
+        }
+        
+        fProd(inclin, module = list( Vocn = module$Vocn,
+                                     Iscn = module$Iscn,
+                                     Vmn = module$Vmn,
+                                     Imn = module$Imn,
+                                     Ncs = module$Ncs,
+                                     Ncp = module$Ncp,
+                                     CoefVT = module$CoefVT,
+                                     TONC = module$TONC))
+        
+      }
+      
+      else
       
       fProd(inclin)
       
+      
     }
+    
+  })
+  
+  output$sSelect <- renderUI({
+    
+    selectInput('slctMod',
+                'Selecciona el modulo a usar',
+                choices = Datos_Modulos$Nombre[Datos_Modulos$Tipo==input$slctCel],
+                selectize = FALSE)
+    
+  })
+  
+  observe({
+    if(!is.null(input$slctMod)){
+      
+    module = Datos_Modulos[Datos_Modulos$Nombre==input$slctMod,]
+    if(is.na(module$CoefVT)){
+      module$CoefVT = 0.0023
+      
+    }
+    updateNumericInput(session, "GVocn", value = module$Vocn)
+    updateNumericInput(session, "GVmn", value = module$Vmn)
+    updateNumericInput(session, "GIscn", value = module$Iscn)
+    updateNumericInput(session, "GImn", value = module$Imn)
+    updateNumericInput(session, "GNcs", value = module$Ncs)
+    updateNumericInput(session, "GNcp", value = module$Ncp)
+    updateNumericInput(session, "GCoef", value = module$CoefVT)
+    updateNumericInput(session, "GTONC", value = module$TONC)
+    }
+    })
+  
+  observeEvent(input$toMod,{
+    
+    updateNavlistPanel(session,
+                      inputId = "#tab-4583-2",
+                      selected = "#tab-6727-2"
+                      )
     
   })
   
