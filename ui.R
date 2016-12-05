@@ -182,16 +182,98 @@ shinyUI(
                             br(),
                             br(),
                             "Para continuar la explicación del efecto fotoeléctrico, vamos a definir primero
-                            ciertos conceptos necesarios:"
+                            ciertos conceptos necesarios:",
+                            tags$li("Fotón: dentro de la física, esta se encuentra definida como aquella
+                                    partícula de luz que se propaga en el vacío, este es responsable de 
+                                    las manifestaciones cuánticas del fenómeno electromagnético.
+                                    Esta partícula es portadora de rayos gamma, rayos X, luz visible,
+                                    ultravioleta, infrarroja, ondas de radio, etc… esto quiere decir, 
+                                    que es portadora de todas las formas de radiación electromagnética. "),
+                            br(),
+                            tags$li("Frecuencia: son el número de repeticiones de un fenómeno periódico 
+                                    por unidad de tiempo. En este caso, la frecuencia de una onda
+                                    electromagnética, esta determina el tipo de onda con las que nos
+                                    encontramos, luz visible, infrarrojos, rayos gamma, etc…"),
+                            br(),
+                            tags$li("Electrón: constituyente elemental de la materia, es una partícula
+                                    subatómica que se encuentra cargada negativamente. "),
+                            br(),
+                            "En el efecto fotoeléctrico, para poder expulsarse un electrón, se necesita
+                            que un átomo absorba suficiente energía, en este caso, el metal absorbe una
+                            cantidad de energía necesaria, proveniente de un fotón, para que el electrón
+                            pueda ser emitido. La energía proveniente del fotón viene determinada por la 
+                            frecuencia de la luz, donde la intensidad no cambia la cantidad de energía sino
+                            la cantidad de fotones disponibles. En el caso de no llegar a superar el umbral
+                            de la energía necesaria, la energía absorbida es re-emitida.",
+                            br(),
+                            div(
+                              img( src = "efecto-fotoelectrico.jpg"),
+                              style = 'text-align: center;'
+                            ),
+                            br(),
+                            "Para la energía fotovoltaica, se utiliza un semiconductor, en el cual el fotón 
+                            permite al semiconductor liberar un electrón, en este momento se produce un vacío
+                            en el átomo del cual es arrancado el electrón, tras esto se busca crear una
+                            diferencia de potencial, donde se genera tensión, mediante la recolocación de los
+                            electrones y los huecos en la dirección opuesta del material, evitando que estos
+                            se distribuyan libremente. El efecto fotoeléctrico descrito, sucede en las células
+                            solares, las cuales se explicara su funcionamiento, materiales y tipos en apartados
+                            posteriores dentro de esta web, donde se expondrá con mayor detalle.",
+                            br()
+                            
+                            
                             
                           )
                           
                           , style = 'text-align: justify'
                         )
-              
-
-               
+                        
+                      
                ),
+               
+               tabPanel( 'Componentes de un sistema',
+                         
+                         div(
+                           p(
+                             "Los sistemas fotovoltaicos se encuentran formados por una gran cantidad
+                             de componentes, cada uno con ciertas características dependiendo del tipo
+                             de sistema que se quiera diseñar. Las características pueden variar por 
+                             la tecnología de las celdas, si el sistema es residencial o comercial, la
+                             tensión deseada, etc… Los componentes que vamos a tratar en profundidad y 
+                             sus características son: ",
+                             br(),
+                             tags$li( actionLink( 'PanyCel',
+                                                  'Paneles y células')),
+                             br(),
+                             tags$li(actionLink( 'Gen',
+                                                  'Generador')),
+                             br(),
+                             tags$li(actionLink( 'Inver',
+                                                 'Inversores')),
+                             br(),
+                             tags$li(actionLink( 'Bat',
+                                                 'Baterias')),
+                             br(),
+                             "Un sistema fotovoltaico contiene más componentes que los mencionados
+                             anteriormente, pero estos no son intrínsecos a los sistemas, como pueden
+                             ser el cableado o los sistemas de anclaje. ",
+                             br(),
+                             div(
+                               img( src = 'ComponentesSisyema.png',
+                                    width = '100%',
+                                    height = '100%'),
+                               style = 'text-align: center;border: dotted;'
+                             )
+                             
+                            
+                             
+                           ),
+                           
+                           style = 'text-align: justify;'
+                         )
+                         
+      ),
+               
               tabPanel('Noticias'),
               
               tabPanel('Modulos', div(id = "Modulos"))
@@ -200,7 +282,7 @@ shinyUI(
             ),
       
       
-      tabPanel('Localización',
+      tabPanel('Diseño',
                
                
                  #CreaciÃ³n de la tabla lateral dentro de LocalizaciÃ³n
@@ -208,7 +290,7 @@ shinyUI(
                    
                    widths = c(3,8),
                    
-                   tabPanel('Mapa',
+                   tabPanel('Geometría solar y localización',
                             
                           
                             column(4,
@@ -241,8 +323,87 @@ shinyUI(
                             
                    ),
                    
-                   tabPanel(title = 'Datos módulo',
+                   tabPanel(title = 'Paneles y células',
                             value = 'dMod',
+                            
+                            div(
+                              p(
+                                "Un panel fotovoltaico, es un conjunto de células fotovoltaicas con
+                                el fin de producir electricidad mediante el efecto fotoeléctrico 
+                                utilizando la luz como fuente. Dependiendo de la tensión deseada, 
+                                estos paneles pueden colocar en serie, lo mismo sucede con la intensidad
+                                o corriente eléctrica, donde se pueden colocan en paralelo con el fin de alcanzar
+                                la intensidad deseada. Estos módulos pueden estar formados por distintos tipo
+                                de células, por lo que se clasifican en distintas tecnologías, donde una célula
+                                fotovoltaica se trata de un dispositivo formado por un material que presente el", 
+                                actionLink( 'pHeffect',
+                                  'efecto fotoeléctrico'), 
+                                "un semiconductor, generalmente silicio.",
+                                br(),
+                                br(),
+                                "Cada célula está formada por dos tipos distintos de semiconductores, uno cargado
+                                positivamente (tipo n) en la zona superior y otra cargada negativamente (tipo p)
+                                en la carga inferior, a esto se le conoce como un dispositivo electrónico de unión
+                                tipo “pn”. Cuando un rayo de luz incide sobre una célula solar, un electrón es
+                                liberado de la capa inferior donde este es atraído por la carga positiva de la capa
+                                n, la capa superior, el desplazamiento del electrón deja un “hueco” cerca de la unión
+                                entre las dos capas, un electrón situado en una zona cercana de la capa p, asciende
+                                para cubrir el hueco. Con esto a medida que la luz mantiene el proceso y se siguen 
+                                liberando electrones, se genera una corriente eléctrica.",
+                                br(),
+                                div(
+                                  img( src = 'Funcionamientocelula.png'),
+                                  style = 'text-align: center'
+                                ),
+                                br(),
+                                div(strong("Obtención del Silicio"),
+                                    style = 'text-align: center;'),
+                                br(),
+                                "Un punto a favor del silicio, es que se obtiene mediante una reducción de uno de
+                                los compuestos más comunes de la tierra, la sílice, donde esta se puede obtener 
+                                fácilmente del cuarzo. Para ello, uno de los primeros pasos es la purificación del
+                                silicio, donde se busca una pureza entorno al 98%, esta purificación se realiza mediante
+                                procesos químicos, Lavado y Decapado, estos procesos se usan hasta que se puede denominar
+                                al silicio purificado como “silicio de grado solar”, donde se permiten impurezas en este
+                                de hasta una parte por millón (ppm). ",
+                                br(),
+                                br(),
+                                "Posteriormente, se funde el silicio con el fin de comenzar un proceso de crecimiento 
+                                cristalino, este proceso trata de obtener cristales mayores mediante la adición de compuestos
+                                que dependiendo del tiempo de enfriado (cristalización), cuanto mayor sea este, mayor serán
+                                los cristales, en el caso del silicio de esto dependerá si se trata de silicio monocristalino 
+                                o policristalino.",
+                                br(),
+                                br(),
+                                "Para la obtención de lingotes de silicio monocristalino, uno de los métodos más usados 
+                                en la actualidad es el “Proceso Czochralski”, este proceso usa el silicio fundido 
+                                comprobando que este se encuentre un poco por encima de su temperatura de fusión, evitando
+                                así que se solidifique. Inicialmente se produce el “dopaje” del semiconductor, esto es,
+                                añadir fósforo, o boro dependiendo del tipo de conductor que se quiera obtener, tipo “p”
+                                con fósforo o tipo “n” con boro. Este silicio dopado se introduce en un crisol mientras
+                                una varilla gira, esta contiene en la punta lo que se conoce como “semilla”, esto es una 
+                                pequeña cantidad de monocristal del semiconductor fundido. Esta semilla provoca que al entrar
+                                en contacto con el semiconductor fundido, este se agrega a la semilla y comienza un proceso 
+                                de solidificación con la estructura cristalina del monocristal, creciendo así este. Mientras 
+                                rota la varilla, esta se va sacando del crisol poco a poco y alrededor de la varilla se va 
+                                formando un cilindro monocristalino. Mediante el control de la velocidad de rotación y la
+                                temperatura permite crear un lingote monocristalino y controlar el tamaño de estos. Como
+                                toque final se comienza la purificación del lingote obtenido mediante la fusión por zonas.",
+                                br(),
+                                div(
+                                  img( src = 'Czochralski.jpg'),
+                                  style = 'text-align: center'
+                                )
+                                
+                                
+                              ),
+                              
+                              style = 'text-align: justify;'
+                            ),
+                            
+                            
+                            
+                            # source('Textos/Paneles.R', encoding = 'UTF-8', echo = FALSE, print.eval = FALSE),
                             
                             
                             
@@ -316,7 +477,7 @@ shinyUI(
                                    
                             )
                             ),
-                   tabPanel("Datos Generador",
+                   tabPanel("Generadores",
                             
                             h6(strong("Aqui se muestran los datos sobre el generador escogido,
                                asimismo, si no se encuentra el generador deseado, puede
@@ -343,7 +504,7 @@ shinyUI(
                             
                             ),
                    
-                   tabPanel("Datos inversor",
+                   tabPanel("Inversores",
                             
                             selectInput("slctInv",
                                         "Selecciona el inversor",
