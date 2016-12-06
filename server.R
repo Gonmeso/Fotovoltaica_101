@@ -322,8 +322,13 @@ shinyServer(function(input, output, session) {
       
       
       inclin <- generatorPlane()
+      
+      
+      
       module = Datos_Modulos[1,]
       inversor = Datos_Inversores[1,]
+      
+      
       
       if(!is.null(input$slctMod)){
         
@@ -338,7 +343,7 @@ shinyServer(function(input, output, session) {
         
         inversor = Datos_Inversores[Datos_Inversores$Nombre==input$slctInv,]
         
-        if(input$slctInv!="Ninguno"){
+       
           
           if(is.na(inversor$Gumb)){
             inversor$Gumb = 20
@@ -349,7 +354,7 @@ shinyServer(function(input, output, session) {
             inversor$Ki2 = 0.025
             inversor$Ki3 = 0.05
           }
-        }
+        
       }
         
 

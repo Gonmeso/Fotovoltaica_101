@@ -434,7 +434,7 @@ shinyUI(
                             
                             selectInput('slctCel',
                                         'Selecciona el tipo de celula',
-                                        choices = as.character(unique(Datos_Modulos$Tipo)),
+                                        choices = c("Personalizado",as.character(unique(Datos_Modulos$Tipo))),
                                         selected = "Por defecto",
                                         selectize = FALSE),
                             
@@ -533,7 +533,7 @@ shinyUI(
                             
                             selectInput("slctInv",
                                         "Selecciona el inversor",
-                                        choices = as.character(Datos_Inversores$Nombre),
+                                        choices = c("Personalizado",as.character(Datos_Inversores$Nombre)),
                                         selected = "Por Defecto"
                                         ),
                             
