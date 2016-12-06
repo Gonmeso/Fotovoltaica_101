@@ -41,6 +41,8 @@ if(!exists("AllData")){
 
 }
 
+if(!exists('Datos_Modulos')|!exists('Datos_Inversores')){
 
 Datos_Modulos <- read.csv2(file = "data/Datos_Modulos.csv")
 Datos_Inversores <- read.csv2(file = "data/Datos_inversores.csv")
+}

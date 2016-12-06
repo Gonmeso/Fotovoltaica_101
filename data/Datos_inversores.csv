@@ -1,4 +1,5 @@
 Nombre ;Ki1;Ki2;Ki3;Pinv;Vmin;Vmax;Gumb
+Por Defecto;0,01;0,025;0,05;25000;420;750;20
 SMA Sunny Boy 3600 Smart Energy;;;;5200;175;500;
 SOLIVIA 3.0 TL;;;;3600;200;500;
 SOLIVIA 3.8 TL;;;;4560;200;500;

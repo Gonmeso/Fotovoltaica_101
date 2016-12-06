@@ -322,6 +322,8 @@ shinyServer(function(input, output, session) {
       
       
       inclin <- generatorPlane()
+      module = Datos_Modulos[1,]
+      inversor = Datos_Inversores[1,]
       
       if(!is.null(input$slctMod)){
         
@@ -331,22 +333,51 @@ shinyServer(function(input, output, session) {
           module$CoefVT = 0.0023
           
         }
-        
-        fProd(inclin, module = list( Vocn = module$Vocn,
-                                     Iscn = module$Iscn,
-                                     Vmn = module$Vmn,
-                                     Imn = module$Imn,
-                                     Ncs = module$Ncs,
-                                     Ncp = module$Ncp,
-                                     CoefVT = module$CoefVT,
-                                     TONC = module$TONC))
-        
       }
+      if(!is.null(input$slctInv)){
+        
+        inversor = Datos_Inversores[Datos_Inversores$Nombre==input$slctInv,]
+        
+        if(input$slctInv!="Ninguno"){
+          
+          if(is.na(inversor$Gumb)){
+            inversor$Gumb = 20
+          }
+          
+          if(is.na(inversor$Ki1)&is.na(inversor$Ki2)&is.na(inversor$Ki3)){
+            inversor$Ki1 = 0.01
+            inversor$Ki2 = 0.025
+            inversor$Ki3 = 0.05
+          }
+        }
+      }
+        
+
+        
+        fProd(inclin, 
+              module = list( Vocn = module$Vocn,
+                             Iscn = module$Iscn,
+                             Vmn = module$Vmn,
+                             Imn = module$Imn,
+                             Ncs = module$Ncs,
+                             Ncp = module$Ncp,
+                             CoefVT = module$CoefVT,
+                             TONC = module$TONC),
+              
+              inverter = list(Ki = c(inversor$Ki1, inversor$Ki2,inversor$Ki3),
+                              Pinv = inversor$Pinv,
+                              Vmin = inversor$Vmin,
+                              vmax = inversor$Vmax,
+                              Gumb = inversor$Gumb
+                              )
+              )
+        
       
-      else
       
-      fProd(inclin)
-      
+      # # else
+      # # 
+      # # fProd(inclin)
+      # 
       
     }
     
@@ -392,14 +423,14 @@ shinyServer(function(input, output, session) {
         }
         
         if(is.na(inversor$Ki1)&is.na(inversor$Ki2)&is.na(inversor$Ki3)){
-          inversor$GKi1 = 0.01
-          inversor$GKi2 = 0.025
-          inversor$GKi3 = 0.05
+          inversor$Ki1 = 0.01
+          inversor$Ki2 = 0.025
+          inversor$Ki3 = 0.05
         }
       }
-      updateNumericInput(session, "GKi1", value = inversor$GKi1)
-      updateNumericInput(session, "GKi2", value = inversor$GKi2)
-      updateNumericInput(session, "GKi3", value = inversor$GKi3)
+      updateNumericInput(session, "GKi1", value = inversor$Ki1)
+      updateNumericInput(session, "GKi2", value = inversor$Ki2)
+      updateNumericInput(session, "GKi3", value = inversor$Ki3)
       updateNumericInput(session, "GPinv", value = inversor$Pinv)
       updateNumericInput(session, "GGumb", value = inversor$Gumb)
       updateSliderInput(session, "GVminmax", value = c(inversor$Vmin, inversor$Vmax))
