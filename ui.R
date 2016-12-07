@@ -245,9 +245,6 @@ shinyUI(
                              tags$li( actionLink( 'PanyCel',
                                                   'Paneles y células')),
                              br(),
-                             tags$li(actionLink( 'Gen',
-                                                  'Generador')),
-                             br(),
                              tags$li(actionLink( 'Inver',
                                                  'Inversores')),
                              br(),
@@ -363,15 +360,106 @@ shinyUI(
                                      
                                      ),
                             
-                            tabPanel('Reguladores'
+
+                            
+                            tabPanel('Inversores',
+                                     
+                                     div(
+                                       p(
+                                         "Este dispositivo cumple con la función de invertir la corriente continua 
+                                         obtenida de los paneles fotovoltaicos a corriente alterna para su uso. Es
+                                         un parte primordial de cualquier sistema fotovoltaico, pues la corriente
+                                         alterna es la más utilizada gracias a su fácil transformación lo que
+                                         favorece su generación, transporte y distribución. Es un dispositivo
+                                         necesario, tanto para sistemas residenciales como de gran magnitud. ",
+                                         br(),
+                                         br(),
+                                         "Estos además de invertir la corriente, este dispositivo regulara la tensión
+                                         y frecuencia para su uso, donde en sistemas residenciales se transformara
+                                         a 220 voltios y una frecuencia de 50 Hz. Hay que tener en cuenta también 
+                                         la fuente de la corriente continua, donde se necesita que esta proporcione
+                                         con cierta estabilidad la energía para poder cumplir con la inversión deseada.
+                                         Esta fuente puede ser de 12, 24 o 48 V, pero en este caso al provenir de
+                                         paneles fotovoltaicos, estos pueden rondar entre los 150 y 800 voltios. El
+                                         número de inversores depende la potencia máxima producida por los paneles y la
+                                         potencia máxima que es capaz de soportar el inversor. ",
+                                         br(),
+                                         br(),
+                                         "En sistemas residenciales estos se conectan directamente a la línea eléctrica
+                                         del domicilio, para transformar la energía con las propiedades adecuadas y así
+                                         inyectarla en la línea para su uso, mientras este se mantenga encendido.  Para
+                                         mantener la fuente de energía estable, los inversores se conectan a baterías
+                                         de manera que pueda suministrarse la energía uniformemente, además el inversor
+                                         es el encargado de controlar cuando es necesario obtener energía de la batería,
+                                         mantenerla o cargarla de la forma más óptima, con el fin de aprovechar la 
+                                         energía de la forma más favorable. En el caso de no estar conectado a una batería,
+                                         el inversor proporcionará solo la energía que sea segura para la red, evitando
+                                         así peligros para los sistemas conectados a esta. ",
+                                         br(),
+                                         br(),
+                                         "Uno de los puntos más favorables de los inversores es la eficiencia de estos,
+                                         la cual ronda entre el 92% y el 96%, esto se debe a las pérdidas provocadas por
+                                         la conversión y por el porcentaje de autoconsumo. Actualmente se han llegado a 
+                                         obtener eficiencias cercanas al 98% y 99%. ",
+                                         br(),
+                                         br(),
+                                         "Cabe mencionar, que al ser un componente necesario para los sistemas, los 
+                                         fabricantes también se han focalizado en reducir su precio pero manteniendo la eficiencia.",
+                                         br(),
+                                         br(),
+                                         "En la siguiente imagen podemos observar un esquema de un sistema fotovoltaico y la
+                                         posición del inversor en el circuito:",
+                                         div(
+                                           img( src = 'esquema_inversor.gif' ),
+                                           style = 'text-align: center;'
+                                         ),
+                                         br(),
+                                         br(),
+                                         br()
+                                         
+                                       ),
+                                       
+                                       style = 'text-align: justify;'
+                                     )
                                      
                                      ),
                             
-                            tabPanel('Inversores'
+                            tabPanel('Baterias',
                                      
-                                     ),
-                            
-                            tabPanel('Baterias'
+                                     div(
+                                       p(
+                                         "Las baterías son los dispositivos encargados de almacenar la energía excedente
+                                         generada por los paneles y suministrar energía al inversor en los momentos que
+                                         los paneles no genere la cantidad necesaria de energía, para mantener la estabilidad
+                                         del sistema.",
+                                         br(),
+                                         br(),
+                                         div(
+                                           img( src = "Bateria.jpg"),
+                                           style = 'text-align: center;'
+                                         ),
+                                         br(),
+                                         br(),
+                                         "Se suelen utilizar agrupaciones, bancos de baterías, para poder almacenar la suficiente
+                                         energía para mantener la energía estable en el caso de que no pueda producir la energía
+                                         necesaria en periodos de tiempo nuboso. Esto se debe a que en el caso de que se produzcan 
+                                         descargas totales de las baterías se van a producir más ciclos completos de carga,
+                                         lo que se traduce en una menor vida efectiva de las baterías. Para esto se recomienda
+                                         un banco de baterías que sea capaz de mantener alimentando al inversor cerca de 5 días.",
+                                         br(),
+                                         br(),
+                                         "La capacidad de las baterías se mide en amperios por hora (amp-hr) a “N” voltios donde 
+                                         la carga se estima en una duración de 20 horas, es decir, la batería puede alimentar a 
+                                         “N” voltios, “X” amperios totales en 20 horas.",
+                                         br(),
+                                         br(),
+                                         br()
+                                         
+                                       ),
+                                       
+                                       style = 'text-align'
+                                     )
+                                     
                                      )
                             
                             
@@ -424,13 +512,54 @@ shinyUI(
                    tabPanel(title = 'Paneles y células',
                             value = 'dMod',
                             
-                            
-                            
-                            
-                            
-                            # source('Textos/Paneles.R', encoding = 'UTF-8', echo = FALSE, print.eval = FALSE),
-                            
-                            
+                            div(
+                              p(
+                                "Los paneles tienen ciertas especificaciones que son necesarias para ver la
+                                eficiencia del sistema o la cantidad de paneles que necesitaremos para conseguir
+                                una cierta potencia. La información se divide entre:",
+                                tags$li("Datos eléctricos: Potencia máxima, eficiencia de la célula y del panel,
+                                        tensión en circuito abierto y condiciones estándar, corriente en cortocircuito
+                                        y condiciones estándar, tensión máxima, coeficientes de temperatura y la
+                                        temperatura de funcionamiento."),
+                                tags$li("Datos mecánicos: número de células en serie y en paralelo, cables de salida,
+                                        cristal protector y peso."),
+                                tags$li("Condiciones de funcionamiento: temperatura máxima y mínimo de funcionamiento,
+                                        máxima carga soportada y resistencia a impactos."),
+                                tags$li("Certificados y garantías. "),
+                                br(),
+                                "En este caso los datos más relevantes, que son utilizados para el cálculo, son:",
+                                br(),
+                                br(),
+                                tags$li("Tensión en circuito abierto (Vocn): tensión en la célula cuando la corriente
+                                        neta en el dispositivo es cero."),
+                                tags$li("Corriente en cortocircuito (Iscn): corriente máxima en el dispositivo cuando
+                                        la tensión en este es igual a cero."),
+                                tags$li("Tensión en condiciones estándar (Vmn): tensión máxima en condiciones estándar*."),
+                                tags$li("Corriente en condiciones estándar (Imn): corriente máxima en condiciones estándar*."),
+                                tags$li("Nº de células en serie (Ncs) y en paralelo (Ncp)"),
+                                tags$li("Temperatura de funcionamiento (TONC): temperatura de funcionamiento del panel en
+                                        condiciones estándar"),
+                                tags$li("Coeficiente de tensión por temperatura (CoefV): reducción de la tensión por célula
+                                        y por grado."),
+                                br(),
+                                div(
+                                  p(
+                                    "*Las condiciones estándar (Standar Test Conditions en inglés) son a:",
+                                    tags$li("Temperatura: 25ºC"),
+                                    tags$li("Irradiación: 1000 W/m2"),
+                                    tags$li("Espectro de masa de aire: AM 1.5")
+                                  ),
+                                  style = 'border: dotted; background: #E5E5E5'
+                                )
+                              ),
+                              
+                              style = 'text-align: justify'
+                            ),
+                           
+                            br(),
+                            strong("Aquí podemos seleccionar el panel deseado según su tecnología con las especificaciones
+                                   mencionadas previamente o introducir los datos por nuestra cuenta: "),
+                            br(),
                             
                             selectInput('slctCel',
                                         'Selecciona el tipo de celula',
@@ -440,11 +569,6 @@ shinyUI(
                             
                             uiOutput('sSelect'),
                             
-                            p(
-                              h5("En caso de no encontrarse el modulo buscado,
-                                 puede introducir los datos necesarios de froma manual aqui:",
-                                 width = '300px')
-                            ),
                             
                             column(3,
                                    
