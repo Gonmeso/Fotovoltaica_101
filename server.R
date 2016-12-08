@@ -331,8 +331,26 @@ shinyServer(function(input, output, session) {
       
       
       if(!is.null(input$slctMod)){
+       
+         #Para cuando el módulo se selecciona directamente 
+        if(input$slctCel!="Personalizado"){
         
         module = Datos_Modulos[Datos_Modulos$Nombre==input$slctMod,]
+        }
+        
+        # Actualización de valores cuando los datos se introducen en modo Personalizado
+        else{
+          module = Datos_Modulos[1,]
+          module$Vocn <- input$GVocn
+        module$Vmn <- input$GVmn
+        module$Iscn <- input$GIscn
+        module$Imn <- input$GImn
+        module$Ncs <- input$GNcs
+        module$Ncp <- input$GNcp
+        module$CoefVT <- input$GCoef
+        module$TONC <- input$GTONC
+        }
+          
         
         if(is.na(module$CoefVT)){
           module$CoefVT = 0.0023
@@ -341,7 +359,22 @@ shinyServer(function(input, output, session) {
       }
       if(!is.null(input$slctInv)){
         
+        # IDEM modulos
+        if(input$slctInv!="Personalizado"){
+        
         inversor = Datos_Inversores[Datos_Inversores$Nombre==input$slctInv,]
+        }
+        
+        # IDEM módulos
+        else{
+          inversor$Ki1 <- input$GKi1
+        inversor$Ki2 <- input$GKi2
+        inversor$Ki3 <- input$GKi3
+        inversor$Pinv <- input$GPinv
+        inversor$Gumb <- input$GGumb
+        inversor$Vmin <- input$GVminmax[1]
+        inversor$Vmax <- input$GVminmax[2]
+        }
         
        
           
@@ -390,17 +423,30 @@ shinyServer(function(input, output, session) {
   
   output$sSelect <- renderUI({
     
+    if(input$slctCel!="Personalizado"){
     selectInput('slctMod',
                 'Selecciona el modulo a usar',
                 choices = Datos_Modulos$Nombre[Datos_Modulos$Tipo==input$slctCel],
                 selectize = FALSE)
+    }
+    
+    # No tener este segundo render provocaba que no se actualizaran los datos en Personalizado
+    else
+      selectInput('slctMod',
+                  'Selecciona el modulo a usar',
+                  choices = "Personalizado",
+                  selectize = FALSE)
     
   })
   
+  # Tanto para módulos como inversores, si se selecciona un predeterminado, este valor no se modifica
   observe({
     if(!is.null(input$slctMod)){
       
     module = Datos_Modulos[Datos_Modulos$Nombre==input$slctMod,]
+    
+    if(input$slctCel!="Personalizado"){
+      
     if(is.na(module$CoefVT)){
       module$CoefVT = 0.0023
       
@@ -413,6 +459,17 @@ shinyServer(function(input, output, session) {
     updateNumericInput(session, "GNcp", value = module$Ncp)
     updateNumericInput(session, "GCoef", value = module$CoefVT)
     updateNumericInput(session, "GTONC", value = module$TONC)
+    
+    module$Vocn <- input$GVocn
+    module$Vmn <- input$GVmn
+    module$Iscn <- input$GIscn
+    module$Imn <- input$GImn
+    module$Ncs <- input$GNcs
+    module$Ncp <- input$GNcp
+    module$CoefVT <- input$GCoef
+    module$TONC <- input$GTONC
+    
+    }
     }
     })
   
@@ -421,7 +478,7 @@ shinyServer(function(input, output, session) {
       
       inversor = Datos_Inversores[Datos_Inversores$Nombre==input$slctInv,]
       
-      if(input$slctInv!="Ninguno"){
+      if(input$slctInv!="Personalizado"){
         
         if(is.na(inversor$Gumb)){
         inversor$Gumb = 20
@@ -432,19 +489,38 @@ shinyServer(function(input, output, session) {
           inversor$Ki2 = 0.025
           inversor$Ki3 = 0.05
         }
-      }
+      
       updateNumericInput(session, "GKi1", value = inversor$Ki1)
       updateNumericInput(session, "GKi2", value = inversor$Ki2)
       updateNumericInput(session, "GKi3", value = inversor$Ki3)
       updateNumericInput(session, "GPinv", value = inversor$Pinv)
       updateNumericInput(session, "GGumb", value = inversor$Gumb)
       updateSliderInput(session, "GVminmax", value = c(inversor$Vmin, inversor$Vmax))
+      
+      inversor$Ki1 <- input$GKi1
+      inversor$Ki2 <- input$GKi2
+      inversor$Ki3 <- input$GKi3
+      inversor$Pinv <- input$GPinv
+      inversor$Gumb <- input$GGumb
+      inversor$Vmin <- input$GVminmax[1]
+      inversor$Vmax <- input$GVminmax[2]
+      
 
+      
+      }
+      else
+        inversor = Datos_Inversores[1,]  
+      inversor$Ki1 <- input$GKi1
+      inversor$Ki2 <- input$GKi2
+      inversor$Ki3 <- input$GKi3
+      inversor$Pinv <- input$GPinv
+      inversor$GGumb <- input$GGumb
     }
   })
   
   
   
+  # ///////////HIPERENLACES DENTRO DE SHINY////////
   
   
   observeEvent(input$toMod,{

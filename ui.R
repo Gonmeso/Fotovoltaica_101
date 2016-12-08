@@ -564,8 +564,8 @@ shinyUI(
                             selectInput('slctCel',
                                         'Selecciona el tipo de celula',
                                         choices = c("Personalizado",as.character(unique(Datos_Modulos$Tipo))),
-                                        selected = "Por defecto",
-                                        selectize = FALSE),
+                                        selected = "Por defecto"
+                                        ),
                             
                             uiOutput('sSelect'),
                             
