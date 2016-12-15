@@ -172,32 +172,74 @@ shinyServer(function(input, output, session) {
    
    lng2 <- reactive({
      
-     pos <- input$Map_marker_click$lng
+     input$Map_marker_click$lng
      
-     as.numeric(pos)
+     
      
    })
 
    ##Obtenci贸n del dataframe de la estaci贸n seleccionada porr clic
    dataEstacion <- reactive({
+     
      ##Debido al uso de funciones se encuentra esta condici贸n, para evitar errores
      if(!is.null(input$Map_marker_click)){
+       
+       lat <- lat2()
+       lng <- lng2()
       
       ##Latitud del clic  
       ##Num <- as.numeric(input$Map_marker_click$lat)
       clickID <- input$Map_marker_click$id
+      
+      if(!is.null(clickID)){
       ##Selecciona la fila de DatosSiar que coincide con el clic a la estaci贸n
       pillaDatos <- DatosSiar[ID == clickID]
       
       ##Comprobaci贸n por consola
       PInfo <- as.vector(input$Map_marker_click)
-      print(PInfo)
-      print(pillaDatos)
+
       
       ##Se coge el dataframe de la estacion clicada
       estaEs <- AllData[ID == clickID]
       
       estaEs
+      
+      } else{
+      
+      EstacionesSelect <- DatosSiar[ sqrt((abs(DatosSiar$lon-lng))^2 + (abs(DatosSiar$lat-lat))^2) <= 0.5]
+      
+      EstacionesSelect$Dist <- sqrt((abs(EstacionesSelect$lon-lng))^2 + (abs(EstacionesSelect$lat-lat))^2)
+      
+      pondera <- (1/EstacionesSelect$Dist^2)/sum(1/EstacionesSelect$Dist^2)
+      
+      EstacionesSelect$Ponderacion <- pondera
+      
+      ind <- which(AllData$ID %in% EstacionesSelect$ID) 
+      
+      finalSel <- data.frame()
+      
+      finalSel <- rbind(finalSel, AllData[ind,])
+      
+      finalSel <- na.omit(finalSel)
+      
+      for( i in 1:length(EstacionesSelect$ID)){
+        
+        if(EstacionesSelect$ID[i] %in% finalSel$ID){
+          
+          ind2 <- which(finalSel$ID %in% EstacionesSelect$ID[i])
+          finalSel$Ponderacion[ind2] <- EstacionesSelect$Ponderacion[i]  
+          
+        }
+      }
+      
+      finalSel$G0 <- finalSel$G0*finalSel$Ponderacion
+      finalSel$Ta <- finalSel$Ta*finalSel$Ponderacion
+      
+      
+      estaEs <- ddply(finalSel,.(Fecha),summarize,G0=sum(G0), Ta=sum(Ta),number=length(G0))
+
+     
+      }
      }
      
    })
@@ -205,9 +247,10 @@ shinyServer(function(input, output, session) {
    ##Prueba del funcionamiento de la selecci贸n del dataframe por consola
    observe({
      
-     Datos_Est<- dataEstacion()
+
      
-     if(!is.null(input$Map_marker_click)){
+     if(!is.null(input$Map_marker_click)&(length(dataEstacion())!=0)){
+       Datos_Est<- dataEstacion()
        
        if(!is.na(Datos_Est[1,1])&exists('DatosSiar')){
        
@@ -215,10 +258,10 @@ shinyServer(function(input, output, session) {
        
        a <- as.data.frame(fSolD(as.numeric(lat2()), fBTd("serie")))
        
-       print(horizontalPlane())
+       # print(horizontalPlane())
        
        
-       print(head(a))
+       # print(head(a))
        
        output$grafico <-  renderPlot({
          
@@ -231,7 +274,13 @@ shinyServer(function(input, output, session) {
          box("figure")
                                      })
        
-       print(generatorPlane())
+       output$Graf2 <- renderPlot({
+         
+         xyplot(aRed())
+         
+       })
+       
+       # print(generatorPlane())
        print(aRed())
       
      }
@@ -332,13 +381,13 @@ shinyServer(function(input, output, session) {
       
       if(!is.null(input$slctMod)){
        
-         #Para cuando el m骴ulo se selecciona directamente 
+         #Para cuando el m?dulo se selecciona directamente 
         if(input$slctCel!="Personalizado"){
         
         module = Datos_Modulos[Datos_Modulos$Nombre==input$slctMod,]
         }
         
-        # Actualizaci髇 de valores cuando los datos se introducen en modo Personalizado
+        # Actualizaci?n de valores cuando los datos se introducen en modo Personalizado
         else{
           module = Datos_Modulos[1,]
           module$Vocn <- input$GVocn
@@ -365,7 +414,7 @@ shinyServer(function(input, output, session) {
         inversor = Datos_Inversores[Datos_Inversores$Nombre==input$slctInv,]
         }
         
-        # IDEM m骴ulos
+        # IDEM m?dulos
         else{
           inversor$Ki1 <- input$GKi1
         inversor$Ki2 <- input$GKi2
@@ -392,7 +441,7 @@ shinyServer(function(input, output, session) {
         
 
         
-        fProd(inclin, 
+        prodGCPV(lat2(),dataRad = inclin, modeRad = "prev", 
               module = list( Vocn = module$Vocn,
                              Iscn = module$Iscn,
                              Vmn = module$Vmn,
@@ -439,7 +488,7 @@ shinyServer(function(input, output, session) {
     
   })
   
-  # Tanto para m骴ulos como inversores, si se selecciona un predeterminado, este valor no se modifica
+  # Tanto para m?dulos como inversores, si se selecciona un predeterminado, este valor no se modifica
   observe({
     if(!is.null(input$slctMod)){
       

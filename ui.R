@@ -729,7 +729,17 @@ shinyUI(
                
       ),
       
-      tabPanel('Introducción'),
+      tabPanel('Resultados',
+               
+               tabPanel("Energía producida",
+                        
+                        "Se produce la siguiente energía",
+                        
+                        plotOutput("Graf2")
+                        
+                        )
+               
+               ),
       tabPanel('Introducción')
       
       
