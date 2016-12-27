@@ -496,6 +496,7 @@ shinyUI(
                             br(),
                             p(plotOutput("grafico")),
                             
+                            
                             actionLink('toMod',
                                          "Ir a modulos")
                             
@@ -731,6 +732,58 @@ shinyUI(
       
       tabPanel('Resultados',
                
+               navlistPanel( id = 'Result', widths = c(3,8),
+               
+               tabPanel("Datos Estación",
+                       column(12, 
+                        div(
+                          p(
+                            "A continuación, se muestran los datos del punto seleccionado, estos pueden filtrarse
+                            usando los filtros que se encuentran al final de la tabla",
+                            br(),
+                            br(),
+                            dataTableOutput("EstData"),
+                            br(),
+                            "La(s) estaciones seleccionadas son:",
+                            dataTableOutput("EstList")
+                            
+                          ) 
+                          ),
+                          style = 'textalign = justify;'
+                        )
+                       
+                        
+                        
+                        
+                        ),
+               
+               tabPanel("Radiación en plano horizontal",
+                        column(12,
+                        div(
+                          p(
+                            strong("A continuación se muestran las radiaciones globales, directas y 
+                                   difusas de los datos seleccionados:"),
+                            br(),
+                            dataTableOutput("RadData"),
+                            br(),
+                            br(),
+                            strong("Los valores medios mensuales son:"),
+                            br(),
+                            dataTableOutput("MRadData"),
+                            br(),
+                            br(),
+                            strong("Los valores medios anuales son:"),
+                            dataTableOutput("YRadData"),
+                            br(),
+                            br(),
+                            plotOutput("RadGraf")
+                          
+                          )
+                        ),
+                        style = 'texalign=justify;'
+                        )
+                        ),
+               
                tabPanel("Energía producida",
                         
                         "Se produce la siguiente energía",
@@ -739,6 +792,7 @@ shinyUI(
                         
                         )
                
+               )
                ),
       tabPanel('Introducción')
       

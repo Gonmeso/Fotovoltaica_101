@@ -3,6 +3,7 @@ library(ggmap)
 library(solaR)
 library(htmltools)
 library(rsconnect)
+library(plyr)
 source("SiarData.R")
 
 
@@ -92,7 +93,7 @@ shinyServer(function(input, output, session) {
                              "<b>",
                              "La Longitud de este punto es: ",
                              "</b>",
-                             easyFormat(input$lonIn,2)))
+                             easyFormat(input$lonIn,2))) 
     
     
   })
@@ -195,6 +196,11 @@ shinyServer(function(input, output, session) {
       ##Selecciona la fila de DatosSiar que coincide con el clic a la estación
       pillaDatos <- DatosSiar[ID == clickID]
       
+      output$EstList <- renderDataTable({
+        
+        pillaDatos[,c(2,4,5)]
+      })
+      
       ##Comprobación por consola
       PInfo <- as.vector(input$Map_marker_click)
 
@@ -202,17 +208,30 @@ shinyServer(function(input, output, session) {
       ##Se coge el dataframe de la estacion clicada
       estaEs <- AllData[ID == clickID]
       
+      output$EstData <- renderDataTable({
+        names(estaEs)[c(4,5)] <- c("Temperatura Ambiente", "Radiación")
+        estaEs[,c(3:5)]
+        },
+        options = list(pageLength = 10))
+      
       estaEs
       
       } else{
       
-      EstacionesSelect <- DatosSiar[ sqrt((abs(DatosSiar$lon-lng))^2 + (abs(DatosSiar$lat-lat))^2) <= 0.5]
+      EstacionesSelect <- DatosSiar[ sqrt((abs(DatosSiar$lon-lng))^2 + (abs(DatosSiar$lat-lat))^2) <= 0.05]
+      # EstacionesSelect <- DatosSiar[c(DatosSiar$lon-lng<=0.5)]
       
       EstacionesSelect$Dist <- sqrt((abs(EstacionesSelect$lon-lng))^2 + (abs(EstacionesSelect$lat-lat))^2)
       
       pondera <- (1/EstacionesSelect$Dist^2)/sum(1/EstacionesSelect$Dist^2)
       
       EstacionesSelect$Ponderacion <- pondera
+      
+      output$EstList <- renderDataTable({
+        
+        EstacionesSelect[,c(2,4,5,11)]
+        
+        }, options = list (pageLength = 10))
       
       ind <- which(AllData$ID %in% EstacionesSelect$ID) 
       
@@ -238,7 +257,12 @@ shinyServer(function(input, output, session) {
       
       estaEs <- ddply(finalSel,.(Fecha),summarize,G0=sum(G0), Ta=sum(Ta),number=length(G0))
 
-     
+      output$EstData <- renderDataTable({
+        names(estaEs)[c(2,3)] <- c("Radiación", "Temperatura ambiente")
+        estaEs[,c(1,2,3)]
+        },
+                                        options = list(pageLength = 10))
+      estaEs
       }
      }
      
@@ -258,11 +282,16 @@ shinyServer(function(input, output, session) {
        
        a <- as.data.frame(fSolD(as.numeric(lat2()), fBTd("serie")))
        
-       # print(horizontalPlane())
+       print(horizontalPlane())
        
        
        # print(head(a))
        
+
+
+       # output$graficoRad <- renderPlot({
+       #   px1 <- xyplot(horizontalPlane())
+       # })
        output$grafico <-  renderPlot({
          
          px1 <- xyplot(horizontalPlane())
@@ -343,11 +372,45 @@ shinyServer(function(input, output, session) {
                   as.POSIXct(datos$Fecha, format = '%d/%m/%Y'))
          if(!is.null('G0d')){
          
-         calcG0(lat, 
-                modeRad = "bd",
-                dataRad = list(lat = lat,
-                               file = G0d)
+         rad <- calcG0(lat, 
+                  modeRad = "bd",
+                  dataRad = list(lat = lat,
+                                 file = G0d)
                 )
+         
+         output$RadData <- renderDataTable({
+           
+           rad1 <- as.data.frameD(rad)
+           names(rad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Día","Mes","Año")
+           rad1
+           
+         }, options = list(pageLength = 10))
+         
+         output$MRadData <- renderDataTable({
+           
+           rad1 <- as.data.frameM(rad)
+           names(rad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Mes","Año")
+           rad1
+           
+         }, options = list(pageLength = 10))
+         
+         output$YRadData <- renderDataTable({
+           
+           rad1 <- as.data.frameY(rad)
+           names(rad1) <- c( "Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Año")
+           rad1
+           
+         }, options = list(pageLength = 10))
+         
+         output$RadGraf <- renderPlot({
+           
+           xyplot(rad)
+           # box("figure")
+           
+         })
+         
+         rad
+         
          }
      }
      
