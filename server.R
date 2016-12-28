@@ -218,10 +218,14 @@ shinyServer(function(input, output, session) {
       
       } else{
       
-      EstacionesSelect <- DatosSiar[ sqrt((abs(DatosSiar$lon-lng))^2 + (abs(DatosSiar$lat-lat))^2) <= 0.05]
+      EstacionesSelect <- DatosSiar #[ sqrt((abs(DatosSiar$lon-lng))^2 + (abs(DatosSiar$lat-lat))^2) <= 0.05]
       # EstacionesSelect <- DatosSiar[c(DatosSiar$lon-lng<=0.5)]
       
       EstacionesSelect$Dist <- sqrt((abs(EstacionesSelect$lon-lng))^2 + (abs(EstacionesSelect$lat-lat))^2)
+      
+      EstacionesSelect <- EstacionesSelect[EstacionesSelect$Dist <= 0.5, ]
+      
+      if(!is.na(EstacionesSelect[1,1])){
       
       pondera <- (1/EstacionesSelect$Dist^2)/sum(1/EstacionesSelect$Dist^2)
       
@@ -240,6 +244,7 @@ shinyServer(function(input, output, session) {
       finalSel <- rbind(finalSel, AllData[ind,])
       
       finalSel <- na.omit(finalSel)
+      
       
       for( i in 1:length(EstacionesSelect$ID)){
         
@@ -264,6 +269,7 @@ shinyServer(function(input, output, session) {
                                         options = list(pageLength = 10))
       estaEs
       }
+      }
      }
      
    })
@@ -273,25 +279,29 @@ shinyServer(function(input, output, session) {
      
 
      
-     if(!is.null(input$Map_marker_click)&(length(dataEstacion())!=0)){
-       Datos_Est<- dataEstacion()
+     if(!is.null(input$Map_marker_click)){
+       # Datos_Est<- dataEstacion()
        
-       if(!is.na(Datos_Est[1,1])&exists('DatosSiar')){
+       # if(!is.na(Datos_Est[1,1])&exists('DatosSiar')){
        
-       print(Datos_Est)
+       # print(Datos_Est)
        
-       a <- as.data.frame(fSolD(as.numeric(lat2()), fBTd("serie")))
+       # a <- as.data.frame(fSolD(as.numeric(lat2()), fBTd("serie")))
        
-       print(horizontalPlane())
+       # print(horizontalPlane())
        
        
        # print(head(a))
        
+       validate(
+         need(!is.null(horizontalPlane()), "No tenemos datos para esta zona, selecciona otros")
+       )
+       
 
 
-       # output$graficoRad <- renderPlot({
-       #   px1 <- xyplot(horizontalPlane())
-       # })
+       output$graficoRad <- renderPlot({
+         px1 <- xyplot(horizontalPlane())
+       })
        output$grafico <-  renderPlot({
          
          px1 <- xyplot(horizontalPlane())
@@ -312,7 +322,7 @@ shinyServer(function(input, output, session) {
        # print(generatorPlane())
        print(aRed())
       
-     }
+     # }
      
 
 
@@ -338,8 +348,22 @@ shinyServer(function(input, output, session) {
        ))
        
        }
+       
+       if(is.null(horizontalPlane())&!(lat>43.81|lat<35.76|lng>3.94|lng< -9.27)){
          
+         showModal(modalDialog(
+           
+           title = "UPS!",
+           "No tenemos datos para esta zona,por favor seleccione otro punto",
+           footer = modalButton("Ok"),
+           easyClose = TRUE
+           
+         ))
+         
+       }
      }
+     
+     
      
    })
    
@@ -349,6 +373,8 @@ shinyServer(function(input, output, session) {
 # ///////SOLAR//////
    
    ##Movimiento relativo, sirve tanto para estaciones como click
+   
+   
    dailyMove <- reactive({
      
      if(!is.null(input$Map_marker_click)){
@@ -363,7 +389,7 @@ shinyServer(function(input, output, session) {
 
    horizontalPlane <- reactive({
      
-     if(!is.null(input$Map_marker_click)){
+     if(!is.null(input$Map_marker_click)&!is.null(dataEstacion())){
        
          datos <- as.data.frame(dataEstacion())
          lat <- as.numeric(lat2())
@@ -384,7 +410,8 @@ shinyServer(function(input, output, session) {
            names(rad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Día","Mes","Año")
            rad1
            
-         }, options = list(pageLength = 10))
+         }, options = list(pageLength = 10,
+                           scrollX=TRUE))
          
          output$MRadData <- renderDataTable({
            
@@ -392,7 +419,8 @@ shinyServer(function(input, output, session) {
            names(rad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Mes","Año")
            rad1
            
-         }, options = list(pageLength = 10))
+         }, options = list(pageLength = 10,
+                           scrollX=TRUE))
          
          output$YRadData <- renderDataTable({
            
@@ -400,12 +428,13 @@ shinyServer(function(input, output, session) {
            names(rad1) <- c( "Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Año")
            rad1
            
-         }, options = list(pageLength = 10))
+         }, options = list(pageLength = 10,
+                           scrollX=TRUE))
          
          output$RadGraf <- renderPlot({
            
            xyplot(rad)
-           # box("figure")
+
            
          })
          
@@ -418,11 +447,47 @@ shinyServer(function(input, output, session) {
    
   generatorPlane <- reactive({
     
-    if(!is.null(input$Map_marker_click)){
+    if(!is.null(input$Map_marker_click)&!is.null(horizontalPlane())){
     
     g0 <- horizontalPlane()
     
-    calcGef(lat2(),modeRad = 'prev', dataRad = g0)
+    
+    hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0)
+    
+    output$HRadData <- renderDataTable({
+      
+      hrad1 <- as.data.frameD(hrad)
+      # names(rad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Día","Mes","Año")
+      hrad1
+      
+    }, options = list(pageLength = 10))
+    
+    output$MHRadData <- renderDataTable({
+      
+      hrad1 <- as.data.frameM(hrad)
+      # names(hrad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Mes","Año")
+      hrad1
+      
+    }, options = list(pageLength = 10,
+                      scrollX=TRUE))
+    
+    output$YHRadData <- renderDataTable({
+      
+      hrad1 <- as.data.frameY(hrad)
+      # names(hrad1) <- c( "Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Año")
+      hrad1
+      
+    }, options = list(pageLength = 10,
+                      scrollX=TRUE))
+    
+    output$HRadGraf <- renderPlot({
+      
+      xyplot(hrad)
+      # box("figure")
+      
+    })
+    
+    hrad
     
     }
     

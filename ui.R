@@ -776,6 +776,7 @@ shinyUI(
                             dataTableOutput("YRadData"),
                             br(),
                             br(),
+                            h4("Radiaciones en plano horizontal:"),
                             plotOutput("RadGraf")
                           
                           )
@@ -783,6 +784,34 @@ shinyUI(
                         style = 'texalign=justify;'
                         )
                         ),
+               
+               tabPanel("Radiación en plano generador",
+                        column(12,
+                               div(
+                                 p(
+                                   strong("A continuación se muestran las radiaciones globales, directas y 
+                                          difusas de los datos seleccionados:"),
+                                   br(),
+                                   dataTableOutput("HRadData"),
+                                   br(),
+                                   br(),
+                                   strong("Los valores medios mensuales son:"),
+                                   br(),
+                                   dataTableOutput("MHRadData"),
+                                   br(),
+                                   br(),
+                                   strong("Los valores medios anuales son:"),
+                                   dataTableOutput("YHRadData"),
+                                   # br(),
+                                   # br(),
+                                   h4("Radiaciones en plano generador:"),
+                                   plotOutput("HRadGraf")
+                                   
+                                   )
+                               ),
+                               style = 'texalign=justify;'
+                        )
+               ),
                
                tabPanel("Energía producida",
                         
