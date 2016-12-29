@@ -324,7 +324,9 @@ shinyServer(function(input, output, session) {
       
      # }
      
-
+       validate(
+         need(!is.null(horizontalPlane()), "No tenemos datos para esta zona, selecciona otros")
+       )
 
      } 
      })
@@ -363,7 +365,9 @@ shinyServer(function(input, output, session) {
        }
      }
      
-     
+     output$getU <- renderText({
+       paste0("Día = ", input$plot_click$x, "\nTensión = ", input$plot_click$y)
+     })
      
    })
    
@@ -407,7 +411,7 @@ shinyServer(function(input, output, session) {
          output$RadData <- renderDataTable({
            
            rad1 <- as.data.frameD(rad)
-           names(rad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Día","Mes","Año")
+           names(rad1) <- c("Global (W/m^2)","Difusa (W/m^2)","Directa(W/m^2)","Día","Mes","Año")
            rad1
            
          }, options = list(pageLength = 10,
@@ -416,7 +420,7 @@ shinyServer(function(input, output, session) {
          output$MRadData <- renderDataTable({
            
            rad1 <- as.data.frameM(rad)
-           names(rad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Mes","Año")
+           names(rad1) <- c("Global (kW/m^2)","Difusa (kW/m^2)","Directa(kW/m^2)","Mes","Año")
            rad1
            
          }, options = list(pageLength = 10,
@@ -425,7 +429,7 @@ shinyServer(function(input, output, session) {
          output$YRadData <- renderDataTable({
            
            rad1 <- as.data.frameY(rad)
-           names(rad1) <- c( "Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Año")
+           names(rad1) <- c( "Global (kW/m^2)","Difusa (kW/m^2)","Directa(kW/m^2)","Año")
            rad1
            
          }, options = list(pageLength = 10,
@@ -504,6 +508,7 @@ shinyServer(function(input, output, session) {
       
       module = Datos_Modulos[1,]
       inversor = Datos_Inversores[1,]
+      generator = list(Nms = 12, Nmp = 11)
       
       
       
@@ -566,10 +571,11 @@ shinyServer(function(input, output, session) {
           }
         
       }
-        
+        Nms <- input$GNms
+        Nmp <- input$GNmp
 
         
-        prodGCPV(lat2(),dataRad = inclin, modeRad = "prev", 
+        aRed <- prodGCPV(lat2(),dataRad = inclin, modeRad = "prev", 
               module = list( Vocn = module$Vocn,
                              Iscn = module$Iscn,
                              Vmn = module$Vmn,
@@ -584,16 +590,52 @@ shinyServer(function(input, output, session) {
                               Vmin = inversor$Vmin,
                               vmax = inversor$Vmax,
                               Gumb = inversor$Gumb
-                              )
+                              ),
+              generator = list(Nms = Nms, Nmp = Nmp)
+              
               )
         
+        output$RedData <- renderDataTable({
+          
+          aRed <- as.data.frameD(aRed)
+          names(aRed) <- c("Tensión en alterna (V)","Tensión en continua(V)","Productividad","Día","Mes","Año")
+          aRed
+          
+        }, options = list(pageLength = 10,
+                          scrollX=TRUE))
       
-      
-      # # else
-      # # 
-      # # fProd(inclin)
-      # 
-      
+        output$MRedData <- renderDataTable({
+          
+          aRed <- as.data.frameM(aRed)
+          names(aRed) <- c("Tensión en alterna (kV)","Tensión en continua (kV)","Productividad","Mes","Año")
+          aRed
+          
+        }, options = list(pageLength = 10,
+                          scrollX=TRUE))
+
+        output$YRedData <- renderDataTable({
+          
+          aRed <- as.data.frameY(aRed)
+          names(aRed) <- c("Tensión en alterna (kV)","Tensión en continua (kV)","Productividad","Año")
+          aRed
+          
+        }, options = list(pageLength = 10,
+                          scrollX=TRUE))
+        
+        output$DRedGraf <- renderPlot({
+          
+          plot(c(1:length(as.data.frameD(aRed)$Eac))
+               ,as.data.frameD(aRed)$Eac,
+               type = "l",
+               main = "Tensión en corriente alterna",
+               xlab = "Días",
+               ylab = "Tensión Diaria")
+          # box("figure")
+          
+        })
+        
+        aRed
+        
     }
     
   })

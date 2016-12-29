@@ -639,7 +639,8 @@ shinyUI(
                                                 'Nms',
                                                 step = 1,
                                                 width = '100px',
-                                                c(0,100)
+                                                c(0,100),
+                                                value = 12
                                                 ),
                                    
                                    numericInput(
@@ -647,7 +648,8 @@ shinyUI(
                                      'Nmp',
                                      step = 1,
                                      width = '100px',
-                                     c(0,100)
+                                     c(0,100),
+                                     value = 11
                                    )
                                   
                                    )
@@ -802,8 +804,8 @@ shinyUI(
                                    br(),
                                    strong("Los valores medios anuales son:"),
                                    dataTableOutput("YHRadData"),
-                                   # br(),
-                                   # br(),
+                                   br(),
+                                   br(),
                                    h4("Radiaciones en plano generador:"),
                                    plotOutput("HRadGraf")
                                    
@@ -815,16 +817,35 @@ shinyUI(
                
                tabPanel("Energía producida",
                         
-                        "Se produce la siguiente energía",
+                        div(
+                          p(
+                        "La tensión diaria es la siguiente:",
+                        br(),
+                        br(),
+                        dataTableOutput('RedData'),
+                        br(),
+                        br(),
+                        "La tensión acumulada por mes:",
+                        br(),
+                        br(),
+                        dataTableOutput('MRedData'),
+                        br(),
+                        br(),
+                        "La tensión acumulada anual:",
+                        br(),
+                        br(),
+                        dataTableOutput('YRedData'),
+                        br(),
+                        br(),
+                        plotOutput("DRedGraf", click = "plot_click"),
+                        verbatimTextOutput("getU")
+                          )
+                        , style = 'textalign=justify;'
                         
-                        plotOutput("Graf2")
-                        
-                        )
+               )
                
                )
-               ),
-      tabPanel('Introducción')
-      
+
       
     )        
             
@@ -832,5 +853,7 @@ shinyUI(
     
     
   )
+)
+)
 )
 )
