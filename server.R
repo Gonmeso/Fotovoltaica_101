@@ -426,6 +426,15 @@ shinyServer(function(input, output, session) {
          }, options = list(pageLength = 10,
                            scrollX=TRUE))
          
+         output$MRadData1 <- renderDataTable({
+           
+           rad1 <- as.data.frameM(rad)
+           names(rad1) <- c("Global (kW/m^2)","Difusa (kW/m^2)","Directa(kW/m^2)","Mes","Año")
+           rad1
+           
+         }, options = list(pageLength = 10,
+                           scrollX=TRUE))
+         
          output$YRadData <- renderDataTable({
            
            rad1 <- as.data.frameY(rad)
@@ -461,7 +470,7 @@ shinyServer(function(input, output, session) {
     output$HRadData <- renderDataTable({
       
       hrad1 <- as.data.frameD(hrad)
-      # names(rad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Día","Mes","Año")
+      names(hrad1) <- c("Global (W/m^2)","Difusa (W/m^2)","Directa(W/m^2)","Día","Mes","Año")
       hrad1
       
     }, options = list(pageLength = 10))
@@ -469,7 +478,20 @@ shinyServer(function(input, output, session) {
     output$MHRadData <- renderDataTable({
       
       hrad1 <- as.data.frameM(hrad)
-      # names(hrad1) <- c("Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Mes","Año")
+      names(hrad1) <- c("Irradiancia extra-atmosférica en plano inclinado (kW/m^2)", "Irradiancia directa (kW/m^2)",
+                        "Global (kW/m^2)","Difusa (kW/m^2)","Directa(kW/m^2)",
+                        "Global eficaz (kW/m^2)","Difusa eficaz (kW/m^2)","Directa eficaz (kW/m^2)", "Mes","Año")
+      hrad1
+      
+    }, options = list(pageLength = 10,
+                      scrollX=TRUE)) 
+    
+    output$MHRadData1 <- renderDataTable({
+      
+      hrad1 <- as.data.frameM(hrad)
+      names(hrad1) <- c("Irradiancia extra-atmosférica en plano inclinado (kW/m^2)", "Irradiancia directa (kW/m^2)",
+                        "Global (kW/m^2)","Difusa (kW/m^2)","Directa(kW/m^2)",
+                        "Global eficaz (kW/m^2)","Difusa eficaz (kW/m^2)","Directa eficaz (kW/m^2)", "Mes","Año")
       hrad1
       
     }, options = list(pageLength = 10,
@@ -478,7 +500,9 @@ shinyServer(function(input, output, session) {
     output$YHRadData <- renderDataTable({
       
       hrad1 <- as.data.frameY(hrad)
-      # names(hrad1) <- c( "Global (Wh/m^2)","Difusa (Wh/m^2)","Directa(Wh/m^2)","Año")
+      names(hrad1) <- c("Irradiancia extra-atmosférica en plano inclinado (kW/m^2)", "Irradiancia directa (kW/m^2)",
+                        "Global (kW/m^2)","Difusa (kW/m^2)","Directa(kW/m^2)",
+                        "Global eficaz (kW/m^2)","Difusa eficaz (kW/m^2)","Directa eficaz (kW/m^2)", "Mes","Año")
       hrad1
       
     }, options = list(pageLength = 10,
@@ -595,6 +619,20 @@ shinyServer(function(input, output, session) {
               
               )
         
+        output$Modulo <- renderDataTable({
+          
+          module
+          
+        }, options = list(pageLength = 10,
+                           scrollX=TRUE))
+        
+        output$Inversor <- renderDataTable({
+          
+          inversor
+          
+        }, options = list(pageLength = 10,
+                          scrollX=TRUE))
+        
         output$RedData <- renderDataTable({
           
           aRed <- as.data.frameD(aRed)
@@ -605,6 +643,15 @@ shinyServer(function(input, output, session) {
                           scrollX=TRUE))
       
         output$MRedData <- renderDataTable({
+          
+          aRed <- as.data.frameM(aRed)
+          names(aRed) <- c("Tensión en alterna (kV)","Tensión en continua (kV)","Productividad","Mes","Año")
+          aRed
+          
+        }, options = list(pageLength = 10,
+                          scrollX=TRUE))
+        
+        output$MRedData1 <- renderDataTable({
           
           aRed <- as.data.frameM(aRed)
           names(aRed) <- c("Tensión en alterna (kV)","Tensión en continua (kV)","Productividad","Mes","Año")

@@ -771,6 +771,7 @@ shinyUI(
                             br(),
                             strong("Los valores medios mensuales son:"),
                             br(),
+                            br(),
                             dataTableOutput("MRadData"),
                             br(),
                             br(),
@@ -798,6 +799,7 @@ shinyUI(
                                    br(),
                                    br(),
                                    strong("Los valores medios mensuales son:"),
+                                   br(),
                                    br(),
                                    dataTableOutput("MHRadData"),
                                    br(),
@@ -844,6 +846,47 @@ shinyUI(
                         
                )
                
+               ),
+               
+               tabPanel("Resumen",
+
+                        div(
+                          p(
+                            strong("El módulo escogido y sus características son:"),
+                            br(),
+                            br(),
+                            dataTableOutput("Modulo"),
+                            br(),
+                            br(),
+                            strong("El inversor escogido y sus características son:"),
+                            br(),
+                            br(),
+                            dataTableOutput("Inversor"),
+                            br(),
+                            br(),
+                            strong("Valores medios mensuales en plano horizontal:"),
+                            br(),
+                            br(),
+                            dataTableOutput("MRadData1"),
+                            br(),
+                            br(),
+                            strong("Valores medios mensuales en plano generador:"),
+                            br(),
+                            br(),
+                            dataTableOutput("MHRadData1"),
+                            br(),
+                            br(),
+                            strong("Valores medios mensuales de tensión en corriente alterna:"),
+                            br(),
+                            br(),
+                            dataTableOutput('MRedData1')
+
+                          ),
+                          style = 'textalign=justify'
+                        )
+
+
+
                )
 
       
