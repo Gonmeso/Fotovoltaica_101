@@ -269,11 +269,7 @@ shinyUI(
                            style = 'text-align: justify;'
                          )
                          
-      ),
-               
-              tabPanel('Noticias'),
-              
-              tabPanel('Modulos', div(id = "Modulos"))
+      )
               
             )
             ),
