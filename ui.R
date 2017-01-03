@@ -474,6 +474,125 @@ shinyUI(
                    
                    tabPanel('Geometría solar y localización',
                             
+                            div(
+                              p(
+                                "Uno de los parámetros más influyentes dentro de la generación de 
+                                energía es la posición de la Tierra con el Sol, pues de esta depende
+                                la cantidad de radiación que se pueda utilizar, así como la dirección
+                                y la inclinación del módulo. ",
+                                br(),
+                                br(),
+                                "La Tierra orbita alrededor del sol en una elipse, donde la duración del
+                                año es cercana a los 365 días (5 horas y 57 minutos), según el punto en
+                                el que se encuentre nos podemos encontrar en diferentes estaciones, esto 
+                                es provocado por el ángulo formado entre el eje polar, donde este es un
+                                eje imaginario sobre el que la tierra realiza su movimiento de rotación,
+                                y el plano sobre el que orbita la tierra, la eclíptica.
+                                Durante las diferentes estaciones nos podemos encontrar con diferencias
+                                en la producción, esto es debido a la cantidad de horas de sol que afectan
+                                directamente a la generación de energía, además afecta a las sombras generadas
+                                por los paneles que provocan una gran caída en la eficiencia de los sistemas
+                                por lo que hay que tener en cuenta esto a la hora de realizar el diseño.",
+                                br(),
+                                br(),
+                                "Además del día, el hemisferio y la latitud a la que nos encontremos es muy
+                                determinante a la hora del diseño, pues dependiendo de esta posición las
+                                radiaciones solares incidirán de uno u otro modo, teniendo que modifica
+                                el grado de inclinación de los equipos. ",
+                                br(),
+                                br(),
+                                "Una de las variables más importantes a la hora de estudiar la geometría solar
+                                , es la declinación, que es el ángulo formado entre el plano ecuatorial y la
+                                línea imaginaria que une al sol con la Tierra, la cual depende del día en el
+                                que nos encontremos y cambia en cada momento. Dependiendo del valor de este 
+                                según el hemisferio podemos encontrarnos con:",
+                                br(),
+                                br(),
+                                tags$li("Equinoccio de primavera: en este punto la declinación vale cero 
+                                        donde la noche y el día tienen la misma duración"),
+                                tags$li("Equinoccio de otoño: en este punto la declinación vale cero 
+                                        donde la noche y el día tienen la misma duración"),
+                                tags$li("Solsticio de verano: es aquel en el que la declinación toma 
+                                        su valor máximo según el hemisferio en el que nos encontremos y 
+                                        en este se encuentra el día más largo del año"),
+                                tags$li("Solsticio de invierno: punto en el que la declinación toma
+                                        su valor mínimo, es el día más corto del año"),
+                                br(),
+                                br(),
+                                "Para los solsticios, estos son opuestos en los distintos hemisferios,
+                                es decir, el día del solsticio de verano en el hemisferio norte será el
+                                solsticio de invierno en el hemisferio sur. ",
+                                br(),
+                                br(),
+                                "El valor aproximado de la declinación viene determinado por la siguiente
+                                fórmula:",
+                                br(),
+                                br(),
+                                div(
+                                  img( src ="formulaDec.png"),
+                                  style='text-align:center;'
+                                ),
+                                br(),
+                                br(),
+                                "Donde “n” es el día del año. En la siguiente gráfica podemos observar
+                                la declinación a lo largo del año:",
+                                br(),
+                                br(),
+                                div(
+                                  img( src ="grafDec.png", width = '70%', height = '70%'),
+                                  style='text-align:center;'
+                                ),
+                                "Aquí se puede apreciar los distintos valores así como los días de los
+                                solsticios y equinoccios mencionados anteriormente.",
+                                br(),
+                                br(),
+                                "De la latitud del punto en el que nos encontremos dependen distintos
+                                ángulos solares que son claves a la hora de obtener la posición del sol
+                                en un instante dado, estos son:",
+                                br(),
+                                br(),
+                                tags$li("Cenit solar: se denomina como el punto de mayor altitud en la
+                                        bóveda celeste en relación a un punto determinado."),
+                                tags$li("Azimut solar: ángulo o arco horizontal entre un cuerpo 
+                                        celeste, en este caso el sol, y la dirección norte-sur."),
+                                tags$li("Altura solar: es el ángulo formado entre la horizontal 
+                                        del punto donde nos encontremos y la vertical del sol con
+                                        respecto a esta horizontal."),
+                                br(),
+                                br(),
+                                "Para facilitar la compresión de estos ángulos se puede observar la
+                                siguiente imagen:",
+                                br(),
+                                br(),
+                                div(
+                                  img( src ="angulos.gif"),
+                                  style='text-align:center;'
+                                ),
+                                br(),
+                                br(),
+                                "Con estos ángulos podemos obtener la información necesaria para la
+                                orientación inclinación y distancia entre módulos. ",
+                                br(),
+                                br(),
+                                "Tal y como hemos comentado, para hallar estos angulos necesitamos la latitud,
+                                esta la podemos obtener interactuando con el siguiente mapa de tres formas:",
+                                br(),
+                                br(),
+                                tags$li("Clicando en el mapa"),
+                                tags$li("Introduciendo las coordenadas númericamente"),
+                                tags$li("Introduciendo una dirección"),
+                                br(),
+                                br(),
+                                "Todas estas opciones crean un marcador, el cual volviendo a clicar sobre él,
+                                guarda los datos de las coordenadas y nos muestra las coordenadas seleccionadas
+                                en un pequeño popup"
+                              ),
+                              style = 'text-align=justify;'
+                            ),
+                            
+                            strong("Coordenadas"),
+                            br(),
+                            br(),
                           
                             column(4,
                             numericInput('lonIn', "Longitud", value = 0, width = '50px')),
@@ -481,25 +600,29 @@ shinyUI(
                             column(5,
                             numericInput('latIn', "Latitud", value = 0, width = '50px')),
                             
-                            textInput('calle', "Dirección", value = "Spain"),
-
                             
-                            h3("Seleccione su posición", align = "center"),
+
+                            br(),
+                            br(),
+                            textInput('calle', strong("Dirección"), value = "Spain"),
+
+                            strong("Clic"),
+                            br(),
+                            br(),
+
                             
                             
                             column(12, 
                             leafletOutput("Map"),
                             br(),
-                            p(plotOutput("grafico")),
-                            
-                            
+                            br(),
+                            "Asimismo, puede activarse el check", strong("'Estaciones'"), "para visualizar las estaciones de
+                            las cuales tenemos los datos y si se deseara, pueden seleccionarse por clic para 
+                            realizar los calculos con los datos de la estación",
+                            br(),
                             actionLink('toMod',
                                          "Ir a modulos")
-                            
-                            
-
                          
-                            
                             )
                             
                             
@@ -625,9 +748,48 @@ shinyUI(
                             ),
                    tabPanel("Generadores",
                             
-                            h6(strong("Aqui se muestran los datos sobre el generador escogido,
-                               asimismo, si no se encuentra el generador deseado, puede
-                               introducir los datos manualmente:"), style = "font-family:verdana" ),
+                            div(
+                              p(
+                                "Se define como el conjunto de módulos conectados en serie y en paralelo entre sí.",
+                                br(),
+                                br(),
+                                "Para la conexión en serie, Ns, el nº de módulos en serie, la corriente 
+                                generada es la menor producida por los módulos conectados, mientras que
+                                la tensión de esa rama es la suma de la tensión generada por cada módulo:",
+                                br(),
+                                br(),
+                                div(
+                                  img( src = "f1.png"), style = 'text-align:center;'
+                                ),
+                                br(),
+                                br(),
+                                "En el caso de la conexión en paralelo, Np, el resultado es el contrario, 
+                                la tensión es equivalente a la generada por la rama, mientras que la
+                                corriente es la suma de todas las ramas conectadas en paralelo.",
+                                br(),
+                                br(),
+                                div(
+                                  img( src = "f2.png"), style = 'text-align:center;'
+                                ),
+                                br(),
+                                br(),
+                                "El número total de módulos dentro del generador queda definido por el 
+                                producto del número de ramas con el número de módulos en cada rama:",
+                                br(),
+                                br(),
+                                div(
+                                  img( src = "f2.png"), style = 'text-align:center;'
+                                ),
+                                br(),
+                                br(),
+                                "A continuación, se muestran los valores del generador por defecto,pero pueden introducirse
+                                valores nuevos y realizar el cálculo con estos.",
+                                br(),
+                                br()
+                                
+                              ),
+                              style = 'text-align:justify'
+                            ),
                             
                             column(3,
                                    
