@@ -502,7 +502,7 @@ shinyServer(function(input, output, session) {
       hrad1 <- as.data.frameY(hrad)
       names(hrad1) <- c("Irradiancia extra-atmosférica en plano inclinado (kW/m^2)", "Irradiancia directa (kW/m^2)",
                         "Global (kW/m^2)","Difusa (kW/m^2)","Directa(kW/m^2)",
-                        "Global eficaz (kW/m^2)","Difusa eficaz (kW/m^2)","Directa eficaz (kW/m^2)", "Mes","Año")
+                        "Global eficaz (kW/m^2)","Difusa eficaz (kW/m^2)","Directa eficaz (kW/m^2)","Año")
       hrad1
       
     }, options = list(pageLength = 10,
@@ -511,7 +511,7 @@ shinyServer(function(input, output, session) {
     output$HRadGraf <- renderPlot({
       
       xyplot(hrad)
-      # box("figure")
+
       
     })
     
