@@ -442,8 +442,47 @@ shinyUI(
                    
                    tabPanel('Geometría solar y localización',
                             
+                            strong("Coordenadas"),
+                            br(),
+                            br(),
+                            
+                            column(4,
+                                   numericInput('lonIn', "Longitud", value = 0, width = '50px')),
+                            
+                            column(5,
+                                   numericInput('latIn', "Latitud", value = 0, width = '50px')),
+                            
+                            
+                            
+                            br(),
+                            br(),
+                            textInput('calle', strong("Dirección"), value = "Spain"),
+                            
+                            strong("Clic"),
+                            br(),
+                            br(),
+                            
+                            
+                            
+                            column(12, 
+                                   leafletOutput("Map"),
+                                   br(),
+                                   br(),
+                                   "Asimismo, puede activarse el check", strong("'Estaciones'"), "para visualizar las estaciones de
+                            las cuales tenemos los datos y si se deseara, pueden seleccionarse por clic para 
+                            realizar los calculos con los datos de la estación",
+                                   br(),
+                                   actionLink('toMod',
+                                              "Ir a modulos"),
+                                   br(),
+                                   br()
+                                   
+                            ),
+                            
                             div(
                               p(
+                                br(),
+                                br(),
                                 "Uno de los parámetros más influyentes dentro de la generación de 
                                 energía es la posición de la Tierra con el Sol, pues de esta depende
                                 la cantidad de radiación que se pueda utilizar, así como la dirección
@@ -556,42 +595,9 @@ shinyUI(
                                 en un pequeño popup"
                               ),
                               style = 'text-align=justify;'
-                            ),
-                            
-                            strong("Coordenadas"),
-                            br(),
-                            br(),
-                          
-                            column(4,
-                            numericInput('lonIn', "Longitud", value = 0, width = '50px')),
-                            
-                            column(5,
-                            numericInput('latIn', "Latitud", value = 0, width = '50px')),
-                            
-                            
-
-                            br(),
-                            br(),
-                            textInput('calle', strong("Dirección"), value = "Spain"),
-
-                            strong("Clic"),
-                            br(),
-                            br(),
-
-                            
-                            
-                            column(12, 
-                            leafletOutput("Map"),
-                            br(),
-                            br(),
-                            "Asimismo, puede activarse el check", strong("'Estaciones'"), "para visualizar las estaciones de
-                            las cuales tenemos los datos y si se deseara, pueden seleccionarse por clic para 
-                            realizar los calculos con los datos de la estación",
-                            br(),
-                            actionLink('toMod',
-                                         "Ir a modulos")
-                         
                             )
+                            
+                            
                             
                             
                             
@@ -599,6 +605,78 @@ shinyUI(
                    
                    tabPanel(title = 'Paneles y células',
                             value = 'dMod',
+                            
+                            br(),
+                            strong("Aquí podemos seleccionar el panel deseado según su tecnología con las especificaciones
+                                   mencionadas previamente o introducir los datos por nuestra cuenta: "),
+                            br(),
+                            
+                            selectInput('slctCel',
+                                        'Selecciona el tipo de celula',
+                                        choices = c("Personalizado",as.character(unique(Datos_Modulos$Tipo))),
+                                        selected = "Por defecto"
+                            ),
+                            
+                            uiOutput('sSelect'),
+                            
+                            fluidRow(
+                            
+                            column(3,
+                                   
+                                   numericInput('GVocn',
+                                                'Vocn',
+                                                c(0.00, 200.00),
+                                                step = 0.1,
+                                                width = '100px'),
+                                   
+                                   numericInput('GIscn',
+                                                'Iscn',
+                                                step = 0.1,
+                                                width = '100px',
+                                                c(0.0, 100.0)),
+                                   
+                                   numericInput('GVmn',
+                                                'Vmn',
+                                                step = 0.1,
+                                                width = '100px',
+                                                c(0, 100)),
+                                   
+                                   numericInput('GImn',
+                                                'Imn',
+                                                step = 0.1,
+                                                width = '100px',
+                                                c(0,100))
+                                   
+                            ),
+                            
+                            column(4,
+                                   
+                                   numericInput('GNcs',
+                                                'Ncs',
+                                                c(0,150),
+                                                width = '100px',
+                                                step = 1),
+                                   
+                                   numericInput('GNcp',
+                                                'Ncp',
+                                                step = 1,
+                                                width = '100px',
+                                                c(0.0, 100.0)),
+                                   
+                                   numericInput('GCoef',
+                                                'CoefV',
+                                                step = 0.0001,
+                                                width = '100px',
+                                                c(0, 0.5)),
+                                   
+                                   numericInput('GTONC',
+                                                'TONC',
+                                                step = 0.1,
+                                                width = '100px',
+                                                c(0,100))
+                                   
+                            )
+                            ),
                             
                             div(
                               p(
@@ -642,79 +720,41 @@ shinyUI(
                               ),
                               
                               style = 'text-align: justify'
-                            ),
+                            )
                            
-                            br(),
-                            strong("Aquí podemos seleccionar el panel deseado según su tecnología con las especificaciones
-                                   mencionadas previamente o introducir los datos por nuestra cuenta: "),
-                            br(),
                             
-                            selectInput('slctCel',
-                                        'Selecciona el tipo de celula',
-                                        choices = c("Personalizado",as.character(unique(Datos_Modulos$Tipo))),
-                                        selected = "Por defecto"
-                                        ),
+                            ),
+                   
+                   tabPanel("Generadores",
+                           
                             
-                            uiOutput('sSelect'),
+                            fluidRow(
                             
-                            
-                            column(3,
+                              strong("Selección del generador:"),
+                              br(),
+                              
+                            column(3,offset = 5,
                                    
-                                   numericInput('GVocn',
-                                                'Vocn',
-                                                c(0.00, 200.00),
-                                                step = 0.1,
-                                                width = '100px'),
-                                   
-                                   numericInput('GIscn',
-                                                'Iscn',
-                                                step = 0.1,
-                                                width = '100px',
-                                                c(0.0, 100.0)),
-                                   
-                                   numericInput('GVmn',
-                                                'Vmn',
-                                                step = 0.1,
-                                                width = '100px',
-                                                c(0, 100)),
-                                   
-                                   numericInput('GImn',
-                                               'Imn',
-                                               step = 0.1,
-                                               width = '100px',
-                                               c(0,100))
-                                   
-                                    ),
-                            
-                            column(4,
-                                   
-                                   numericInput('GNcs',
-                                                'Ncs',
-                                                c(0,150),
-                                                width = '100px',
-                                                step = 1),
-                                   
-                                   numericInput('GNcp',
-                                                'Ncp',
+                                   numericInput('GNms',
+                                                'Nms',
                                                 step = 1,
                                                 width = '100px',
-                                                c(0.0, 100.0)),
+                                                c(0,100),
+                                                value = 12
+                                   ),
                                    
-                                   numericInput('GCoef',
-                                                'CoefV',
-                                                step = 0.0001,
-                                                width = '100px',
-                                                c(0, 0.5)),
-                                   
-                                   numericInput('GTONC',
-                                                'TONC',
-                                                step = 0.1,
-                                                width = '100px',
-                                                c(0,100))
+                                   numericInput(
+                                     'GNmp',
+                                     'Nmp',
+                                     step = 1,
+                                     width = '100px',
+                                     c(0,100),
+                                     value = 11
+                                   )
                                    
                             )
+                           
                             ),
-                   tabPanel("Generadores",
                             
                             div(
                               p(
@@ -757,28 +797,9 @@ shinyUI(
                                 
                               ),
                               style = 'text-align:justify'
-                            ),
+                            )
                             
-                            column(3,
-                                   
-                                   numericInput('GNms',
-                                                'Nms',
-                                                step = 1,
-                                                width = '100px',
-                                                c(0,100),
-                                                value = 12
-                                                ),
-                                   
-                                   numericInput(
-                                     'GNmp',
-                                     'Nmp',
-                                     step = 1,
-                                     width = '100px',
-                                     c(0,100),
-                                     value = 11
-                                   )
-                                  
-                                   )
+                            
                             
                             ),
                    
