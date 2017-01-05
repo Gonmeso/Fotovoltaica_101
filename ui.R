@@ -447,10 +447,10 @@ shinyUI(
                             br(),
                             
                             column(4,
-                                   numericInput('lonIn', "Longitud", value = 0, width = '50px')),
+                                   numericInput('lonIn', "Longitud", value = 0, width = '80px')),
                             
                             column(5,
-                                   numericInput('latIn', "Latitud", value = 0, width = '50px')),
+                                   numericInput('latIn', "Latitud", value = 0, width = '80px')),
                             
                             
                             
@@ -467,6 +467,8 @@ shinyUI(
                             column(12, 
                                    leafletOutput("Map"),
                                    br(),
+                                   br(),
+                                   strong("Para guardar el valor y comenzar el cálculo se ha de clicar en el marcador"),
                                    br(),
                                    "Asimismo, puede activarse el check", strong("'Estaciones'"), "para visualizar las estaciones de
                             las cuales tenemos los datos y si se deseara, pueden seleccionarse por clic para 

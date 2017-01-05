@@ -164,20 +164,34 @@ shinyServer(function(input, output, session) {
    })
 
    ##Obtener la latitud y longitud de las marcadores originales
+
    
    lat2 <- reactive({
+     if(!is.null(input$Map_click)){
      
-     input$Map_marker_click$lat
+     input$Map_click$lat
+     }
     
   })
    
    lng2 <- reactive({
+     if(!is.null(input$Map_click)){
      
-     input$Map_marker_click$lng
+     input$Map_click$lng
      
+     }
+     })
+   
+   observe({
+     if(!is.null(input$Map_click)){
      
+     updateNumericInput(session, "lonIn", value = easyFormat(lng2(),2))
+     updateNumericInput(session, "latIn", value = easyFormat(lat2(),2))
+     }
      
    })
+   
+   
 
    ##Obtención del dataframe de la estación seleccionada porr clic
    dataEstacion <- reactive({
