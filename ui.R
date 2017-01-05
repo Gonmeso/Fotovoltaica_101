@@ -983,65 +983,75 @@ shinyUI(
                         
                         div(
                           p(
-                        "La tensión diaria es la siguiente:",
-                        br(),
-                        br(),
-                        dataTableOutput('RedData'),
-                        br(),
-                        br(),
-                        "La tensión acumulada por mes:",
-                        br(),
-                        br(),
-                        dataTableOutput('MRedData'),
-                        br(),
-                        br(),
-                        "La tensión acumulada anual:",
-                        br(),
-                        br(),
-                        dataTableOutput('YRedData'),
-                        br(),
-                        br(),
-                        plotOutput("DRedGraf", click = "plot_click"),
-                        verbatimTextOutput("getU")
-                          )
-                        , style = 'textalign=justify;'
-                        
-               )
-               
-               ),
-               
-               tabPanel("Resumen",
+                            h4("Productividad del sistema:"),
+                            plotOutput("aRedProd"),
+                            br(),
+                            br(),
+                            h4("La energía diaria es la siguiente:"),
+                            br(),
+                            br(),
+                            plotOutput("DRedGraf", click = "plot_click"),
+                            br(),
+                            br(),
+                            strong("Los datos de la energía diaria son:"),
+                            br(),
+                            br(),
+                            dataTableOutput('RedData'),
+                            br(),
+                            br(),
+                            strong("La energía acumulada por mes:"),
+                            br(),
+                            br(),
+                            dataTableOutput('MRedData'),
+                            br(),
+                            br(),
+                            strong("La energía acumulada anual:"),
+                            br(),
+                            br(),
+                            dataTableOutput('YRedData'),
+                            br(),
+                            br()
 
-                        div(
-                          p(
-                            strong("El módulo escogido y sus características son:"),
-                            br(),
-                            br(),
-                            dataTableOutput("Modulo"),
-                            br(),
-                            br(),
-                            strong("El inversor escogido y sus características son:"),
-                            br(),
-                            br(),
-                            dataTableOutput("Inversor"),
-                            br(),
-                            br(),
-                            strong("Valores medios mensuales en plano horizontal:"),
-                            br(),
-                            br(),
-                            dataTableOutput("MRadData1"),
-                            br(),
-                            br(),
-                            strong("Valores medios mensuales en plano generador:"),
-                            br(),
-                            br(),
-                            dataTableOutput("MHRadData1"),
-                            br(),
-                            br(),
-                            strong("Valores medios mensuales de tensión en corriente alterna:"),
-                            br(),
-                            br(),
-                            dataTableOutput('MRedData1')
+
+                            )
+                          , style = 'textalign=justify;'
+                          
+                 )
+                 
+                 ),
+                 
+                 tabPanel("Resumen",
+  
+                          div(
+                            p(
+                              strong("El módulo escogido y sus características son:"),
+                              br(),
+                              br(),
+                              dataTableOutput("Modulo"),
+                              br(),
+                              br(),
+                              strong("El inversor escogido y sus características son:"),
+                              br(),
+                              br(),
+                              dataTableOutput("Inversor"),
+                              br(),
+                              br(),
+                              strong("Valores medios mensuales en plano horizontal:"),
+                              br(),
+                              br(),
+                              dataTableOutput("MRadData1"),
+                              br(),
+                              br(),
+                              strong("Valores medios mensuales en plano generador:"),
+                              br(),
+                              br(),
+                              dataTableOutput("MHRadData1"),
+                              br(),
+                              br(),
+                              strong("Valores medios mensuales de tensión en corriente alterna:"),
+                              br(),
+                              br(),
+                              dataTableOutput('MRedData1')
 
                           ),
                           style = 'textalign=justify'

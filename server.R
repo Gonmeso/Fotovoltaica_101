@@ -673,7 +673,8 @@ shinyServer(function(input, output, session) {
         output$RedData <- renderDataTable({
           
           aRed <- as.data.frameD(aRed)
-          names(aRed) <- c("Tensión en alterna (V)","Tensión en continua(V)","Productividad","Día","Mes","Año")
+          aRed[,c(1:3)] <- easyFormat(aRed[,c(1:3)],2)
+          names(aRed) <- c("Energía en alterna (Wh)","Energía en continua (Wh)","Productividad","Día","Mes","Año")
           aRed
           
         }, options = list(pageLength = 10,
@@ -682,7 +683,8 @@ shinyServer(function(input, output, session) {
         output$MRedData <- renderDataTable({
           
           aRed <- as.data.frameM(aRed)
-          names(aRed) <- c("Tensión en alterna (kV)","Tensión en continua (kV)","Productividad","Mes","Año")
+          aRed[,c(1:3)] <- easyFormat(aRed[,c(1:3)],2)
+          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Mes","Año")
           aRed
           
         }, options = list(pageLength = 10,
@@ -691,7 +693,8 @@ shinyServer(function(input, output, session) {
         output$MRedData1 <- renderDataTable({
           
           aRed <- as.data.frameM(aRed)
-          names(aRed) <- c("Tensión en alterna (kV)","Tensión en continua (kV)","Productividad","Mes","Año")
+          aRed[,c(1:3)] <- easyFormat(aRed[,c(1:3)],2)
+          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Mes","Año")
           aRed
           
         }, options = list(pageLength = 10,
@@ -700,7 +703,8 @@ shinyServer(function(input, output, session) {
         output$YRedData <- renderDataTable({
           
           aRed <- as.data.frameY(aRed)
-          names(aRed) <- c("Tensión en alterna (kV)","Tensión en continua (kV)","Productividad","Año")
+          aRed[,c(1:3)] <- easyFormat(aRed[,c(1:3)],2)
+          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Año")
           aRed
           
         }, options = list(pageLength = 10,
@@ -711,9 +715,21 @@ shinyServer(function(input, output, session) {
           plot(c(1:length(as.data.frameD(aRed)$Eac))
                ,as.data.frameD(aRed)$Eac,
                type = "l",
-               main = "Tensión en corriente alterna",
+               main = "Energía en alterna",
                xlab = "Días",
-               ylab = "Tensión Diaria")
+               ylab = "Energía Diaria (Wh)")
+          # box("figure")
+          
+        })
+        
+        output$aRedProd <- renderPlot({
+          
+          plot(c(1:length(as.data.frameD(aRed)$Yf))
+               ,as.data.frameD(aRed)$Yf,
+               type = "l",
+               main = "Productividad",
+               xlab = "Días",
+               ylab = "Wh/Wp")
           # box("figure")
           
         })
