@@ -919,6 +919,10 @@ shinyUI(
                         column(12,
                         div(
                           p(
+                            h4("Radiaciones en plano horizontal:"),
+                            plotOutput("RadGraf"),
+                            br(),
+                            br(),
                             strong("A continuación se muestran las radiaciones globales, directas y 
                                    difusas de los datos seleccionados:"),
                             br(),
@@ -934,9 +938,8 @@ shinyUI(
                             strong("Los valores medios anuales son:"),
                             dataTableOutput("YRadData"),
                             br(),
-                            br(),
-                            h4("Radiaciones en plano horizontal:"),
-                            plotOutput("RadGraf")
+                            br()
+
                           
                           )
                         ),
@@ -948,6 +951,10 @@ shinyUI(
                         column(12,
                                div(
                                  p(
+                                   h4("Radiaciones en plano generador:"),
+                                   plotOutput("HRadGraf"),
+                                   br(),
+                                   br(),
                                    strong("A continuación se muestran las radiaciones globales, directas y 
                                           difusas de los datos seleccionados:"),
                                    br(),
@@ -963,9 +970,8 @@ shinyUI(
                                    strong("Los valores medios anuales son:"),
                                    dataTableOutput("YHRadData"),
                                    br(),
-                                   br(),
-                                   h4("Radiaciones en plano generador:"),
-                                   plotOutput("HRadGraf")
+                                   br()
+
                                    
                                    )
                                ),
