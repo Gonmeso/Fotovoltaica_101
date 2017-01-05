@@ -889,6 +889,13 @@ shinyUI(
                        column(12, 
                         div(
                           p(
+                            "Se muestra una gráfico con los datos diarios de radiación de la/s estacion/es
+                            seleccionadas",
+                            br(),
+                            br(),
+                            plotOutput("EstGraf"),
+                            br(),
+                            br(),
                             "A continuación, se muestran los datos del punto seleccionado, estos pueden filtrarse
                             usando los filtros que se encuentran al final de la tabla",
                             br(),

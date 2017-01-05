@@ -277,10 +277,25 @@ shinyServer(function(input, output, session) {
       estaEs <- ddply(finalSel,.(Fecha),summarize,G0=sum(G0), Ta=sum(Ta),number=length(G0))
 
       output$EstData <- renderDataTable({
-        names(estaEs)[c(2,3)] <- c("Radiación", "Temperatura ambiente")
+        names(estaEs)[c(2,3)] <- c("Radiación", "Temperatura_ambiente")
+        estaEs$Fecha <- as.Date(estaEs$Fecha)
+        estaEs$Radiación <- easyFormat(estaEs$Radiación, 2)
+        estaEs$Temperatura_ambiente <- easyFormat(estaEs$Temperatura_ambiente, 2)
+        names(estaEs)[c(2,3)] <- c("Radiación (Wh/m^2)", "Temperatura ambiente (ºC)")
         estaEs[,c(1,2,3)]
         },
                                         options = list(pageLength = 10))
+      output$EstGraf <- renderPlot({
+        
+        plot(c(1:length(estaEs$G0)), estaEs$G0,
+             main = "Tomas de radiación diaria",
+             type = 'l',
+             col = "blue",
+             xlab = "Día",
+             ylab = "Radiación (Wh/m^2)")
+        
+      })
+      
       estaEs
       }
       }
