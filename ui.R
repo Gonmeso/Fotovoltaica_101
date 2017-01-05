@@ -248,9 +248,6 @@ shinyUI(
                              tags$li(actionLink( 'Inver',
                                                  'Inversores')),
                              br(),
-                             tags$li(actionLink( 'Bat',
-                                                 'Baterias')),
-                             br(),
                              "Un sistema fotovoltaico contiene más componentes que los mencionados
                              anteriormente, pero estos no son intrínsecos a los sistemas, como pueden
                              ser el cableado o los sistemas de anclaje. ",
@@ -383,14 +380,23 @@ shinyUI(
                                          br(),
                                          "En sistemas residenciales estos se conectan directamente a la línea eléctrica
                                          del domicilio, para transformar la energía con las propiedades adecuadas y así
-                                         inyectarla en la línea para su uso, mientras este se mantenga encendido.  Para
-                                         mantener la fuente de energía estable, los inversores se conectan a baterías
-                                         de manera que pueda suministrarse la energía uniformemente, además el inversor
-                                         es el encargado de controlar cuando es necesario obtener energía de la batería,
-                                         mantenerla o cargarla de la forma más óptima, con el fin de aprovechar la 
-                                         energía de la forma más favorable. En el caso de no estar conectado a una batería,
-                                         el inversor proporcionará solo la energía que sea segura para la red, evitando
-                                         así peligros para los sistemas conectados a esta. ",
+                                         inyectarla en la línea para su uso, mientras este se mantenga encendido.Cabe añadir,
+                                         que los inversores con los que vamos a tratar en el caso de sistemas fotovoltaicos,
+                                         son inversores de sistemas conectados a red, por lo que no se encuentran conectados
+                                         a baterías y no pueden suministrar energía en caso de cortes de red.",
+                                         br(),
+                                         br(),
+                                         "Además, un inversor se puede encontrar en ciertas situaciones apagado dado que estas
+                                         pueden poner en peligro la integridad del sistema y de la red, algunas de estas 
+                                         situaciones son:",
+                                         br(),
+                                         br(),
+                                         tags$li("En el caso de un fallo en la red eléctrica"),
+                                         tags$li("La tensión de la red se encuentra fuera del rango admisible"),
+                                         tags$li("Inestabilidades de la red provocan frecuencias fuera de los límites establecidos"),
+                                         tags$li("La temperatura a la que está sometido el inversor es elevada"),
+                                         tags$li("La tensión o la intensidad del sistema fotovoltaico no llegan a los umbrales
+                                                 de funcionamiento"),
                                          br(),
                                          br(),
                                          "Uno de los puntos más favorables de los inversores es la eficiencia de estos,
@@ -406,7 +412,7 @@ shinyUI(
                                          "En la siguiente imagen podemos observar un esquema de un sistema fotovoltaico y la
                                          posición del inversor en el circuito:",
                                          div(
-                                           img( src = 'esquema_inversor.gif' ),
+                                           img( src = 'esquemaSFCR.jpg', width = '95%', height = '95%' ),
                                            style = 'text-align: center;'
                                          ),
                                          br(),
@@ -416,44 +422,6 @@ shinyUI(
                                        ),
                                        
                                        style = 'text-align: justify;'
-                                     )
-                                     
-                                     ),
-                            
-                            tabPanel('Baterias',
-                                     
-                                     div(
-                                       p(
-                                         "Las baterías son los dispositivos encargados de almacenar la energía excedente
-                                         generada por los paneles y suministrar energía al inversor en los momentos que
-                                         los paneles no genere la cantidad necesaria de energía, para mantener la estabilidad
-                                         del sistema.",
-                                         br(),
-                                         br(),
-                                         div(
-                                           img( src = "Bateria.jpg"),
-                                           style = 'text-align: center;'
-                                         ),
-                                         br(),
-                                         br(),
-                                         "Se suelen utilizar agrupaciones, bancos de baterías, para poder almacenar la suficiente
-                                         energía para mantener la energía estable en el caso de que no pueda producir la energía
-                                         necesaria en periodos de tiempo nuboso. Esto se debe a que en el caso de que se produzcan 
-                                         descargas totales de las baterías se van a producir más ciclos completos de carga,
-                                         lo que se traduce en una menor vida efectiva de las baterías. Para esto se recomienda
-                                         un banco de baterías que sea capaz de mantener alimentando al inversor cerca de 5 días.",
-                                         br(),
-                                         br(),
-                                         "La capacidad de las baterías se mide en amperios por hora (amp-hr) a “N” voltios donde 
-                                         la carga se estima en una duración de 20 horas, es decir, la batería puede alimentar a 
-                                         “N” voltios, “X” amperios totales en 20 horas.",
-                                         br(),
-                                         br(),
-                                         br()
-                                         
-                                       ),
-                                       
-                                       style = 'text-align'
                                      )
                                      
                                      )
