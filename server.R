@@ -494,11 +494,27 @@ shinyServer(function(input, output, session) {
   generatorPlane <- reactive({
     
     if(!is.null(input$Map_marker_click)&!is.null(horizontalPlane())){
+      
+      track = "fixed"
+      
+      if(input$track=="Eje horizontal"){
+        track="horiz"
+      } 
+      if(input$track=="Estático"){
+        track="fixed"
+      } 
+      if(input$track=="Doble eje"){
+        track="two"
+      }
+      
+      output$tipoTrack <- renderText({
+        input$track
+      })
     
     g0 <- horizontalPlane()
     
     
-    hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0)
+    hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0, modeTrk = track)
     
     output$HRadData <- renderDataTable({
       
@@ -566,12 +582,12 @@ shinyServer(function(input, output, session) {
       inclin <- generatorPlane()
       
       
-      
+
       module = Datos_Modulos[1,]
       inversor = Datos_Inversores[1,]
       generator = list(Nms = 12, Nmp = 11)
       
-      
+
       
       if(!is.null(input$slctMod)){
        
@@ -635,6 +651,8 @@ shinyServer(function(input, output, session) {
         Nms <- input$GNms
         Nmp <- input$GNmp
 
+        genDf <- data.frame( Nms, Nmp)
+        names(genDf) <- c("Número de paneles en serie","Número de paneles en paralelo" )
         
         aRed <- prodGCPV(lat2(),dataRad = inclin, modeRad = "prev", 
               module = list( Vocn = module$Vocn,
@@ -666,6 +684,13 @@ shinyServer(function(input, output, session) {
         output$Inversor <- renderDataTable({
           
           inversor
+          
+        }, options = list(pageLength = 10,
+                          scrollX=TRUE))
+        
+        output$Generador <- renderDataTable({
+          
+          genDf
           
         }, options = list(pageLength = 10,
                           scrollX=TRUE))
