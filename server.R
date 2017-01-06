@@ -167,26 +167,42 @@ shinyServer(function(input, output, session) {
 
    
    lat2 <- reactive({
-     if(!is.null(input$Map_click)){
+     if(!is.null(input$Map_marker_click)){
      
-     input$Map_click$lat
+     input$Map_marker_click$lat
      }
     
   })
    
    lng2 <- reactive({
-     if(!is.null(input$Map_click)){
+     if(!is.null(input$Map_marker_click)){
      
-     input$Map_click$lng
+     input$Map_marker_click$lng
      
      }
      })
    
+   lat1 <- reactive({
+     if(!is.null(input$Map_click)){
+       
+       input$Map_click$lat
+     }
+     
+   })
+   
+   lng1 <- reactive({
+     if(!is.null(input$Map_click)){
+       
+       input$Map_click$lng
+       
+     }
+   })
+   
    observe({
      if(!is.null(input$Map_click)){
      
-     updateNumericInput(session, "lonIn", value = easyFormat(lng2(),2))
-     updateNumericInput(session, "latIn", value = easyFormat(lat2(),2))
+     updateNumericInput(session, "lonIn", value = easyFormat(lng1(),2))
+     updateNumericInput(session, "latIn", value = easyFormat(lat1(),2))
      }
      
    })
