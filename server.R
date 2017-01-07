@@ -244,6 +244,17 @@ shinyServer(function(input, output, session) {
         },
         options = list(pageLength = 10))
       
+      output$EstGraf <- renderPlot({
+        
+        plot(c(1:length(estaEs$G0)), estaEs$G0,
+             main = "Tomas de radiación diaria",
+             type = 'l',
+             col = "blue",
+             xlab = "Día",
+             ylab = "Radiación (Wh/m^2)")
+        
+      })
+      
       estaEs
       
       } else{
