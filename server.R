@@ -715,12 +715,19 @@ shinyServer(function(input, output, session) {
         }, options = list(pageLength = 10,
                           scrollX=TRUE))
         
-        output$Generador <- renderDataTable({
+        output$Generador1 <- renderText({
           
-          genDf
+          paste0("La cantidad de paneles en serie son: ", input$GNms)
           
-        }, options = list(pageLength = 10,
-                          scrollX=TRUE))
+        })    
+        
+        output$Generador2 <- renderText({
+          
+          paste0("La cantidad de ramas en paralelo son: ", input$GNmp)
+          
+        })
+        # }, options = list(pageLength = 10,
+        #                   scrollX=TRUE))
         
         output$RedData <- renderDataTable({
           
