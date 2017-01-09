@@ -677,13 +677,9 @@ shinyUI(
                                                 width = '100px',
                                                 c(0,100))
                                    
-                            ),
+                            )
                             
-                            selectInput("track",
-                                        "Modo de seguimiento",
-                                        choices = c("Estático", "Eje horizontal", "Doble eje"),
-                                        selected = "Estático"
-                                        )
+
                             
                             ),
                             
@@ -733,6 +729,63 @@ shinyUI(
                            
                             
                             ),
+                   
+                   tabPanel("Modo de seguimiento",
+                     
+                            selectInput("track",
+                                        "Modo de seguimiento",
+                                        choices = c("Estático", "Eje horizontal", "Doble eje"),
+                                        selected = "Estático"
+                            ),
+                            
+                            div(
+                              p(
+                                "Para aumentar la cantidad de energía que puede producir un sistema se han
+                                desarrollado distintos tipos de sistemas de seguimiento que permitan mantener
+                                la incidencia de los rayos solares lo más óptima posible a lo largo del día.
+                                Los distintos tipos de sistemas son:",
+                                br(),
+                                br(),
+                                strong("Sistema estático"),
+                                br(),
+                                br(),
+                                "Es el sistema más común actualmente y el más barato, estos mantienen una 
+                                orientación y una inclinación estática, lo que los hacen los menos eficientes,
+                                pero debido al coste de los sistemas de seguimiento sigue manteniéndose como 
+                                la opción principal, además de versatilidad a la hora de instalarlo, pues su 
+                                instalación se puede realizar en cualquier tipo de superficie. ",
+                                br(),
+                                br(),
+                                strong("Sistemas con seguidores de un eje"),
+                                br(),
+                                br(),
+                                "Este tipo de sistemas solo tiene un grado de libertad, es decir, tiene un solo
+                                parámetro que nos permite determinar el número de reacciones del sistema. 
+                                Los sistemas más comunes de este tipo, son: los sistemas de un eje polar 
+                                (la superficie del módulo gira sobre un eje orientado al sur e inclinado 
+                                un ángulo igual a la latitud), en un eje azimutal (se produce la rotación
+                                sobre un eje vertical y el ángulo de la superficie es constante e igual a
+                                la latitud) y en eje horizontal (la rotación se produce en el eje horizontal
+                                orientado en dirección norte-sur).",
+                                br(),
+                                br(),
+                                strong("Sistemas con seguimientos en dos ejes"),
+                                br(),
+                                br(),
+                                "Sistemas con dos grados de libertad, con un seguimiento más preciso y eficiente.
+                                Los tipos de sistemas usados se dividen en tipo Monoposte, cuyo apoyo es central
+                                , y Carrousel, el cual tiene distintos apoyos a lo largo de una superficie circular.",
+                                br(),
+                                "Los sistemas de un solo eje mantienen un menor coste que aquellos de dos ejes, así 
+                                como una mayor simplicidad de instalación y fabricación y una mayor adaptación en 
+                                distintos tipos de superficie. Por otro lado, los sistemas de dos ejes tienen un
+                                seguimiento más preciso que se traduce en un incremento de la producción pero con 
+                                un mayor coste frente a los sistemas de un eje. "
+                              ),
+                              style = 'text-align:justify;'
+                            )
+                            
+                   ),
                    
                    tabPanel("Generadores",
                            
