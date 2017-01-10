@@ -586,7 +586,7 @@ shinyServer(function(input, output, session) {
     output$YHRadData <- renderDataTable({
       
       hrad1 <- as.data.frameY(hrad)
-      names(hrad1) <- c("Irradiancia extra-atmosférica en plano inclinado (kWh/m^2)", "Irradiancia directa (kWh/m^2)",
+      names(hrad1) <- c(withMathJax("Irradiancia extra-atmosférica en plano inclinado $$\\(kWh/m^2)$$"), "Irradiancia directa (kWh/m^2)",
                         "Global (kWh/m^2)","Difusa (kWh/m^2)","Directa(kWh/m^2)",
                         "Global eficaz (kW/m^2)","Difusa eficaz (kW/m^2)","Directa eficaz (kW/m^2)","Año")
       hrad1[,c(1:8)] <- easyFormat( hrad1[,c(1:8)], 2)
@@ -814,7 +814,7 @@ shinyServer(function(input, output, session) {
                type = "l",
                main = "Productividad",
                xlab = "Días",
-               ylab = "Wh/Wp")
+               ylab = "kWh/kWp")
           # box("figure")
           
         })
