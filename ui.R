@@ -1087,9 +1087,6 @@ shinyUI(
                
                tabPanel("Energía producida",
                         
-                        HTML('<button data-toggle="collapse" data-target="#demo">Collapsible</button>
-                               
-                               <div id="demo" class="collapse">'),
                         div(
                           p(
                             h4("Productividad del sistema:"),
@@ -1125,8 +1122,7 @@ shinyUI(
                             )
                           , style = 'textalign=justify;'
                           
-                 ),
-                 HTML('</div>')
+                 )
                  
                  )
                  
