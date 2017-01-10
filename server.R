@@ -727,14 +727,14 @@ shinyServer(function(input, output, session) {
               
               )
         
-        output$Modulo <- renderDataTable({
+        output$Modulo <- renderTable({
           
           module
           
         }, options = list(pageLength = 10,
                            scrollX=TRUE))
         
-        output$Inversor <- renderDataTable({
+        output$Inversor <- renderTable({
           
           inversor
           
