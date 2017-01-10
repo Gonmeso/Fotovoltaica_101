@@ -253,10 +253,8 @@ shinyUI(
                              ser el cableado o los sistemas de anclaje. ",
                              br(),
                              div(
-                               img( src = 'ComponentesSisyema.png',
-                                    width = '100%',
-                                    height = '100%'),
-                               style = 'text-align: center;border: dotted;'
+                               img( src = 'esquemaSFCR.jpg', width = '95%', height = '95%' ),
+                               style = 'text-align: center;'
                              )
                              
                             
@@ -731,12 +729,23 @@ shinyUI(
                             ),
                    
                    tabPanel("Modo de seguimiento",
+                            
+                            strong("Selecciona el tipo de seguimiento"),
+                            br(),
+                            br(),
                      
                             selectInput("track",
                                         "Modo de seguimiento",
                                         choices = c("Estático", "Eje horizontal", "Doble eje"),
                                         selected = "Estático"
                             ),
+                            
+                            br(),
+                            br(),
+                            uiOutput("angulos"),
+                            uiOutput("angulos1"),
+
+
                             
                             div(
                               p(

@@ -518,6 +518,10 @@ shinyServer(function(input, output, session) {
      
    })
    
+
+       
+
+   
   generatorPlane <- reactive({
     
     if(!is.null(input$Map_marker_click)&!is.null(horizontalPlane())){
@@ -528,7 +532,10 @@ shinyServer(function(input, output, session) {
         track="horiz"
       } 
       if(input$track=="Estático"){
+        
         track="fixed"
+        
+
       } 
       if(input$track=="Doble eje"){
         track="two"
@@ -540,7 +547,7 @@ shinyServer(function(input, output, session) {
     
     g0 <- horizontalPlane()
     
-    
+
     hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0, modeTrk = track)
     
     output$HRadData <- renderDataTable({
@@ -594,6 +601,25 @@ shinyServer(function(input, output, session) {
 
       
     })
+
+    a <- slot(hrad, 'angGen')$alfa
+    b <- slot(hrad, 'angGen')$beta
+
+    if(input$track=='Estático'){
+    output$angulos <- renderUI(
+
+
+      numericInput("alpha", "Orientación",value = a)
+
+    )
+    output$angulos1 <- renderUI(
+
+
+      numericInput("beta", "Inclinación",value = b)
+
+
+    )
+    }
     
     hrad
     
