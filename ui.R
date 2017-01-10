@@ -438,7 +438,7 @@ shinyUI(
                    
                    widths = c(3,8),
                    
-                   tabPanel('Geometría solar y localización',
+                   tabPanel('Radiación solar',
                             
                             strong("Coordenadas"),
                             br(),
@@ -803,6 +803,10 @@ shinyUI(
                             
                               strong("Selección del generador:"),
                               br(),
+                              "A continuación, se muestran los valores del generador por defecto, pero pueden introducirse
+                                valores nuevos y realizar el cálculo con esto:",
+                              br(),
+                              br(),
                               
                             column(3,offset = 5,
                                    
@@ -860,11 +864,8 @@ shinyUI(
                                   img( src = "f2.png"), style = 'text-align:center;'
                                 ),
                                 br(),
-                                br(),
-                                "A continuación, se muestran los valores del generador por defecto,pero pueden introducirse
-                                valores nuevos y realizar el cálculo con estos.",
-                                br(),
                                 br()
+
                                 
                               ),
                               style = 'text-align:justify'
