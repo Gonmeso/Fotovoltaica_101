@@ -742,8 +742,8 @@ shinyUI(
                             
                             br(),
                             br(),
-                            uiOutput("angulos"),
-                            uiOutput("angulos1"),
+                            numericInput("angulos", "Orientación",0),
+                            numericInput("angulos1", "Inclinación",0),
 
 
                             

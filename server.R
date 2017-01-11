@@ -435,16 +435,27 @@ shinyServer(function(input, output, session) {
    ##Movimiento relativo, sirve tanto para estaciones como click
    
    
-   dailyMove <- reactive({
+   dailyMove <- observe({
      
-     if(!is.null(input$Map_marker_click)){
+     if(!is.null(input$Map_click)){
        
-       calcSol(as.numeric(lat2()), fBTd("serie"))
+       sol <- calcSol(as.numeric(lat1()), fBTd("serie"))
        
+       ang <- fTheta(sol = sol, beta = lat1()-10)
+       a <- as.numeric(ang[9]$Alfa)
+       b <- (as.numeric(ang[9]$Beta) * 180) / (pi)
+       b <- easyFormat(b,2)
+     theta <- c(a,b)
+     
+     updateNumericInput(session, "angulos", value = a)
+     updateNumericInput(session, "angulos1", value = b)
+     
      }
      
-     
+
    })  
+   
+
    
 
    horizontalPlane <- reactive({
@@ -548,7 +559,7 @@ shinyServer(function(input, output, session) {
     g0 <- horizontalPlane()
     
 
-    hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0, modeTrk = track)
+    hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0, modeTrk = track, alfa = input$angulos, beta = input$angulos1)
     
     output$HRadData <- renderDataTable({
       
@@ -604,21 +615,10 @@ shinyServer(function(input, output, session) {
 
     a <- slot(hrad, 'angGen')$alfa
     b <- slot(hrad, 'angGen')$beta
-
-    if(input$track=='Estático'){
-    output$angulos <- renderUI(
-
-
-      numericInput("alpha", "Orientación",value = a)
-
-    )
-    output$angulos1 <- renderUI(
-
-
-      numericInput("beta", "Inclinación",value = b)
-
-
-    )
+    
+    if( input$track == 'Estático'){
+    updateNumericInput(session, 'angulos', value = a)
+    updateNumericInput(session, 'angulos1', value = b)
     }
     
     hrad
