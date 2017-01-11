@@ -961,6 +961,16 @@ shinyServer(function(input, output, session) {
     
   })
   
+  hideSelect1 <- observe({
+    toggle("angulos", anim = TRUE, condition = input$track=='Estático')
+    
+    })
+  
+  hideSelect2 <- observe({
+    toggle("angulos1", anim = TRUE, condition = input$track=='Estático')
+    
+    })
+  
 
   
 })

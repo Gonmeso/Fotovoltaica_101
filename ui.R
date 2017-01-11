@@ -1,5 +1,6 @@
 library(shiny)
 library(ggmap)
+library(shinyjs)
 library(leaflet)
 source("SiarData.R")
 
@@ -8,8 +9,11 @@ source("SiarData.R")
 ##FunciÃ³n para la creaciÃ³n de la interfaz
 shinyUI(
   
+
+  
   ##Ajuste de la pÃ¡gina al especio de la ventana
   fluidPage(theme = "bootstrap.css",
+            useShinyjs(),
     fluidRow(        
     
     ##CreaciÃ³n de la barra superior
@@ -469,8 +473,8 @@ shinyUI(
                                    strong("Para guardar el valor y comenzar el cálculo se ha de clicar en el marcador"),
                                    br(),
                                    "Asimismo, puede activarse el check", strong("'Estaciones'"), "para visualizar las estaciones de
-                            las cuales tenemos los datos y si se deseara, pueden seleccionarse por clic para 
-                            realizar los calculos con los datos de la estación",
+                                    las cuales tenemos los datos y si se deseara, pueden seleccionarse por clic para 
+                                    realizar los calculos con los datos de la estación",
                                    br(),
                                    actionLink('toMod',
                                               "Ir a modulos"),
@@ -771,6 +775,7 @@ shinyUI(
                             br(),
                             numericInput("angulos", "Orientación",0),
                             numericInput("angulos1", "Inclinación",0),
+                            
 
 
                             
