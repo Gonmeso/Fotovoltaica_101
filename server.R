@@ -4,6 +4,7 @@ library(solaR)
 library(htmltools)
 library(rsconnect)
 library(plyr)
+library(shinyjs)
 source("SiarData.R")
 
 
