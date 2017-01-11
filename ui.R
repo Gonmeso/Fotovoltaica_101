@@ -592,7 +592,34 @@ shinyUI(
                                 br(),
                                 "Todas estas opciones crean un marcador, el cual volviendo a clicar sobre él,
                                 guarda los datos de las coordenadas y nos muestra las coordenadas seleccionadas
-                                en un pequeño popup"
+                                en un pequeño popup",
+                                br(),
+                                br(),
+                                "Tras obtener estos datos, se realizan los cálculos de las radiaciones global, difusa y directa
+                                partiendo de los datos de las estaciones. La localización es importante a la hora de la producción 
+                                de energía, según esta posición y la distinta incidencia de los rayos solares podemos 
+                                encontrarnos con distintas cantidades de radiación. Esta radiación puede dividirse en cuatro tipos
+                                distintos:",
+                                br(),
+                                br(),
+                                tags$li('Directa (B): radiación que proviene directamente del sol'),
+                                tags$li('Difusa (D): es la radiación proveniente de la atmósfera,
+                                        eso es provocado por la dispersión de parte de la energía 
+                                        procedente del sol. Cuanto más claro se encuentre el cielo,
+                                        menor cantidad de radiación difusa, donde en un día soleado,
+                                        esta puede llegar en torno al 15%, mientras que en los días
+                                        nublados el porcentaje aumenta sustancialmente.'),
+                                tags$li('Reflejada (R): se trata de la radiación reflejada por la 
+                                        superficie, esta depende del coeficiente de reflexión de la superficie
+                                        . En ocasiones, esta es una cantidad muy pequeña por lo que puede
+                                        despreciarse.'),
+                                tags$li('Global (G): Es la suma de las radiaciones anteriores'),
+                                br(),
+                                br(),
+                                div(
+                                  img( src ="radiaciones.jpg"),
+                                  style='text-align:center;'
+                                )
                               ),
                               style = 'text-align=justify;'
                             )
