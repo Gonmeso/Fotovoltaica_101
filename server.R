@@ -780,8 +780,9 @@ shinyServer(function(input, output, session) {
         output$RedData <- renderDataTable({
           
           aRed <- as.data.frameD(aRed)
+          aRed[,c(1,2)] <- aRed[,c(1,2)]/1000
           aRed[,c(1:3)] <- easyFormat(aRed[,c(1:3)],2)
-          names(aRed) <- c("Energía en alterna (Wh)","Energía en continua (Wh)","Productividad","Día","Mes","Año")
+          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Día","Mes","Año")
           aRed
           
         }, options = list(pageLength = 10,
@@ -818,13 +819,14 @@ shinyServer(function(input, output, session) {
                           scrollX=TRUE))
         
         output$DRedGraf <- renderPlot({
-          
-          plot(c(1:length(as.data.frameD(aRed)$Eac))
-               ,as.data.frameD(aRed)$Eac,
+          aRed <- as.data.frameD(aRed)
+          aRed[,c(1,2)] <- aRed[,c(1,2)]/1000
+          plot(c(1:length(aRed$Eac))
+               ,aRed$Eac,
                type = "l",
                main = "Energía en alterna",
                xlab = "Días",
-               ylab = "Energía Diaria (Wh)")
+               ylab = "Energía Diaria (kWh)")
           # box("figure")
           
         })
