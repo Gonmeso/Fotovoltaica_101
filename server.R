@@ -377,7 +377,7 @@ shinyServer(function(input, output, session) {
        
        # print(generatorPlane())
        print(aRed())
-       print(slot(aRed(),'inverter'))
+       print(slot(aRed(),'generator'))
       
      # }
      
@@ -419,7 +419,24 @@ shinyServer(function(input, output, session) {
            
          ))
          
-       }
+       }  
+       getnInv <- reactive(input$nInv)
+       
+       if(req(input$nInv)){
+         if((input$GPinv*getnInv())<as.numeric(slot(aRed(),'generator')$Pg)){
+
+           showModal(modalDialog(
+
+             title = "Advertencia",
+             "La potencia nominal del generador es mayor que la potencia nominal del inversor,
+             para solucionarlo seleccione la pestaña inversores y aumente su número ",
+             footer = modalButton("Ok"),
+             easyClose = TRUE
+
+           ))
+
+         }
+     }
      }
      
      output$getU <- renderText({
@@ -719,7 +736,8 @@ shinyServer(function(input, output, session) {
                              TONC = module$TONC),
               
               inverter = list(Ki = c(inversor$Ki1, inversor$Ki2,inversor$Ki3),
-                              Pinv = (inversor$Pinv*input$nInv),
+                              if(!is.null(input$nInv)){Pinv = (inversor$Pinv*input$nInv)}else Pinv = inversor$Pinv
+                              ,
                               Vmin = inversor$Vmin,
                               vmax = inversor$Vmax,
                               Gumb = inversor$Gumb
