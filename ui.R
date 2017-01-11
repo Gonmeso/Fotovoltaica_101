@@ -953,19 +953,68 @@ shinyUI(
                                    )
                                    
                             ),
-                            column(4,
-                                   
-                                   sliderInput('GVminmax',
-                                               'Vmin - Vmax',
-                                               min = 0,
-                                               max = 1000,
-                                               c(0,100)
-                                   
-                                   ),
-                                   offset =  1 
-                                   
-                                   
-                                   
+                            fluidRow(
+                              column(4,
+                                     
+                                     sliderInput('GVminmax',
+                                                 'Vmin - Vmax',
+                                                 min = 0,
+                                                 max = 1000,
+                                                 c(0,100)
+                                     
+                                     ),
+                                     
+                                     numericInput('nInv',
+                                                  'Número de inversores',
+                                                  value =1,
+                                                  min = 1),
+                                     offset =  1 
+                                     
+                                     
+                                     
+                              )
+                            ),
+                            div(
+                              p(
+                                br(),
+                                br(),
+                                "Como parte fundamental, también vamos a necesitar ciertos datos de los inversores,
+                                donde en la hoja de especificaciones suelen incluir los siguientes:",
+                                br(),
+                                br(),
+                                tags$li("Entrada (corriente continua): potencia máxima, máxima tensión de entrada,
+                                        rango del punto de máxima potencia (MPP) de la tensión, tensión mínima de 
+                                        entrada y máxima corriente de entrada."),
+                                tags$li("Salida (corriente alterna): potencia en condiciones de red (220 V a 50 Hz),
+                                        potencia aparente máxima, tensión nominal en alterna, frecuencia de salida,
+                                        máxima corriente de salida y factor de potencia máximo."),
+                                tags$li("Eficiencias."),
+                                tags$li("Protecciones."),
+                                tags$li("Datos generales: dimensiones, peso, temperatura de funcionamiento, emisión
+                                        de sonido, autoconsumo, conexión de baterías y máximo valor de humedad."),
+                                tags$li("Tipo de conexiones y garantías."),
+                                tags$li("Especificaciones de la batería, en caso de estar incluida en el inversor."),
+                                br(),
+                                br(),
+                                "En este caso los datos que utilizaremos para el cálculo son los siguientes: ",
+                                br(),
+                                br(),
+                                tags$li('Coeficientes de eficiencia de la curva del inversor (Ki).'),
+                                tags$li('Potencia máxima del inversor (Pinv).'),
+                                tags$li('Rango del punto de máxima potencia de la tensión en el inversor: rango
+                                        de tensión donde se maximiza la energía disponible proveniente de los paneles conectados.'),
+                                tags$li('Irradiación umbral (Gumb): irradiación mínima en W/m2 para poner en marcha el inversor. '),
+                                br(),
+                                br(),
+                                "Tanto el primero como el último no suelen encontrarse dentro de las especificaciones, por lo que
+                                se toman valores por defecto, donde para Ki son 0.01. 0.025 y 0.05, donde para Gumb es de 20 W/m2",
+                                br(),
+                                br()
+                                
+                                
+                                
+                              ),
+                              style = 'text-align=justify'
                             )
                             
 

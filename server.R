@@ -377,6 +377,7 @@ shinyServer(function(input, output, session) {
        
        # print(generatorPlane())
        print(aRed())
+       print(slot(aRed(),'inverter'))
       
      # }
      
@@ -718,7 +719,7 @@ shinyServer(function(input, output, session) {
                              TONC = module$TONC),
               
               inverter = list(Ki = c(inversor$Ki1, inversor$Ki2,inversor$Ki3),
-                              Pinv = inversor$Pinv,
+                              Pinv = (inversor$Pinv*input$nInv),
                               Vmin = inversor$Vmin,
                               vmax = inversor$Vmax,
                               Gumb = inversor$Gumb
@@ -736,6 +737,9 @@ shinyServer(function(input, output, session) {
         
         output$Inversor <- renderTable({
           
+          inversor$nInv <- input$nInv
+          names(inversor)[9] <- 'Número de inversores'
+          inversor$Pinv <- (inversor$Pinv*input$nInv)
           inversor
           
         }, options = list(pageLength = 10,
