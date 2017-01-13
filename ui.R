@@ -482,11 +482,12 @@ shinyUI(
                                    br()
                                    
                             ),
+                            actionButton('radBot','Mostrar texto didáctico'),
                             
-                            div(
+                            br(),
+                            br(),
+                            div( id = 'radDiv',
                               p(
-                                br(),
-                                br(),
                                 "Uno de los parámetros más influyentes dentro de la generación de 
                                 energía es la posición de la Tierra con el Sol, pues de esta depende
                                 la cantidad de radiación que se pueda utilizar, así como la dirección
@@ -625,7 +626,7 @@ shinyUI(
                                   style='text-align:center;'
                                 )
                               ),
-                              style = 'text-align=justify;'
+                              style = 'text-align: justify; border: dotted; background: #E5E5E5'
                             )
                             
                             
@@ -707,12 +708,23 @@ shinyUI(
                                                 c(0,100))
                                    
                             )
-                            
+
 
                             
                             ),
-                            
+                            br(), 
                             div(
+                              "*Los datos de los módulos provienen de las fichas técnicas proporcionadas por el fabricante.
+                              Si en la ficha técnica no se encuentran algunos valores, estos mantendrán el valor por defecto.",
+                              style = 'border:solid'
+                            ),
+                            br(),
+                            br(),
+                            actionButton('modBot','Mostrar texto didáctico'),
+                            
+                            br(),
+                            br(),
+                            div( id = 'modDiv',
                               p(
                                 "Los paneles tienen ciertas especificaciones que son necesarias para ver la
                                 eficiencia del sistema o la cantidad de paneles que necesitaremos para conseguir
@@ -748,12 +760,11 @@ shinyUI(
                                     tags$li("Temperatura: 25ºC"),
                                     tags$li("Irradiación: 1000 W/m2"),
                                     tags$li("Espectro de masa de aire: AM 1.5")
-                                  ),
-                                  style = 'border: dotted; background: #E5E5E5'
+                                  )
                                 )
                               ),
                               
-                              style = 'text-align: justify'
+                              style = 'text-align: justify; border: dotted; background: #E5E5E5'
                             )
                            
                             
@@ -775,11 +786,13 @@ shinyUI(
                             br(),
                             numericInput("angulos", "Orientación",0),
                             numericInput("angulos1", "Inclinación",0),
+                            br(),
+                            br(),
+                            actionButton('segBot','Mostrar texto didáctico'),
+                            br(),
+                            br(),
                             
-
-
-                            
-                            div(
+                            div( id= 'segDiv',
                               p(
                                 "Para aumentar la cantidad de energía que puede producir un sistema se han
                                 desarrollado distintos tipos de sistemas de seguimiento que permitan mantener
@@ -823,7 +836,7 @@ shinyUI(
                                 seguimiento más preciso que se traduce en un incremento de la producción pero con 
                                 un mayor coste frente a los sistemas de un eje. "
                               ),
-                              style = 'text-align:justify;'
+                              style = 'text-align: justify; border: dotted; background: #E5E5E5'
                             )
                             
                    ),
@@ -862,8 +875,11 @@ shinyUI(
                             )
                            
                             ),
+                            br(),
+                            br(),
+                            actionButton('genBot','Mostrar texto didáctico'),
                             
-                            div(
+                            div( id = 'genDiv',
                               p(
                                 "Se define como el conjunto de módulos conectados en serie y en paralelo entre sí.",
                                 br(),
@@ -900,7 +916,7 @@ shinyUI(
 
                                 
                               ),
-                              style = 'text-align:justify'
+                              style = 'text-align: justify; border: dotted; background: #E5E5E5'
                             )
                             
                             
@@ -979,7 +995,12 @@ shinyUI(
                                      
                               )
                             ),
-                            div(
+                            br(),
+                            br(),
+                            actionButton('invBot','Mostrar texto didáctico'),
+                            br(),
+                            br(),
+                            div( id = 'invDiv',
                               p(
                                 br(),
                                 br(),
@@ -1019,7 +1040,7 @@ shinyUI(
                                 
                                 
                               ),
-                              style = 'text-align=justify'
+                              style = 'text-align: justify; border: dotted; background: #E5E5E5'
                             )
                             
 

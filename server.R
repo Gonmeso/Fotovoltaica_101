@@ -971,6 +971,55 @@ shinyServer(function(input, output, session) {
     
     })
   
+  hideMod <- observe({
+    hide("modDiv", anim = TRUE)
+    
+  })
+  
+  toggleMod <- observeEvent(input$modBot,{
+    toggle("modDiv", anim = TRUE)
+    
+  })
+  
+  hideInv <- observe({
+    hide("invDiv", anim = TRUE)
+    
+  })
+  
+  toggleInv <- observeEvent(input$invBot,{
+    toggle("invDiv", anim = TRUE)
+    
+  })
+  
+  hideRad <- observe({
+    hide("radDiv", anim = TRUE)
+    
+  })
+  
+  toggleRad <- observeEvent(input$radBot,{
+    toggle("radDiv", anim = TRUE)
+    
+  })
+  
+  hideGen<- observe({
+    hide("genDiv", anim = TRUE)
+    
+  })
+  
+  toggleGen <- observeEvent(input$genBot,{
+    toggle("genDiv", anim = TRUE)
+    
+  }) 
+  
+  hideSeg<- observe({
+    hide("segDiv", anim = TRUE)
+    
+  })
+  
+  toggleSeg <- observeEvent(input$segBot,{
+    toggle("segDiv", anim = TRUE)
+    
+  })
 
   
 })
