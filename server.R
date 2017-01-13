@@ -424,7 +424,12 @@ shinyServer(function(input, output, session) {
        getnInv <- reactive(input$nInv)
        
        if(req(input$nInv)){
-         if((input$GPinv*getnInv())<as.numeric(slot(aRed(),'generator')$Pg)){
+         
+         Pdc <- slot(aRed(),'generator')$Pg
+         Pi <- input$GPinv*getnInv()
+         P0 <- Pdc/Pi
+
+         if(P0>1.4){
 
            showModal(modalDialog(
 
