@@ -257,7 +257,7 @@ shinyUI(
                              ser el cableado o los sistemas de anclaje. ",
                              br(),
                              div(
-                               img( src = 'esquemaSFCR.jpg', width = '95%', height = '95%' ),
+                               img( src = 'EsquemaSFCR.jpg', width = '95%', height = '95%' ),
                                style = 'text-align: center;'
                              )
                              
@@ -414,7 +414,7 @@ shinyUI(
                                          "En la siguiente imagen podemos observar un esquema de un sistema fotovoltaico y la
                                          posición del inversor en el circuito:",
                                          div(
-                                           img( src = 'esquemaSFCR.jpg', width = '95%', height = '95%' ),
+                                           img( src = 'EsquemaSFCR.jpg', width = '95%', height = '95%' ),
                                            style = 'text-align: center;'
                                          ),
                                          br(),
