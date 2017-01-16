@@ -381,7 +381,7 @@ shinyServer(function(input, output, session) {
        print(slot(aRed(),'generator'))
        print(slot(aRed(),'module'))
        print(slot(aRed(),'inverter'))
-       print(slot(aRed(),'prodI'))
+       
       
      # }
      
