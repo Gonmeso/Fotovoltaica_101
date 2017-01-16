@@ -688,10 +688,16 @@ shinyServer(function(input, output, session) {
         }
           
         
-        if(is.na(module$CoefVT)){
+        if(req(module$CoefVT)&is.na(module$CoefVT)){
           module$CoefVT = 0.0023
           
         }
+        if(is.na(module$TONC)){
+          module$TONC = 47
+          
+        }
+        
+        
       }
       if(!is.null(input$slctInv)){
         
@@ -875,36 +881,42 @@ shinyServer(function(input, output, session) {
   
   # Tanto para m?dulos como inversores, si se selecciona un predeterminado, este valor no se modifica
   observe({
+    
     if(!is.null(input$slctMod)){
       
-    module = Datos_Modulos[Datos_Modulos$Nombre==input$slctMod,]
-    
-    if(input$slctCel!="Personalizado"){
+      module = Datos_Modulos[Datos_Modulos$Nombre==input$slctMod,]
       
-    if(is.na(module$CoefVT)){
-      module$CoefVT = 0.0023
-      
-    }
-    updateNumericInput(session, "GVocn", value = module$Vocn)
-    updateNumericInput(session, "GVmn", value = module$Vmn)
-    updateNumericInput(session, "GIscn", value = module$Iscn)
-    updateNumericInput(session, "GImn", value = module$Imn)
-    updateNumericInput(session, "GNcs", value = module$Ncs)
-    updateNumericInput(session, "GNcp", value = module$Ncp)
-    updateNumericInput(session, "GCoef", value = module$CoefVT)
-    updateNumericInput(session, "GTONC", value = module$TONC)
-    
-    module$Vocn <- input$GVocn
-    module$Vmn <- input$GVmn
-    module$Iscn <- input$GIscn
-    module$Imn <- input$GImn
-    module$Ncs <- input$GNcs
-    module$Ncp <- input$GNcp
-    module$CoefVT <- input$GCoef
-    module$TONC <- input$GTONC
-    
-    }
-    }
+      if(input$slctCel!="Personalizado"){
+        
+        if(req(module$CoefVT)&is.na(module$CoefVT)){
+          module$CoefVT = 0.0023
+          
+        }
+          
+          if(is.na(module$TONC)){
+            module$TONC = 47
+            
+          }
+        updateNumericInput(session, "GVocn", value = module$Vocn)
+        updateNumericInput(session, "GVmn", value = module$Vmn)
+        updateNumericInput(session, "GIscn", value = module$Iscn)
+        updateNumericInput(session, "GImn", value = module$Imn)
+        updateNumericInput(session, "GNcs", value = module$Ncs)
+        updateNumericInput(session, "GNcp", value = module$Ncp)
+        updateNumericInput(session, "GCoef", value = module$CoefVT)
+        updateNumericInput(session, "GTONC", value = module$TONC)
+        
+        module$Vocn <- input$GVocn
+        module$Vmn <- input$GVmn
+        module$Iscn <- input$GIscn
+        module$Imn <- input$GImn
+        module$Ncs <- input$GNcs
+        module$Ncp <- input$GNcp
+        module$CoefVT <- input$GCoef
+        module$TONC <- input$GTONC
+        
+        }
+      }
     })
   
   observe({
