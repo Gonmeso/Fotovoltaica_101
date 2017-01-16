@@ -657,24 +657,28 @@ shinyUI(
                                    
                                    numericInput('GVocn',
                                                 'Vocn',
+                                                value = 57.6,
                                                 c(0.00, 200.00),
                                                 step = 0.1,
                                                 width = '100px'),
                                    
                                    numericInput('GIscn',
                                                 'Iscn',
+                                                value = 4.7,
                                                 step = 0.1,
                                                 width = '100px',
                                                 c(0.0, 100.0)),
                                    
                                    numericInput('GVmn',
                                                 'Vmn',
+                                                value = 46.08,
                                                 step = 0.1,
                                                 width = '100px',
                                                 c(0, 100)),
                                    
                                    numericInput('GImn',
                                                 'Imn',
+                                                value = 4.35,
                                                 step = 0.1,
                                                 width = '100px',
                                                 c(0,100))
@@ -685,30 +689,40 @@ shinyUI(
                                    
                                    numericInput('GNcs',
                                                 'Ncs',
+                                                value = 96,
                                                 c(0,150),
                                                 width = '100px',
                                                 step = 1),
                                    
                                    numericInput('GNcp',
                                                 'Ncp',
+                                                value = 1,
                                                 step = 1,
                                                 width = '100px',
                                                 c(0.0, 100.0)),
                                    
                                    numericInput('GCoef',
                                                 'CoefV',
+                                                value = 0.0023,
                                                 step = 0.0001,
                                                 width = '100px',
                                                 c(0, 0.5)),
                                    
                                    numericInput('GTONC',
                                                 'TONC',
+                                                value = 47,
                                                 step = 0.1,
                                                 width = '100px',
                                                 c(0,100))
                                    
+                            ),
+                            
+                            column(6, 
+                            
+                            numericInput("modPot", 'Potencia en condiciones estándar', value = 200.48, width = 200, min = 0)
+                            
                             )
-
+  
 
                             
                             ),
@@ -853,7 +867,7 @@ shinyUI(
                               br(),
                               br(),
                               
-                            column(3,offset = 5,
+                            column(3,
                                    
                                    numericInput('GNms',
                                                 'Nms',
@@ -862,6 +876,7 @@ shinyUI(
                                                 c(0,100),
                                                 value = 12
                                    ),
+                                   br(),
                                    
                                    numericInput(
                                      'GNmp',
@@ -871,10 +886,31 @@ shinyUI(
                                      c(0,100),
                                      value = 11
                                    )
-                                   
-                            )
-                           
                             ),
+                            
+                                   
+                                   column(6, 
+                                   numericInput('potGen',
+                                                'Potencia del generador en kilovatios',
+                                                value = 26.46,
+                                                width = '250px'),
+                                   numericInput('p0',
+                                                'Relación entre la potencia del inversor y del generador',
+                                                value = 1.06,
+                                                width = '250px'),
+                                   br(),
+                                   numericInput('minMod',
+                                                'Mínimo número de módulos en serie',
+                                                value = 10,
+                                                min = 0,
+                                                width = '250px')
+                                   )
+                            
+
+                                   
+                            ),
+                           
+                            
                             br(),
                             br(),
                             actionButton('genBot','Mostrar texto didáctico'),
@@ -935,6 +971,7 @@ shinyUI(
                                    
                                    numericInput('GKi1',
                                                 'Ki1',
+                                                value = 0.01,
                                                 step = 0.001,
                                                 width = '100px',
                                                 c(0,1)
@@ -942,6 +979,7 @@ shinyUI(
                                    
                                    numericInput('GKi2',
                                                 'Ki2',
+                                                value = 0.025,
                                                 step = 0.001,
                                                 width = '100px',
                                                 c(0,1)
@@ -949,6 +987,7 @@ shinyUI(
                                    
                                    numericInput('GKi3',
                                                 'Ki3',
+                                                value = 0.05,
                                                 step = 0.001,
                                                 width = '100px',
                                                 c(0,1)
@@ -960,6 +999,7 @@ shinyUI(
                                    numericInput(
                                      'GPinv',
                                      'Pinv',
+                                     value = 25000,
                                      step = 100,
                                      width = '100px',
                                      c(0,50000)
@@ -968,6 +1008,7 @@ shinyUI(
                                    numericInput(
                                      'GGumb',
                                      'Gumb',
+                                     value = 20,
                                      step = 1,
                                      width = '100px',
                                      c(0,100)
@@ -979,6 +1020,7 @@ shinyUI(
                                      
                                      sliderInput('GVminmax',
                                                  'Vmin - Vmax',
+                                                 value = c(420,750),
                                                  min = 0,
                                                  max = 1000,
                                                  c(0,100)
@@ -989,10 +1031,13 @@ shinyUI(
                                                   'Número de inversores',
                                                   value =1,
                                                   min = 1),
-                                     offset =  1 
                                      
-                                     
-                                     
+                              
+                              numericInput('p0-1',
+                                           'Relación entre la potencia del inversor y del generador',
+                                           value = 1.06,
+                                           width = '250px'),
+                              offset =  1 
                               )
                             ),
                             br(),

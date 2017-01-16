@@ -379,6 +379,9 @@ shinyServer(function(input, output, session) {
        # print(generatorPlane())
        print(aRed())
        print(slot(aRed(),'generator'))
+       print(slot(aRed(),'module'))
+       print(slot(aRed(),'inverter'))
+       print(slot(aRed(),'prodI'))
       
      # }
      
@@ -420,16 +423,24 @@ shinyServer(function(input, output, session) {
            
          ))
          
-       }  
-       getnInv <- reactive(input$nInv)
+       }
        
-       if(req(input$nInv)){
+       output$getU <- renderText({
+         paste0("Día = ", input$plot_click$x, "\nTensión = ", input$plot_click$y)
+       })
+     }
+     })
+   
+   observe({
+
+       
+       if(req(input$nInv)&req(input$GVmn)&req(input$GNmp)&req(input$GNms)){
          
-         Pdc <- slot(aRed(),'generator')$Pg
-         Pi <- input$GPinv*getnInv()
+         Pdc <- input$GImn*input$GVmn*input$GNmp*input$GNms
+         Pi <- input$GPinv*input$nInv
          P0 <- Pdc/Pi
 
-         if(P0>1.4){
+         if( P0 > 6){
 
            showModal(modalDialog(
 
@@ -442,12 +453,24 @@ shinyServer(function(input, output, session) {
            ))
 
          }
-     }
+         if(P0<=0.3){
+           
+           showModal(modalDialog(
+             
+             title = "Advertencia",
+             "La potencia nominal del generador es mucho menor que la potencia nominal del inversor,
+             para solucionarlo seleccione la pestaña inversores y disminuya su número o eliga un inversor 
+             de menor potencia",
+             footer = modalButton("Ok"),
+             easyClose = TRUE
+             
+           ))
+           
+         }
      }
      
-     output$getU <- renderText({
-       paste0("Día = ", input$plot_click$x, "\nTensión = ", input$plot_click$y)
-     })
+     
+
      
    })
    
@@ -669,9 +692,10 @@ shinyServer(function(input, output, session) {
       if(!is.null(input$slctMod)){
        
          #Para cuando el m?dulo se selecciona directamente 
-        if(input$slctCel!="Personalizado"){
+        if(input$slctMod!="Personalizado"){
         
         module = Datos_Modulos[Datos_Modulos$Nombre==input$slctMod,]
+        
         }
         
         # Actualizaci?n de valores cuando los datos se introducen en modo Personalizado
@@ -688,7 +712,7 @@ shinyServer(function(input, output, session) {
         }
           
         
-        if(req(module$CoefVT)&is.na(module$CoefVT)){
+        if(is.na(module$CoefVT)){
           module$CoefVT = 0.0023
           
         }
@@ -886,9 +910,10 @@ shinyServer(function(input, output, session) {
       
       module = Datos_Modulos[Datos_Modulos$Nombre==input$slctMod,]
       
-      if(input$slctCel!="Personalizado"){
+      if(input$slctMod!="Personalizado"){
         
-        if(req(module$CoefVT)&is.na(module$CoefVT)){
+        if(is.na(module$CoefVT)){
+          
           module$CoefVT = 0.0023
           
         }
@@ -905,6 +930,7 @@ shinyServer(function(input, output, session) {
         updateNumericInput(session, "GNcp", value = module$Ncp)
         updateNumericInput(session, "GCoef", value = module$CoefVT)
         updateNumericInput(session, "GTONC", value = module$TONC)
+        updateNumericInput(session, "modPot", value = module$Imn*module$Vmn)
         
         module$Vocn <- input$GVocn
         module$Vmn <- input$GVmn
@@ -962,6 +988,46 @@ shinyServer(function(input, output, session) {
       inversor$Pinv <- input$GPinv
       inversor$GGumb <- input$GGumb
     }
+  })
+  
+  observe({
+    
+    if(req(input$GImn)){
+    
+    pot <- input$GImn*input$GVmn*input$GNmp*input$GNms/1000
+    
+    updateNumericInput(session,
+                       'potGen',
+                       value = easyFormat(pot, 2))
+    pot <- input$potGen
+    
+    }
+    
+    if(req(input$nInv)){
+      
+      Pdc <-input$GImn*input$GVmn*input$GNmp*input$GNms/1000
+      Pi <- input$GPinv*input$nInv/1000
+      P0 <- Pdc/Pi
+      updateNumericInput(session,
+                         'p0',
+                         value = easyFormat(P0, 2))
+      P0 <- input$p0
+    
+    }  
+    if(req(input$nInv)){
+      
+      Pdc <-input$GImn*input$GVmn*input$GNmp*input$GNms/1000
+      Pi <- input$GPinv*input$nInv/1000
+      P0 <- Pdc/Pi
+      updateNumericInput(session,
+                         'p0-1',
+                         value = easyFormat(P0, 2))
+      P0 <- input$p0-1
+    
+    }
+    
+    updateNumericInput(session, 'minMod', value = easyFormat((input$GVminmax[1]/input$GVmn)+1,0))
+
   })
   
   
