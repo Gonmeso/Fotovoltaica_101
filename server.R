@@ -260,8 +260,7 @@ shinyServer(function(input, output, session) {
       
       } else{
       
-      EstacionesSelect <- DatosSiar #[ sqrt((abs(DatosSiar$lon-lng))^2 + (abs(DatosSiar$lat-lat))^2) <= 0.05]
-      # EstacionesSelect <- DatosSiar[c(DatosSiar$lon-lng<=0.5)]
+      EstacionesSelect <- DatosSiar 
       
       EstacionesSelect$Dist <- sqrt((abs(EstacionesSelect$lon-lng))^2 + (abs(EstacionesSelect$lat-lat))^2)
       
@@ -275,7 +274,10 @@ shinyServer(function(input, output, session) {
       
       output$EstList <- renderDataTable({
         
-        EstacionesSelect[,c(2,4,5,11)]
+        EstacionesSelect$lon <-  easyFormat(EstacionesSelect$lon,2)
+        EstacionesSelect$lat <-  easyFormat(EstacionesSelect$lat,2)
+        names(EstacionesSelect)[c(6,7)] <- c("Longitud", "Latitud")
+        EstacionesSelect[,c(2,4,5,6,7,11)]
         
         }, options = list (pageLength = 10))
       
@@ -539,7 +541,7 @@ shinyServer(function(input, output, session) {
            rad1[,c(1:3)] <- easyFormat( rad1[,c(1:3)], 2)
            rad1
            
-         }, options = list(pageLength = 10,
+         }, options = list(pageLength = 15,
                            scrollX=TRUE))
          
          output$MRadData1 <- renderDataTable({
@@ -549,15 +551,17 @@ shinyServer(function(input, output, session) {
            rad1[,c(1:3)] <- easyFormat( rad1[,c(1:3)], 2)
            rad1
            
-         }, options = list(pageLength = 10,
+         }, options = list(pageLength = 15,
                            scrollX=TRUE))
          
          output$YRadData <- renderDataTable({
            
            rad1 <- as.data.frameY(rad)
-           names(rad1) <- c( "Global (kWh/m^2)","Difusa (kWh/m^2)","Directa(kWh/m^2)","Año")
-           rad1[,c(1:3)] <- easyFormat( rad1[,c(1:3)], 2)
-           rad1
+           rad1 <- colSums(rad1[,-4])
+           rad2 <- data.frame(G = rad1[1], D = rad1[2], Di = rad1[3])
+           names(rad2) <- c( "Global (kWh/m^2)","Difusa (kWh/m^2)","Directa(kWh/m^2)")
+           rad2[,c(1:3)] <- easyFormat( rad2[,c(1:3)], 2)
+           rad2
            
          }, options = list(pageLength = 10,
                            scrollX=TRUE))
@@ -626,7 +630,7 @@ shinyServer(function(input, output, session) {
       hrad1[,c(1:8)] <- easyFormat( hrad1[,c(1:8)], 2)
       hrad1
       
-    }, options = list(pageLength = 10,
+    }, options = list(pageLength = 13,
                       scrollX=TRUE)) 
     
     output$MHRadData1 <- renderDataTable({
@@ -638,17 +642,22 @@ shinyServer(function(input, output, session) {
       hrad1[,c(1:8)] <- easyFormat( hrad1[,c(1:8)], 2)
       hrad1
       
-    }, options = list(pageLength = 10,
+    }, options = list(pageLength = 13,
                       scrollX=TRUE))
     
     output$YHRadData <- renderDataTable({
       
       hrad1 <- as.data.frameY(hrad)
-      names(hrad1) <- c("Irradiancia extra-atmosférica en plano inclinado $$\\(kWh/m^2)$$", "Irradiancia directa (kWh/m^2)",
+      hrad1 <- colSums(hrad1[,-9])
+      hrad2 <- data.frame(G = hrad1[1], D = hrad1[2],
+                          Di = hrad1[3], a = hrad1[4],
+                          b = hrad1[5], c = hrad1[6],
+                          e = hrad1[7], f = hrad1[8])
+      names(hrad2) <- c("Irradiancia extra-atmosférica en plano inclinado (kWh/m^2)", "Irradiancia directa (kWh/m^2)",
                         "Global (kWh/m^2)","Difusa (kWh/m^2)","Directa(kWh/m^2)",
-                        "Global eficaz (kW/m^2)","Difusa eficaz (kW/m^2)","Directa eficaz (kW/m^2)","Año")
-      hrad1[,c(1:8)] <- easyFormat( hrad1[,c(1:8)], 2)
-      hrad1
+                        "Global eficaz (kW/m^2)","Difusa eficaz (kW/m^2)","Directa eficaz (kW/m^2)")
+      hrad2[,c(1:8)] <- easyFormat( hrad2[,c(1:8)], 2)
+      hrad2
       
     }, options = list(pageLength = 10,
                       scrollX=TRUE))
@@ -831,7 +840,7 @@ shinyServer(function(input, output, session) {
           names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Mes","Año")
           aRed
           
-        }, options = list(pageLength = 10,
+        }, options = list(pageLength = 13,
                           scrollX=TRUE))
         
         output$MRedData1 <- renderDataTable({
@@ -841,15 +850,18 @@ shinyServer(function(input, output, session) {
           names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Mes","Año")
           aRed
           
-        }, options = list(pageLength = 10,
+        }, options = list(pageLength = 13,
                           scrollX=TRUE))
 
         output$YRedData <- renderDataTable({
           
           aRed <- as.data.frameY(aRed)
-          aRed[,c(1:3)] <- easyFormat(aRed[,c(1:3)],2)
-          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Año")
-          aRed
+          aRed <- colSums(aRed[,-4])
+          aRed2 <- data.frame(G = aRed[1], D = aRed[2],
+                              Di = aRed[3])
+          aRed2[,c(1:3)] <- easyFormat(aRed2[,c(1:3)],2)
+          names(aRed2) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad")
+          aRed2
           
         }, options = list(pageLength = 10,
                           scrollX=TRUE))
