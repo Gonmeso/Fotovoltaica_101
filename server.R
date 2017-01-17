@@ -606,6 +606,13 @@ shinyServer(function(input, output, session) {
       }
       
       output$tipoTrack <- renderText({
+        
+        if(input$track=='Estático'){
+          
+          paste0(input$track, " Inclinación: ", input$angulos1, " Orientación: ", input$angulos)
+        }
+        
+        else
         input$track
       })
     
