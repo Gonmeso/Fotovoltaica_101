@@ -228,8 +228,10 @@ shinyServer(function(input, output, session) {
       pillaDatos <- DatosSiar[ID == clickID]
       
       output$EstList <- renderDataTable({
-        
-        pillaDatos[,c(2,4,5)]
+        names(pillaDatos)[c(6,7)] <- c("Longitud", "Latitud")
+        pillaDatos[,7] <- easyFormat(pillaDatos[,7], 2)
+        pillaDatos[,6] <- easyFormat(pillaDatos[,6], 2)
+        pillaDatos[,c(2,4,5,6,7)]
       })
       
       ##Comprobación por consola
@@ -626,7 +628,7 @@ shinyServer(function(input, output, session) {
       hrad1 <- as.data.frameM(hrad)
       names(hrad1) <- c("Irradiancia extra-atmosférica en plano inclinado (kWh/m^2)", "Irradiancia directa (kWh/m^2)",
                         "Global (kWh/m^2)","Difusa (kWh/m^2)","Directa(kWh/m^2)",
-                        "Global eficaz (kWh/m^2)","Difusa eficaz (kWh/m^2)","Directa eficaz (kWh/m^2)", "Mes","Año")
+                        "Global efectiva (kWh/m^2)","Difusa efectiva (kWh/m^2)","Directa efectiva (kWh/m^2)", "Mes","Año")
       hrad1[,c(1:8)] <- easyFormat( hrad1[,c(1:8)], 2)
       hrad1
       
@@ -638,7 +640,7 @@ shinyServer(function(input, output, session) {
       hrad1 <- as.data.frameM(hrad)
       names(hrad1) <- c("Irradiancia extra-atmosférica en plano inclinado (kWh/m^2)", "Irradiancia directa (kW/m^2)",
                         "Global (kWh/m^2)","Difusa (kWh/m^2)","Directa(kWh/m^2)",
-                        "Global eficaz (kWh/m^2)","Difusa eficaz (kWh/m^2)","Directa eficaz (kWh/m^2)", "Mes","Año")
+                        "Global efectiva (kWh/m^2)","Difusa efectiva (kWh/m^2)","Directa efectiva (kWh/m^2)", "Mes","Año")
       hrad1[,c(1:8)] <- easyFormat( hrad1[,c(1:8)], 2)
       hrad1
       
@@ -655,7 +657,7 @@ shinyServer(function(input, output, session) {
                           e = hrad1[7], f = hrad1[8])
       names(hrad2) <- c("Irradiancia extra-atmosférica en plano inclinado (kWh/m^2)", "Irradiancia directa (kWh/m^2)",
                         "Global (kWh/m^2)","Difusa (kWh/m^2)","Directa(kWh/m^2)",
-                        "Global eficaz (kW/m^2)","Difusa eficaz (kW/m^2)","Directa eficaz (kW/m^2)")
+                        "Global efectiva (kW/m^2)","Difusa efectiva (kW/m^2)","Directa efectiva (kW/m^2)")
       hrad2[,c(1:8)] <- easyFormat( hrad2[,c(1:8)], 2)
       hrad2
       
@@ -1053,6 +1055,16 @@ shinyServer(function(input, output, session) {
                       inputId = 'Loca',
                       selected = 'dMod'
                       )
+    
+  })
+  
+  observe({
+    
+    Coordenadas <- paste0("La Latitud del punto es: ",easyFormat(as.numeric(lat2()),2),
+                          "   ",
+                          "La longitud del punto es: ", easyFormat(as.numeric(lng2()),2))
+    
+    output$Coordenadas <- renderText(Coordenadas)
     
   })
   

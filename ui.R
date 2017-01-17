@@ -1120,7 +1120,9 @@ shinyUI(
                             br(),
                             dataTableOutput("EstData"),
                             br(),
-                            "La(s) estaciones seleccionadas son:",
+                            "Las coordenadas del punto seleccionado son:",
+                            verbatimTextOutput('Coordenadas'),
+                            "Donde la(s) estaciones seleccionadas son:",
                             dataTableOutput("EstList")
                             
                           ) 
