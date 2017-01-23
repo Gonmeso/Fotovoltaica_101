@@ -416,7 +416,8 @@ shinyServer(function(input, output, session) {
        
        }
        
-       if(is.null(horizontalPlane())&!(lat>43.81|lat<35.76|lng>3.94|lng< -9.27)){
+       if((lat>43.81|lat<35.76|lng>3.94|lng< -9.27)){
+       # if(is.null(horizontalPlane())&!(lat>43.81|lat<35.76|lng>3.94|lng< -9.27)){
          
          showModal(modalDialog(
            
@@ -486,25 +487,25 @@ shinyServer(function(input, output, session) {
    ##Movimiento relativo, sirve tanto para estaciones como click
    
    
-   dailyMove <- observe({
-     
-     if(!is.null(input$Map_click)){
-       
-       sol <- calcSol(as.numeric(lat1()), fBTd("serie"))
-       
-       ang <- fTheta(sol = sol, beta = lat1()-10)
-       a <- as.numeric(ang[9]$Alfa)
-       b <- (as.numeric(ang[9]$Beta) * 180) / (pi)
-       b <- easyFormat(b,2)
-     theta <- c(a,b)
-     
-     updateNumericInput(session, "angulos", value = a)
-     updateNumericInput(session, "angulos1", value = b)
-     
-     }
-     
-
-   })  
+   # dailyMove <- observe({
+   # 
+   #   if(!is.null(input$Map_click)){
+   # 
+   #     sol <- calcSol(as.numeric(lat1()), fBTd("serie"))
+   # 
+   #     ang <- fTheta(sol = sol, beta = lat1()-10)
+   #     a <- as.numeric(ang[9]$Alfa)
+   #     b <- (as.numeric(ang[9]$Beta) * 180) / (pi)
+   #     b <- easyFormat(b,2)
+   #   theta <- c(a,b)
+   # 
+   #   updateNumericInput(session, "angulos", value = a)
+   #   updateNumericInput(session, "angulos1", value = b)
+   # 
+   #   }
+   # 
+   # 
+   # })
    
 
    
@@ -512,6 +513,7 @@ shinyServer(function(input, output, session) {
    horizontalPlane <- reactive({
      
      if(!is.null(input$Map_marker_click)&!is.null(dataEstacion())){
+
        
          datos <- as.data.frame(dataEstacion())
          lat <- as.numeric(lat2())
@@ -617,9 +619,12 @@ shinyServer(function(input, output, session) {
       })
     
     g0 <- horizontalPlane()
-    
-
+    if(input$angBox==TRUE){
     hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0, modeTrk = track, alfa = input$angulos, beta = input$angulos1)
+    }
+    else{
+      hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0, modeTrk = track)
+      }
     
     output$HRadData <- renderDataTable({
       
@@ -1135,5 +1140,9 @@ shinyServer(function(input, output, session) {
     
   })
 
+  hideBox <- observe({
+    toggle("angBox", anim = TRUE, condition = input$track=='Estático')
+    
+  })
   
 })

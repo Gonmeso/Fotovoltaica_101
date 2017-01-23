@@ -3,6 +3,8 @@ title:
 account: fotovoltaica101
 server: shinyapps.io
 appId: 140635
-bundleId: 662941
+bundleId: 686884
 url: https://fotovoltaica101.shinyapps.io/fotovoltaica_101/
-when: 1482953344.20618
+when: 1485024593.29894
+asMultiple: FALSE
+asStatic: FALSE

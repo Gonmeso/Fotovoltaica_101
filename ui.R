@@ -798,6 +798,7 @@ shinyUI(
                             
                             br(),
                             br(),
+                            checkboxInput("angBox","Utilizar orientación e inclinación personalizadas"),
                             numericInput("angulos", "Orientación",0),
                             numericInput("angulos1", "Inclinación",0),
                             br(),
