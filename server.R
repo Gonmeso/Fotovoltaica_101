@@ -841,7 +841,7 @@ shinyServer(function(input, output, session) {
           aRed <- as.data.frameD(aRed)
           aRed[,c(1,2)] <- aRed[,c(1,2)]/1000
           aRed[,c(1:3)] <- easyFormat(aRed[,c(1:3)],2)
-          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Día","Mes","Año")
+          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad (kWh/kWp)","Día","Mes","Año")
           aRed
           
         }, options = list(pageLength = 10,
@@ -851,7 +851,7 @@ shinyServer(function(input, output, session) {
           
           aRed <- as.data.frameM(aRed)
           aRed[,c(1:3)] <- easyFormat(aRed[,c(1:3)],2)
-          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Mes","Año")
+          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad (kWh/kWp)","Mes","Año")
           aRed
           
         }, options = list(pageLength = 13,
@@ -861,7 +861,7 @@ shinyServer(function(input, output, session) {
           
           aRed <- as.data.frameM(aRed)
           aRed[,c(1:3)] <- easyFormat(aRed[,c(1:3)],2)
-          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad","Mes","Año")
+          names(aRed) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad (kWh/kWp)","Mes","Año")
           aRed
           
         }, options = list(pageLength = 13,
@@ -874,7 +874,7 @@ shinyServer(function(input, output, session) {
           aRed2 <- data.frame(G = aRed[1], D = aRed[2],
                               Di = aRed[3])
           aRed2[,c(1:3)] <- easyFormat(aRed2[,c(1:3)],2)
-          names(aRed2) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad")
+          names(aRed2) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad (kWh/kWp)")
           aRed2
           
         }, options = list(pageLength = 10,
