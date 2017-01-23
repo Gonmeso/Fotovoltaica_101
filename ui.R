@@ -1193,7 +1193,7 @@ shinyUI(
                             br(),
                             br(),
                             strong("Los valores anuales son:"),
-                            dataTableOutput("YRadData"),
+                            tableOutput("YRadData"),
                             br(),
                             br()
 
@@ -1225,7 +1225,7 @@ shinyUI(
                                    br(),
                                    br(),
                                    strong("Los valores anuales son:"),
-                                   dataTableOutput("YHRadData"),
+                                   div(style = 'overflow-x: scroll',tableOutput("YHRadData")),
                                    br(),
                                    br()
 
@@ -1265,7 +1265,7 @@ shinyUI(
                             strong("La energía acumulada anual:"),
                             br(),
                             br(),
-                            dataTableOutput('YRedData'),
+                            tableOutput('YRedData'),
                             br(),
                             br()
 

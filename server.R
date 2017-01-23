@@ -558,7 +558,7 @@ shinyServer(function(input, output, session) {
          }, options = list(pageLength = 15,
                            scrollX=TRUE))
          
-         output$YRadData <- renderDataTable({
+         output$YRadData <- renderTable({
            
            rad1 <- as.data.frameY(rad)
            rad1 <- colSums(rad1[,-4])
@@ -567,8 +567,7 @@ shinyServer(function(input, output, session) {
            rad2[,c(1:3)] <- easyFormat( rad2[,c(1:3)], 2)
            rad2
            
-         }, options = list(pageLength = 10,
-                           scrollX=TRUE))
+         })
          
          output$RadGraf <- renderPlot({
            
@@ -619,12 +618,17 @@ shinyServer(function(input, output, session) {
       })
     
     g0 <- horizontalPlane()
+    
     if(input$angBox==TRUE){
+      
     hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0, modeTrk = track, alfa = input$angulos, beta = input$angulos1)
+    
     }
     else{
+      
       hrad <- calcGef(lat2(),modeRad = 'prev', dataRad = g0, modeTrk = track)
-      }
+     
+       }
     
     output$HRadData <- renderDataTable({
       
@@ -659,7 +663,7 @@ shinyServer(function(input, output, session) {
     }, options = list(pageLength = 13,
                       scrollX=TRUE))
     
-    output$YHRadData <- renderDataTable({
+    output$YHRadData <- renderTable({
       
       hrad1 <- as.data.frameY(hrad)
       hrad1 <- colSums(hrad1[,-9])
@@ -673,8 +677,7 @@ shinyServer(function(input, output, session) {
       hrad2[,c(1:8)] <- easyFormat( hrad2[,c(1:8)], 2)
       hrad2
       
-    }, options = list(pageLength = 10,
-                      scrollX=TRUE))
+    })
     
     output$HRadGraf <- renderPlot({
       
@@ -867,7 +870,7 @@ shinyServer(function(input, output, session) {
         }, options = list(pageLength = 13,
                           scrollX=TRUE))
 
-        output$YRedData <- renderDataTable({
+        output$YRedData <- renderTable({
           
           aRed <- as.data.frameY(aRed)
           aRed <- colSums(aRed[,-4])
@@ -877,8 +880,7 @@ shinyServer(function(input, output, session) {
           names(aRed2) <- c("Energía en alterna (kWh)","Energía en continua (kWh)","Productividad (kWh/kWp)")
           aRed2
           
-        }, options = list(pageLength = 10,
-                          scrollX=TRUE))
+        })
         
         output$DRedGraf <- renderPlot({
           aRed <- as.data.frameD(aRed)
