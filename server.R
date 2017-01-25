@@ -1079,11 +1079,15 @@ shinyServer(function(input, output, session) {
     
     output$minMod <- renderText({
       
-      vM <- input$GCoef*input$GTONC*input$GNcs
-      v1 <- input$GVocn - vM
-      v2 <- (v1/input$GVocn)*input$GVmn
+      Tc <- 25 + 1000*(input$GTONC-20)/800
+      Voc <- input$GVocn - (input$GCoef*input$GNcs*(Tc - 25))
+      Vmpp <- Voc*input$GVmn/input$GVocn
       
-      paste("El nº recomendado de módulos en serie es:", ceiling(input$GVminmax[1]/v2))
+      # vM <- input$GCoef*input$GTONC*input$GNcs
+      # v1 <- input$GVocn - vM
+      # v2 <- (v1/input$GVocn)*input$GVmn
+      
+      paste("El nº recomendado de módulos en serie es:", ceiling((input$GVminmax[1]/Vmpp)+1), Vmpp, Tc)
       
       # if(min(slot(aRed(),'prodI')$Vmpp)>input$GVminmax[1]){
       #   
