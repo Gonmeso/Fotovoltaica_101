@@ -1075,7 +1075,7 @@ shinyServer(function(input, output, session) {
     
     }
     
-    # updateNumericInput(session, 'minMod', value = easyFormat((input$GVminmax[1]/input$GVmn)+1,0))
+
     
     output$minMod <- renderText({
       
@@ -1083,17 +1083,10 @@ shinyServer(function(input, output, session) {
       Voc <- input$GVocn - (input$GCoef*input$GNcs*(Tc - 25))
       Vmpp <- Voc*input$GVmn/input$GVocn
       
-      # vM <- input$GCoef*input$GTONC*input$GNcs
-      # v1 <- input$GVocn - vM
-      # v2 <- (v1/input$GVocn)*input$GVmn
+
+      paste("El nº recomendado de módulos en serie es:", ceiling((input$GVminmax[1]/Vmpp)+1))
       
-      paste("El nº recomendado de módulos en serie es:", ceiling((input$GVminmax[1]/Vmpp)+1), Vmpp, Tc)
-      
-      # if(min(slot(aRed(),'prodI')$Vmpp)>input$GVminmax[1]){
-      #   
-      #   paste("El nº recomendado de módulos en serie es:", ceiling(min(slot(aRed(),'prodI')$Vmpp/input$GVmn)))
-      #   
-      # }
+
       
     })
 
