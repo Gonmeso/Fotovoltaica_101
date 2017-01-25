@@ -900,11 +900,12 @@ shinyUI(
                                                 value = 1.06,
                                                 width = '250px'),
                                    br(),
-                                   numericInput('minMod',
-                                                'Mínimo número de módulos en serie',
-                                                value = 10,
-                                                min = 0,
-                                                width = '250px')
+                                   # numericInput('minMod',
+                                   #              'Mínimo número de módulos en serie',
+                                   #              value = 10,
+                                   #              min = 0,
+                                   #              width = '250px')
+                                   verbatimTextOutput('minMod')
                                    )
                             
 
@@ -1189,6 +1190,9 @@ shinyUI(
                             strong("Los valores mensuales son:"),
                             br(),
                             br(),
+                            plotOutput("mRadGraf"),
+                            br(),
+                            br(),
                             dataTableOutput("MRadData"),
                             br(),
                             br(),
@@ -1221,6 +1225,9 @@ shinyUI(
                                    strong("Los valores mensuales son:"),
                                    br(),
                                    br(),
+                                   plotOutput('mHRadGraf'),
+                                   br(),
+                                   br(),
                                    dataTableOutput("MHRadData"),
                                    br(),
                                    br(),
@@ -1247,7 +1254,7 @@ shinyUI(
                             h4("La energía diaria es la siguiente:"),
                             br(),
                             br(),
-                            plotOutput("DRedGraf", click = "plot_click"),
+                            plotOutput("DRedGraf"),
                             br(),
                             br(),
                             strong("Los datos de la energía diaria son:"),
@@ -1257,6 +1264,9 @@ shinyUI(
                             br(),
                             br(),
                             strong("La energía acumulada por mes:"),
+                            br(),
+                            br(),
+                            plotOutput('maRedProd'),
                             br(),
                             br(),
                             dataTableOutput('MRedData'),

@@ -380,11 +380,11 @@ shinyServer(function(input, output, session) {
          
        })
        
-       # print(generatorPlane())
+       print(generatorPlane())
        print(aRed())
-       print(slot(aRed(),'generator'))
-       print(slot(aRed(),'module'))
-       print(slot(aRed(),'inverter'))
+       # print(slot(aRed(),'generator'))
+       # print(slot(aRed(),'module'))
+       # print(min(slot(aRed(),'prodI')$Vmpp))
        
       
      # }
@@ -416,8 +416,8 @@ shinyServer(function(input, output, session) {
        
        }
        
-       if((lat>43.81|lat<35.76|lng>3.94|lng< -9.27)){
-       # if(is.null(horizontalPlane())&!(lat>43.81|lat<35.76|lng>3.94|lng< -9.27)){
+       if(is.null(dataEstacion())){
+       
          
          showModal(modalDialog(
            
@@ -576,6 +576,13 @@ shinyServer(function(input, output, session) {
            
          })
          
+         output$mRadGraf <- renderPlot({
+           
+           
+           xyplot(slot(rad, 'G0dm'))
+           
+         })
+         
          rad
          
          }
@@ -683,6 +690,13 @@ shinyServer(function(input, output, session) {
       
       xyplot(hrad)
 
+      
+    })
+    
+    output$mHRadGraf <- renderPlot({
+      
+      
+      xyplot(slot(hrad, 'GefD'))
       
     })
 
@@ -907,6 +921,13 @@ shinyServer(function(input, output, session) {
           
         })
         
+        output$maRedProd <- renderPlot({
+          
+          
+          xyplot(slot(aRed, 'prodD'))
+          
+        })
+        
         aRed
         
     }
@@ -1054,7 +1075,23 @@ shinyServer(function(input, output, session) {
     
     }
     
-    updateNumericInput(session, 'minMod', value = easyFormat((input$GVminmax[1]/input$GVmn)+1,0))
+    # updateNumericInput(session, 'minMod', value = easyFormat((input$GVminmax[1]/input$GVmn)+1,0))
+    
+    output$minMod <- renderText({
+      
+      vM <- input$GCoef*input$GTONC*input$GNcs
+      v1 <- input$GVocn - vM
+      v2 <- (v1/input$GVocn)*input$GVmn
+      
+      paste("El nº recomendado de módulos en serie es:", ceiling(input$GVminmax[1]/v2))
+      
+      # if(min(slot(aRed(),'prodI')$Vmpp)>input$GVminmax[1]){
+      #   
+      #   paste("El nº recomendado de módulos en serie es:", ceiling(min(slot(aRed(),'prodI')$Vmpp/input$GVmn)))
+      #   
+      # }
+      
+    })
 
   })
   
