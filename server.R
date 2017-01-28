@@ -1083,8 +1083,14 @@ shinyServer(function(input, output, session) {
       Voc <- input$GVocn - (input$GCoef*input$GNcs*(Tc - 25))
       Vmpp <- Voc*input$GVmn/input$GVocn
       
+      Tc1 <- -10 + 200*(input$GTONC-20)/800
+      Voc1 <- input$GVocn - (input$GCoef*input$GNcs*(Tc1 - 25))
+      Vmpp1 <- Voc1*input$GVmn/input$GVocn
+      nMax <- input$GVminmax[2]/Vmpp1
 
-      paste("El nº recomendado de módulos en serie es:", ceiling((input$GVminmax[1]/Vmpp)+1))
+      minS <- paste("El nº mínimo recomendado de módulos en serie es: ", ceiling((input$GVminmax[1]/Vmpp)+1))
+      maxS <- paste("El nº máximo recomendado de módulos en serie es: " , floor(nMax))
+      paste(minS, maxS, sep = '\n')
       
 
       
