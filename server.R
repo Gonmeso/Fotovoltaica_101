@@ -1050,7 +1050,14 @@ shinyServer(function(input, output, session) {
                        value = easyFormat(pot, 2))
     pot <- input$potGen
     
+    output$GenPot <- renderText({
+      pot
+      paste("La potencia del generador es: ", pot, "kW")
+    })
+    
     }
+    
+
     
     if(req(input$nInv)){
       

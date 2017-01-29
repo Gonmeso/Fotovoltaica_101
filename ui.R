@@ -1041,7 +1041,7 @@ shinyUI(
                                 tags$li("Entrada (corriente continua): potencia máxima, máxima tensión de entrada,
                                         rango del punto de máxima potencia (MPP) de la tensión, tensión mínima de entrada
                                         y máxima corriente de entrada"),
-                                tags$li("•	Salida (corriente alterna): potencia en condiciones de red (siendo en España
+                                tags$li("Salida (corriente alterna): potencia en condiciones de red (siendo en España
                                         la frecuencia de 50Hz y 230 V para redes monofásicas y 400 para trifásicas),
                                         potencia aparente máxima, tensión nominal en alterna, frecuencia de salida,
                                         máxima corriente de salida y factor de potencia máximo"),
@@ -1141,6 +1141,7 @@ shinyUI(
                             br(),
                             verbatimTextOutput("Generador1"),
                             verbatimTextOutput("Generador2"),
+                            verbatimTextOutput("GenPot"),
                             br(),
                             br(),
                             strong("El sistema de seguimiento es:"),
