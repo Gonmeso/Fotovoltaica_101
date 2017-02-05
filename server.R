@@ -202,8 +202,8 @@ shinyServer(function(input, output, session) {
    observe({
      if(!is.null(input$Map_click)){
      
-     updateNumericInput(session, "lonIn", value = easyFormat(lng1(),2))
-     updateNumericInput(session, "latIn", value = easyFormat(lat1(),2))
+     updateNumericInput(session, "lonIn", value = easyFormat(lng1(),4))
+     updateNumericInput(session, "latIn", value = easyFormat(lat1(),4))
      }
      
    })
@@ -649,7 +649,8 @@ shinyServer(function(input, output, session) {
     output$MHRadData <- renderDataTable({
       
       hrad1 <- as.data.frameM(hrad)
-      names(hrad1) <- c("Irradiancia extra-atmosférica en plano inclinado (kWh/m^2)", "Irradiancia directa (kWh/m^2)",
+      names(hrad1) <- c("Irradianción extra-atmosférica en plano inclinado (kWh/m^2)",
+                        "Irradianción directa en superficie perpendicular al vector solar (kWh/m^2)",
                         "Global (kWh/m^2)","Difusa (kWh/m^2)","Directa(kWh/m^2)",
                         "Global efectiva (kWh/m^2)","Difusa efectiva (kWh/m^2)","Directa efectiva (kWh/m^2)", "Mes","Año")
       hrad1[,c(1:8)] <- easyFormat( hrad1[,c(1:8)], 2)
@@ -678,7 +679,8 @@ shinyServer(function(input, output, session) {
                           Di = hrad1[3], a = hrad1[4],
                           b = hrad1[5], c = hrad1[6],
                           e = hrad1[7], f = hrad1[8])
-      names(hrad2) <- c("Irradiancia extra-atmosférica en plano inclinado (kWh/m^2)", "Irradiancia directa (kWh/m^2)",
+      names(hrad2) <- c("Irradianción extra-atmosférica en plano inclinado (kWh/m^2)",
+                        "Irradianción directa en superficie perpendicular al vector solar  (kWh/m^2)",
                         "Global (kWh/m^2)","Difusa (kWh/m^2)","Directa(kWh/m^2)",
                         "Global efectiva (kW/m^2)","Difusa efectiva (kW/m^2)","Directa efectiva (kW/m^2)")
       hrad2[,c(1:8)] <- easyFormat( hrad2[,c(1:8)], 2)
